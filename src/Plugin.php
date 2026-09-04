@@ -11,6 +11,7 @@ use CB\Dictionary\Content\PostType;
 use CB\Dictionary\Content\Taxonomies;
 use CB\Dictionary\Frontend\Shortcodes;
 use CB\Dictionary\Governance\Events;
+use CB\Dictionary\Integration\Builders\Bootstrap as BuilderBootstrap;
 use CB\Dictionary\Integration\Suite;
 
 defined( 'ABSPATH' ) || exit;
@@ -34,6 +35,7 @@ final class Plugin {
 
 		Alphabet::init();
 		Shortcodes::init();
+		BuilderBootstrap::init();
 
 		if ( is_admin() ) {
 			EntryDetails::init();

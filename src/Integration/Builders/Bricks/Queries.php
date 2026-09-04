@@ -1,0 +1,7 @@
+<?php
+declare(strict_types=1);
+namespace CB\Dictionary\Integration\Builders\Bricks;
+use CB\Dictionary\Content\Meta;
+use CB\Dictionary\Frontend\Queries as FrontendQueries;
+defined( 'ABSPATH' ) || exit;
+final class Queries { public const ENTRIES='cb_dictionary_entries';public const FEATURED='cb_dictionary_featured_entries'; public static function init():void{add_filter('bricks/setup/control_options',[self::class,'register_query_types']);add_filter('bricks/query/run',[self::class,'run'],10,2);} public static function register_query_types(array $options):array{$options['queryTypes']=isset($options['queryTypes'])&&is_array($options['queryTypes'])?$options['queryTypes']:[];$options['queryTypes'][self::ENTRIES]=__('Dictionary: Entries','core-blueprint-dictionary');$options['queryTypes'][self::FEATURED]=__('Dictionary: Featured entries','core-blueprint-dictionary');return $options;} public static function run(array $results,mixed $q):array{$type=is_object($q)&&isset($q->object_type)?(string)$q->object_type:'';$limit=self::limit($q);if(self::ENTRIES===$type){return FrontendQueries::entries(['posts_per_page'=>$limit])->posts;}if(self::FEATURED===$type){return FrontendQueries::entries(['posts_per_page'=>$limit,'meta_key'=>Meta::FEATURED,'meta_value'=>'1'])->posts;}return $results;} private static function limit(mixed $q):int{$s=is_object($q)&&isset($q->settings)&&is_array($q->settings)?$q->settings:[];$v=$s['posts_per_page']??$s['count']??20;return is_numeric($v)?max(1,min(100,(int)$v)):20;} }

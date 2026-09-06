@@ -130,7 +130,7 @@ if ( ! str_contains( $builder_readiness, "defined( 'BRICKS_VERSION' )" ) ) {
 }
 
 $bootstrap = (string) file_get_contents( $root . '/core-blueprint-dictionary.php' );
-foreach ( [ 'CB\\Core\\UI\\Notice', 'CB\\Core\\UI\\IntegrationGrid' ] as $required ) {
+foreach ( [ 'Notice', 'IntegrationGrid' ] as $required ) {
 	if ( ! str_contains( $bootstrap, $required ) ) {
 		$failures[] = 'Base public-contract gate is missing ' . $required . '.';
 	}

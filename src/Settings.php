@@ -74,13 +74,9 @@ final class Settings {
 		}
 
 		wp_safe_redirect(
-			add_query_arg(
-				[
-					'page'                  => SettingsPage::SLUG,
-					'tab'                   => 'general',
-					'cb_dictionary_updated' => $state,
-				],
-				admin_url( 'admin.php' )
+			SettingsPage::url(
+				'general',
+				[ 'cb_dictionary_updated' => $state ]
 			)
 		);
 		exit;

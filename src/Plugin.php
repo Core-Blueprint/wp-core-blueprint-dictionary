@@ -54,7 +54,7 @@ final class Plugin {
 		);
 		$links[] = sprintf(
 			'<a href="%s">%s</a>',
-			esc_url( admin_url( 'admin.php?page=' . SettingsPage::SLUG ) ),
+			esc_url( SettingsPage::url() ),
 			esc_html__( 'Settings', 'core-blueprint-dictionary' )
 		);
 		return $links;

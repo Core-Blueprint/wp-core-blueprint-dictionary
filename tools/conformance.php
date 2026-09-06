@@ -94,10 +94,13 @@ foreach ( [ "'0-9' => '0-9'", "range( 'A', 'Z' )", 'wp_set_object_terms', 'remov
 }
 
 $settings = (string) file_get_contents( $root . '/src/Settings.php' );
-foreach ( [ 'DEFAULT_REWRITE_BASE', 'REWRITE_DIRTY_OPTION', 'flush_rewrite_rules( false )', 'record_settings_updated', "'tab'                   => 'general'" ] as $required ) {
+foreach ( [ 'DEFAULT_REWRITE_BASE', 'REWRITE_DIRTY_OPTION', 'flush_rewrite_rules( false )', 'record_settings_updated', 'SettingsPage::url(', "'general'", 'cb_dictionary_updated' ] as $required ) {
 	if ( ! str_contains( $settings, $required ) ) {
 		$failures[] = 'Settings/rewrite contract is missing ' . $required . '.';
 	}
+}
+if ( str_contains( $settings, "'page'                  => SettingsPage::SLUG" ) ) {
+	$failures[] = 'Settings save flow must not redirect to the removed flat settings route.';
 }
 
 $events = (string) file_get_contents( $root . '/src/Governance/Events.php' );
@@ -119,10 +122,28 @@ foreach ( [
 	"'metric-tiles'",
 	"'nav-tabs'",
 	"'integration-grid'",
+	'cb_core_register_settings',
+	'SettingsRegistry::register',
+	'SettingsRegistry::GROUP_CONTENT_PUBLISHING',
+	'SettingsRegistry::url',
+	'Suite::ID',
 ] as $required ) {
 	if ( ! str_contains( $admin_page, $required ) ) {
-		$failures[] = 'Golden Admin contract is missing ' . $required . '.';
+		$failures[] = 'Golden Admin / Settings Hub contract is missing ' . $required . '.';
 	}
+}
+foreach ( [ 'cb_core_register_pages', 'PageRegistry::register', 'core-blueprint-dictionary-settings', 'implements PageContract' ] as $legacy_settings_contract ) {
+	if ( str_contains( $admin_page, $legacy_settings_contract ) ) {
+		$failures[] = 'Dictionary settings must not retain the flat PageRegistry contract: ' . $legacy_settings_contract . '.';
+	}
+}
+
+$plugin = (string) file_get_contents( $root . '/src/Plugin.php' );
+if ( ! str_contains( $plugin, 'SettingsPage::url()' ) ) {
+	$failures[] = 'Plugin Settings action link must target the canonical Settings Hub provider URL.';
+}
+if ( str_contains( $plugin, 'SettingsPage::SLUG' ) ) {
+	$failures[] = 'Plugin Settings action link must not target the removed flat settings slug.';
 }
 
 $admin_readiness = (string) file_get_contents( $root . '/src/Admin/IntegrationReadiness.php' );
@@ -144,6 +165,14 @@ $bootstrap = (string) file_get_contents( $root . '/core-blueprint-dictionary.php
 foreach ( [ 'Notice', 'IntegrationGrid' ] as $presentation_only_contract ) {
 	if ( str_contains( $bootstrap, $presentation_only_contract ) ) {
 		$failures[] = 'Admin presentation contract must not be a hard Dictionary boot dependency: ' . $presentation_only_contract . '.';
+	}
+}
+if ( ! str_contains( $bootstrap, '\\CB\\Core\\Admin\\SettingsRegistry' ) ) {
+	$failures[] = 'Dictionary bootstrap must require the public SettingsRegistry contract.';
+}
+foreach ( [ '\\CB\\Core\\Admin\\PageRegistry', '\\CB\\Core\\Admin\\Page' ] as $legacy_boot_contract ) {
+	if ( str_contains( $bootstrap, $legacy_boot_contract ) ) {
+		$failures[] = 'Dictionary bootstrap must not require the retired flat settings contract: ' . $legacy_boot_contract . '.';
 	}
 }
 

@@ -221,8 +221,8 @@ final class SettingsPage implements PageContract {
 		if ( ! class_exists( IntegrationGrid::class ) ) {
 			self::render_feedback(
 				'warning',
-				__( 'Integration status unavailable', 'core-blueprint-dictionary' ),
-				__( 'Dictionary is active, but this Core Blueprint Base build does not expose the shared IntegrationGrid presentation contract. Update Base to view integration readiness here.', 'core-blueprint-dictionary' )
+				__( 'Integration readiness unavailable', 'core-blueprint-dictionary' ),
+				__( 'Dictionary is active, but this Core Blueprint Base build does not expose the shared IntegrationGrid presentation contract. Update Base to view integration readiness on this tab.', 'core-blueprint-dictionary' )
 			);
 			return;
 		}

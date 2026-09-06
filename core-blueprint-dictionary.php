@@ -72,8 +72,7 @@ function cb_dictionary_base_ready(): bool {
 	}
 
 	return class_exists( '\\CB\\Core\\ExtensionRegistry' )
-		&& class_exists( '\\CB\\Core\\Admin\\PageRegistry' )
-		&& interface_exists( '\\CB\\Core\\Admin\\Page' )
+		&& class_exists( '\\CB\\Core\\Admin\\SettingsRegistry' )
 		&& class_exists( '\\CB\\Core\\Governance\\EventRegistry' )
 		&& class_exists( '\\CB\\Core\\Governance\\Audit' );
 }

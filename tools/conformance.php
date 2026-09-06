@@ -108,7 +108,18 @@ foreach ( [ 'EventRegistry::register', 'Audit::record', 'dictionary.settings.upd
 }
 
 $admin_page = (string) file_get_contents( $root . '/src/Admin/SettingsPage.php' );
-foreach ( [ 'TAB_OVERVIEW', 'TAB_GENERAL', 'TAB_INTEGRATIONS', 'IntegrationGrid::render', "'metric-tiles'", "'nav-tabs'", "'integration-grid'" ] as $required ) {
+foreach ( [
+	'TAB_OVERVIEW',
+	'TAB_GENERAL',
+	'TAB_INTEGRATIONS',
+	'IntegrationGrid::render',
+	'class_exists( IntegrationGrid::class )',
+	'class_exists( Notice::class )',
+	'render_feedback',
+	"'metric-tiles'",
+	"'nav-tabs'",
+	"'integration-grid'",
+] as $required ) {
 	if ( ! str_contains( $admin_page, $required ) ) {
 		$failures[] = 'Golden Admin contract is missing ' . $required . '.';
 	}
@@ -130,9 +141,9 @@ if ( ! str_contains( $builder_readiness, "defined( 'BRICKS_VERSION' )" ) ) {
 }
 
 $bootstrap = (string) file_get_contents( $root . '/core-blueprint-dictionary.php' );
-foreach ( [ 'Notice', 'IntegrationGrid' ] as $required ) {
-	if ( ! str_contains( $bootstrap, $required ) ) {
-		$failures[] = 'Base public-contract gate is missing ' . $required . '.';
+foreach ( [ 'Notice', 'IntegrationGrid' ] as $presentation_only_contract ) {
+	if ( str_contains( $bootstrap, $presentation_only_contract ) ) {
+		$failures[] = 'Admin presentation contract must not be a hard Dictionary boot dependency: ' . $presentation_only_contract . '.';
 	}
 }
 

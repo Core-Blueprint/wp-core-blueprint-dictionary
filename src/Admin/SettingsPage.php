@@ -3,46 +3,49 @@ declare(strict_types=1);
 
 namespace CB\Dictionary\Admin;
 
-use CB\Core\Admin\Page as PageContract;
-use CB\Core\Admin\PageRegistry;
+use CB\Core\Admin\SettingsRegistry;
 use CB\Core\UI\IntegrationGrid;
 use CB\Core\UI\Notice;
 use CB\Dictionary\Content\PostType;
 use CB\Dictionary\Content\Taxonomies;
+use CB\Dictionary\Integration\Suite;
 use CB\Dictionary\Settings;
 
 defined( 'ABSPATH' ) || exit;
 
-final class SettingsPage implements PageContract {
-	public const SLUG = 'core-blueprint-dictionary-settings';
-
+final class SettingsPage {
 	private const TAB_OVERVIEW     = 'overview';
 	private const TAB_GENERAL      = 'general';
 	private const TAB_INTEGRATIONS = 'integrations';
 
 	public static function init(): void {
-		add_action( 'cb_core_register_pages', [ __CLASS__, 'register' ] );
+		add_action( 'cb_core_register_settings', [ __CLASS__, 'register' ] );
 	}
 
 	public static function register(): void {
-		PageRegistry::register(
-			new self(),
+		$page = new self();
+
+		SettingsRegistry::register(
+			Suite::ID,
 			[
-				'components' => [
-					'panels',
-					'notices',
-					'form-controls',
-					'integration-grid',
-					'metric-tiles',
-					'nav-tabs',
-					'status',
+				'label'        => $page->menu_title(),
+				'description'  => __( 'Manage Dictionary health, URL behavior, native content structure and optional integrations. Entries remain normal WordPress content and presentation stays builder-neutral.', 'core-blueprint-dictionary' ),
+				'group'        => SettingsRegistry::GROUP_CONTENT_PUBLISHING,
+				'capability'   => $page->capability(),
+				'renderer'     => [ $page, 'render' ],
+				'requirements' => [
+					'components' => [
+						'panels',
+						'notices',
+						'form-controls',
+						'integration-grid',
+						'metric-tiles',
+						'nav-tabs',
+						'status',
+					],
 				],
 			]
 		);
-	}
-
-	public function slug(): string {
-		return self::SLUG;
 	}
 
 	public function title(): string {
@@ -55,10 +58,6 @@ final class SettingsPage implements PageContract {
 
 	public function capability(): string {
 		return 'manage_options';
-	}
-
-	public function position(): ?int {
-		return null;
 	}
 
 	public function render(): void {
@@ -93,6 +92,16 @@ final class SettingsPage implements PageContract {
 		<?php
 	}
 
+	/** @param array<string,scalar> $query */
+	public static function url( string $tab = self::TAB_OVERVIEW, array $query = [] ): string {
+		if ( ! array_key_exists( $tab, self::tabs() ) ) {
+			$tab = self::TAB_OVERVIEW;
+		}
+
+		$query['tab'] = $tab;
+		return SettingsRegistry::url( Suite::ID, $query );
+	}
+
 	/** @return array<string,string> */
 	private static function tabs(): array {
 		return [
@@ -111,17 +120,7 @@ final class SettingsPage implements PageContract {
 	}
 
 	private static function tab_url( string $tab ): string {
-		if ( ! array_key_exists( $tab, self::tabs() ) ) {
-			$tab = self::TAB_OVERVIEW;
-		}
-
-		return add_query_arg(
-			[
-				'page' => self::SLUG,
-				'tab'  => $tab,
-			],
-			admin_url( 'admin.php' )
-		);
+		return self::url( $tab );
 	}
 
 	private static function render_tabs( string $active_tab ): void {

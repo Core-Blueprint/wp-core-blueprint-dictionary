@@ -135,9 +135,9 @@ final class SettingsPage implements PageContract {
 	}
 
 	private static function render_overview(): void {
-		$counts    = wp_count_posts( PostType::TYPE );
-		$published = (int) ( $counts->publish ?? 0 );
-		$drafts    = (int) ( $counts->draft ?? 0 );
+		$counts     = wp_count_posts( PostType::TYPE );
+		$published  = (int) ( $counts->publish ?? 0 );
+		$drafts     = (int) ( $counts->draft ?? 0 );
 		$categories = wp_count_terms( [
 			'taxonomy'   => Taxonomies::CATEGORY,
 			'hide_empty' => false,
@@ -182,13 +182,21 @@ final class SettingsPage implements PageContract {
 		$updated      = isset( $_GET['cb_dictionary_updated'] )
 			? sanitize_key( (string) wp_unslash( $_GET['cb_dictionary_updated'] ) )
 			: ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- display-only redirect state.
-		?>
-		<?php if ( 'changed' === $updated ) : ?>
-			<?php echo Notice::render( [ 'variant' => Notice::SUCCESS, 'title' => __( 'URL base updated', 'core-blueprint-dictionary' ), 'message' => __( 'The new Dictionary URL base is active. WordPress rewrite rules were refreshed once after the new routes were registered.', 'core-blueprint-dictionary' ) ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Base renderer returns escaped component HTML. ?>
-		<?php elseif ( 'unchanged' === $updated ) : ?>
-			<?php echo Notice::render( [ 'variant' => Notice::INFO, 'title' => __( 'No changes needed', 'core-blueprint-dictionary' ), 'message' => __( 'The Dictionary URL base already had this value, so no rewrite refresh was necessary.', 'core-blueprint-dictionary' ) ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Base renderer returns escaped component HTML. ?>
-		<?php endif; ?>
 
+		if ( 'changed' === $updated ) {
+			self::render_feedback(
+				'success',
+				__( 'URL base updated', 'core-blueprint-dictionary' ),
+				__( 'The new Dictionary URL base is active. WordPress rewrite rules were refreshed once after the new routes were registered.', 'core-blueprint-dictionary' )
+			);
+		} elseif ( 'unchanged' === $updated ) {
+			self::render_feedback(
+				'info',
+				__( 'No changes needed', 'core-blueprint-dictionary' ),
+				__( 'The Dictionary URL base already had this value, so no rewrite refresh was necessary.', 'core-blueprint-dictionary' )
+			);
+		}
+		?>
 		<section class="cb-core-panel">
 			<h2><?php esc_html_e( 'Permalinks', 'core-blueprint-dictionary' ); ?></h2>
 			<p><?php esc_html_e( 'Choose the URL base used by the Dictionary archive, individual entries and Dictionary taxonomy archives. Changing this later changes public URLs, so existing external links may need redirects.', 'core-blueprint-dictionary' ); ?></p>
@@ -210,6 +218,40 @@ final class SettingsPage implements PageContract {
 	}
 
 	private static function render_integrations(): void {
+		if ( ! class_exists( IntegrationGrid::class ) ) {
+			self::render_feedback(
+				'warning',
+				__( 'Integration status unavailable', 'core-blueprint-dictionary' ),
+				__( 'Dictionary is active, but this Core Blueprint Base build does not expose the shared IntegrationGrid presentation contract. Update Base to view integration readiness here.', 'core-blueprint-dictionary' )
+			);
+			return;
+		}
+
 		echo IntegrationGrid::render( IntegrationReadiness::items() ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Base IntegrationGrid owns escaping and presentation.
+	}
+
+	private static function render_feedback( string $variant, string $title, string $message ): void {
+		if ( class_exists( Notice::class ) ) {
+			echo Notice::render( [
+				'variant' => $variant,
+				'title'   => $title,
+				'message' => $message,
+			] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Base Notice owns escaping and presentation.
+			return;
+		}
+
+		$wp_variant = match ( $variant ) {
+			'success' => 'notice-success',
+			'warning' => 'notice-warning',
+			'error'   => 'notice-error',
+			default   => 'notice-info',
+		};
+
+		printf(
+			'<div class="notice %1$s"><p><strong>%2$s</strong> %3$s</p></div>',
+			esc_attr( $wp_variant ),
+			esc_html( $title ),
+			esc_html( $message )
+		);
 	}
 }

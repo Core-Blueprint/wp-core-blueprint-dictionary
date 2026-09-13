@@ -1,0 +1,10 @@
+{
+  "product": "Core Blueprint Dictionary",
+  "domain": "core-blueprint-dictionary",
+  "main_file": "core-blueprint-dictionary.php",
+  "version_constant": "CB_DICTIONARY_VERSION",
+  "exclude": [".git", ".github", "docs", "languages", "tests", "tools", "dist", "build"],
+  "skip_js": false,
+  "commit_mo": false,
+  "source_paths": ["core-blueprint-dictionary.php", "src"]
+}

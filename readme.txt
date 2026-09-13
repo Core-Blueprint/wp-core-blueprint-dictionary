@@ -3,7 +3,7 @@ Contributors: coreblueprint
 Tags: dictionary, glossary, knowledge base, gutenberg, builder
 Requires at least: 7.0
 Requires PHP: 8.4
-Stable tag: 0.1.0-rc1
+Stable tag: 1.0.0-rc1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -29,5 +29,5 @@ Core Blueprint Base with Core API 1.0 is required.
 
 == Changelog ==
 
-= 0.1.0-rc1 =
+= 1.0.0-rc1 =
 * Initial release candidate.

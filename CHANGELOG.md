@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.0-rc1
+## 1.0.0-rc1
 
 - Initial Core Blueprint Dictionary release candidate.
 - Added native `cb_dictionary` post type with Gutenberg and normal WordPress content support.

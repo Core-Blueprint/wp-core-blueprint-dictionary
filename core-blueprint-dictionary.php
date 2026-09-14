@@ -12,6 +12,7 @@
  * Domain Path:       /languages
  * Requires at least: 7.0
  * Requires PHP:      8.4
+ * Requires Plugins: core-blueprint
  *
  * @package CB_Dictionary
  */
@@ -27,8 +28,8 @@ if ( version_compare( PHP_VERSION, '8.4', '<' ) ) {
 		}
 		deactivate_plugins( plugin_basename( __FILE__ ) );
 		wp_die(
-			esc_html( sprintf( 'Core Blueprint Dictionary requires PHP 8.4 or newer. This server runs PHP %s.', PHP_VERSION ) ),
-			esc_html( 'Core Blueprint dependency required' ),
+			esc_html( sprintf( 'PHP %1$s or newer is required. This server runs PHP %2$s.', '8.4', PHP_VERSION ) ),
+			esc_html( 'Core Blueprint requirements not met' ),
 			[
 				'link_url'  => admin_url( 'plugins.php' ),
 				'link_text' => 'Plugins',
@@ -41,7 +42,7 @@ if ( version_compare( PHP_VERSION, '8.4', '<' ) ) {
 			printf(
 				'<div class="notice notice-error"><p><strong>%s</strong> %s</p></div>',
 				esc_html( 'Core Blueprint Dictionary:' ),
-				esc_html( sprintf( 'PHP 8.4 or newer is required. This server runs PHP %s.', PHP_VERSION ) )
+				esc_html( sprintf( 'PHP %1$s or newer is required. This server runs PHP %2$s.', '8.4', PHP_VERSION ) )
 			);
 		}
 	} );
@@ -79,21 +80,27 @@ add_action( 'init', static function (): void {
 	);
 }, 1 );
 
+function cb_dictionary_fail_activation( string $message ): void {
+	if ( ! function_exists( 'deactivate_plugins' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+	}
+	deactivate_plugins( CB_DICTIONARY_BASENAME );
+	wp_die(
+		esc_html( $message ),
+		esc_html( 'Core Blueprint requirements not met' ),
+		[
+			'link_url'  => admin_url( 'plugins.php' ),
+			'link_text' => 'Plugins',
+		]
+	);
+}
+
 function cb_dictionary_activate(): void {
 	if ( ! \CB\Dictionary\Support\Requirements::runtime_ready() ) {
-		if ( ! function_exists( 'deactivate_plugins' ) ) {
-			require_once ABSPATH . 'wp-admin/includes/plugin.php';
-		}
-
-		deactivate_plugins( CB_DICTIONARY_BASENAME );
-		wp_die(
-			esc_html( \CB\Dictionary\Support\Requirements::operator_message() ),
-			esc_html( 'Core Blueprint dependency required' ),
-			[
-				'link_url'  => admin_url( 'plugins.php' ),
-				'link_text' => 'Plugins',
-			]
-		);
+		cb_dictionary_fail_activation( \CB\Dictionary\Support\Requirements::activation_message() );
+	}
+	if ( ! \CB\Dictionary\Support\Requirements::product_ready() ) {
+		cb_dictionary_fail_activation( \CB\Dictionary\Support\Requirements::product_activation_message() );
 	}
 
 	\CB\Dictionary\Install::activate();
@@ -113,6 +120,25 @@ add_action( 'plugins_loaded', static function (): void {
 					'<div class="notice notice-error"><p><strong>%s</strong> %s</p></div>',
 					esc_html__( 'Core Blueprint Dictionary:', 'core-blueprint-dictionary' ),
 					esc_html( \CB\Dictionary\Support\Requirements::operator_message() )
+				);
+			} );
+		}
+		return;
+	}
+
+	/* Lightweight Suite identity attaches after generic Bootstrap readiness. */
+	\CB\Dictionary\Integration\Suite::init();
+
+	if ( ! \CB\Dictionary\Support\Requirements::product_ready() ) {
+		if ( is_admin() ) {
+			add_action( 'admin_notices', static function (): void {
+				if ( ! current_user_can( 'activate_plugins' ) ) {
+					return;
+				}
+				printf(
+					'<div class="notice notice-error"><p><strong>%s</strong> %s</p></div>',
+					esc_html__( 'Core Blueprint Dictionary:', 'core-blueprint-dictionary' ),
+					esc_html( \CB\Dictionary\Support\Requirements::product_operator_message() )
 				);
 			} );
 		}

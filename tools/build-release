@@ -1,29 +1,135 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-PLUGIN_SLUG="core-blueprint-dictionary"
-ENTRY_FILE="$ROOT_DIR/core-blueprint-dictionary.php"
-VERSION="$(php -r '$s=file_get_contents($argv[1]); preg_match("/Version:\s+([^\r\n]+)/", $s, $m); echo trim($m[1] ?? "");' "$ENTRY_FILE")"
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+PACKAGE="core-blueprint-dictionary"
+MAIN_FILE="core-blueprint-dictionary.php"
+ENTRY="$ROOT/$MAIN_FILE"
+BUILD="$ROOT/build"
+STAGE="$BUILD/$PACKAGE"
+LOCALES=(nl_NL de_DE fr_FR es_ES it_IT pt_PT)
+trap 'rm -rf "$BUILD/.release-stage"' EXIT
 
-if [[ -z "$VERSION" ]]; then
-  echo "Unable to determine plugin version." >&2
+fail() {
+  printf 'Dictionary release build failed: %s\n' "$*" >&2
   exit 1
-fi
-command -v rsync >/dev/null 2>&1 || { echo "rsync is required." >&2; exit 1; }
-command -v zip >/dev/null 2>&1 || { echo "zip is required." >&2; exit 1; }
-command -v php >/dev/null 2>&1 || { echo "php is required." >&2; exit 1; }
+}
 
-BUILD_DIR="$ROOT_DIR/build"
-STAGE_DIR="$BUILD_DIR/$PLUGIN_SLUG"
-ZIP_PATH="$BUILD_DIR/${PLUGIN_SLUG}-${VERSION}.zip"
-rm -rf "$BUILD_DIR"
-mkdir -p "$STAGE_DIR"
-rsync -a --exclude='.git/' --exclude='.github/' --exclude='build/' --exclude='*.zip' "$ROOT_DIR/" "$STAGE_DIR/"
-find "$STAGE_DIR" -type f -name '*.php' -print0 | xargs -0 -n1 php -l >/dev/null
-php "$STAGE_DIR/tools/conformance.php" >/dev/null
+# 1. Canonical product identity.
+VERSION=""
+CONSTANT_VERSION=""
+REQUIRES_PHP=""
+REQUIRED_API=""
+header_re='^[[:space:]]*\*[[:space:]]*Version:[[:space:]]*([^[:space:]]+)'
+php_re='^[[:space:]]*\*[[:space:]]*Requires PHP:[[:space:]]*([^[:space:]]+)'
+version_re="^[[:space:]]*define\\([[:space:]]*'CB_DICTIONARY_VERSION'[[:space:]]*,[[:space:]]*'([^']+)'[[:space:]]*\\)[[:space:]]*;"
+api_re="^[[:space:]]*define\\([[:space:]]*'CB_DICTIONARY_REQUIRED_API'[[:space:]]*,[[:space:]]*'([^']+)'[[:space:]]*\\)[[:space:]]*;"
+while IFS= read -r line; do
+  [[ -z "$VERSION" && "$line" =~ $header_re ]] && VERSION="${BASH_REMATCH[1]}"
+  [[ -z "$REQUIRES_PHP" && "$line" =~ $php_re ]] && REQUIRES_PHP="${BASH_REMATCH[1]}"
+  [[ -z "$CONSTANT_VERSION" && "$line" =~ $version_re ]] && CONSTANT_VERSION="${BASH_REMATCH[1]}"
+  [[ -z "$REQUIRED_API" && "$line" =~ $api_re ]] && REQUIRED_API="${BASH_REMATCH[1]}"
+done < "$ENTRY"
+[[ -n "$VERSION" ]] || fail "plugin Version header is unavailable"
+[[ "$VERSION" == "$CONSTANT_VERSION" ]] || fail "Version header and CB_DICTIONARY_VERSION differ"
+[[ "$REQUIRES_PHP" == "8.4" ]] || fail "Requires PHP must remain 8.4"
+[[ "$REQUIRED_API" == "1.0" ]] || fail "CB_DICTIONARY_REQUIRED_API must remain 1.0"
+
+# 2. Required release toolchain.
+for command in php python3 git wp msgfmt rsync zip unzip sha256sum find sort touch grep; do
+  command -v "$command" >/dev/null 2>&1 || fail "required command is unavailable: $command"
+done
+php -r 'exit(version_compare(PHP_VERSION, "8.4", ">=") ? 0 : 1);' || fail "PHP 8.4 or newer is required"
+
+# 3. Canonical localization gate. This intentionally fails closed while the
+# reviewed POT + six PO catalogs are absent.
+"$ROOT/tools/i18n/check"
+
+# 4. Source syntax.
+for file in "$ENTRY" "$ROOT/uninstall.php"; do
+  php -l "$file" >/dev/null || fail "PHP lint failed: $file"
+done
+while IFS= read -r -d '' file; do
+  php -l "$file" >/dev/null || fail "PHP lint failed: $file"
+done < <(find "$ROOT/src" -type f -name '*.php' -print0)
+
+# 5. Product-owned conformance/regression evidence.
+php "$ROOT/tools/conformance.php"
+php "$ROOT/tests/bricks-adapter-regression.php"
+
+# 6. Controlled source copy with hard development exclusions.
+rm -rf "$BUILD"
+mkdir -p "$STAGE"
+ZIP="$BUILD/$PACKAGE-$VERSION.zip"
+CHECKSUM="$ZIP.sha256"
+rsync -a \
+  --exclude='.git/' \
+  --exclude='.github/' \
+  --exclude='build/' \
+  --exclude='dist/' \
+  --exclude='tests/' \
+  --exclude='tools/' \
+  --exclude='docs/' \
+  --exclude='node_modules/' \
+  --exclude='vendor/' \
+  --exclude='.DS_Store' \
+  --exclude='*.zip' \
+  "$ROOT/" "$STAGE/"
+
+# 7. commit_mo:false — derive MO artifacts only in staged release.
+LANG="$STAGE/languages"
+POT="$LANG/core-blueprint-dictionary.pot"
+[[ -s "$POT" ]] || fail "staged canonical POT is missing"
+rm -f "$LANG"/*.mo
+for locale in "${LOCALES[@]}"; do
+  po="$LANG/core-blueprint-dictionary-${locale}.po"
+  mo="$LANG/core-blueprint-dictionary-${locale}.mo"
+  [[ -s "$po" ]] || fail "staged reviewed PO is missing for $locale"
+  msgfmt --check-format --check-header -o "$mo" "$po"
+done
+
+# 8. Staged runtime syntax.
+while IFS= read -r -d '' file; do
+  php -l "$file" >/dev/null || fail "staged PHP lint failed: $file"
+done < <(find "$STAGE" -type f -name '*.php' -print0)
+
+# Stable archive content/order.
+find "$STAGE" -exec touch -t 198001010000 {} +
 (
-  cd "$BUILD_DIR"
-  zip -qr "$(basename "$ZIP_PATH")" "$PLUGIN_SLUG"
+  cd "$BUILD"
+  zip -X -q "$ZIP" "$PACKAGE/"
+  find "$PACKAGE" -type f -print | LC_ALL=C sort | zip -X -q "$ZIP" -@
 )
-echo "$ZIP_PATH"
+
+# 9-10. Archive acceptance.
+unzip -tqq "$ZIP"
+ZIP_ENTRIES="$(unzip -Z1 "$ZIP")"
+FIRST_ENTRY="${ZIP_ENTRIES%%$'\n'*}"
+[[ "$FIRST_ENTRY" == "$PACKAGE/" ]] || fail "release ZIP root is not $PACKAGE/"
+if grep -Eq '(^|/)(\.git|\.github|tests|tools|docs|build|dist|node_modules|vendor)(/|$)' <<<"$ZIP_ENTRIES"; then
+  fail "development-only files leaked into the release ZIP"
+fi
+for required in "$PACKAGE/$MAIN_FILE" "$PACKAGE/languages/core-blueprint-dictionary.pot"; do
+  grep -Fxq "$required" <<<"$ZIP_ENTRIES" || fail "required release file missing from ZIP: $required"
+done
+for locale in "${LOCALES[@]}"; do
+  for ext in po mo; do
+    required="$PACKAGE/languages/core-blueprint-dictionary-${locale}.${ext}"
+    grep -Fxq "$required" <<<"$ZIP_ENTRIES" || fail "required locale artifact missing from ZIP: $required"
+  done
+done
+
+PACKAGED_MAIN="$(unzip -p "$ZIP" "$PACKAGE/$MAIN_FILE")"
+PACKAGED_VERSION=""
+PACKAGED_CONSTANT=""
+while IFS= read -r line; do
+  [[ -z "$PACKAGED_VERSION" && "$line" =~ $header_re ]] && PACKAGED_VERSION="${BASH_REMATCH[1]}"
+  [[ -z "$PACKAGED_CONSTANT" && "$line" =~ $version_re ]] && PACKAGED_CONSTANT="${BASH_REMATCH[1]}"
+done <<< "$PACKAGED_MAIN"
+[[ "$PACKAGED_VERSION" == "$VERSION" ]] || fail "packaged Version header differs from verified source"
+[[ "$PACKAGED_CONSTANT" == "$VERSION" ]] || fail "packaged CB_DICTIONARY_VERSION differs from verified source"
+
+# 11. SHA-256 only after acceptance.
+sha256sum "$ZIP" > "$CHECKSUM"
+read -r SHA256 _ < "$CHECKSUM"
+printf 'Dictionary release build: PASS\nPackage: %s\nVersion: %s\nCanonical root: %s/\nSHA-256: %s\n' "$ZIP" "$VERSION" "$PACKAGE" "$SHA256"

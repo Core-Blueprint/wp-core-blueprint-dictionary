@@ -58,7 +58,7 @@ final class Search extends \Bricks\Element {
 			'tab'     => 'content',
 			'group'   => 'search',
 			'type'    => 'info',
-			'content' => esc_html__( 'Use inline results, or choose external results and pair this element with Dictionary Search Results using the same source key.', 'core-blueprint-dictionary' ),
+			'content' => esc_html__( 'Use inline results, or pair external results using the same source key. Live search enhances the same server-side search used by form submission.', 'core-blueprint-dictionary' ),
 		];
 		$this->controls['placeholder'] = [
 			'tab'     => 'content',
@@ -91,24 +91,27 @@ final class Search extends \Bricks\Element {
 			'group'   => 'search',
 			'label'   => esc_html__( 'Result limit', 'core-blueprint-dictionary' ),
 			'type'    => 'number',
-			'default' => 30,
-			'min'     => 1,
-			'max'     => 100,
-			'step'    => 1,
+			'default'  => 30,
+			'min'      => 1,
+			'max'      => 100,
+			'step'     => 1,
+			'required' => [ 'resultsMode', '=', 'inline' ],
 		];
 		$this->controls['showExcerpt'] = [
 			'tab'     => 'content',
 			'group'   => 'search',
 			'label'   => esc_html__( 'Show excerpts', 'core-blueprint-dictionary' ),
-			'type'    => 'checkbox',
-			'default' => false,
+			'type'     => 'checkbox',
+			'default'  => false,
+			'required' => [ 'resultsMode', '=', 'inline' ],
 		];
 		$this->controls['showCount'] = [
 			'tab'     => 'content',
 			'group'   => 'search',
-			'label'   => esc_html__( 'Show result count', 'core-blueprint-dictionary' ),
-			'type'    => 'checkbox',
-			'default' => false,
+			'label'    => esc_html__( 'Show result count', 'core-blueprint-dictionary' ),
+			'type'     => 'checkbox',
+			'default'  => false,
+			'required' => [ 'resultsMode', '=', 'inline' ],
 		];
 		$this->controls['liveSearch'] = [
 			'tab'     => 'content',
@@ -403,6 +406,13 @@ final class Search extends \Bricks\Element {
 			'type'  => 'color',
 			'css'   => [ [ 'property' => 'background-color', 'selector' => '.cb-dictionary-search-results__item:hover' ] ],
 		];
+		$this->controls['resultItemSelectedBackground'] = [
+			'tab'   => 'content',
+			'group' => 'resultItems',
+			'label' => esc_html__( 'Selected background color', 'core-blueprint-dictionary' ),
+			'type'  => 'color',
+			'css'   => [ [ 'property' => 'background-color', 'selector' => '.cb-dictionary-search-results__item[aria-selected="true"]' ] ],
+		];
 
 		$this->controls['resultsTitleTypography'] = [
 			'tab'   => 'content',
@@ -424,6 +434,13 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'Title hover color', 'core-blueprint-dictionary' ),
 			'type'  => 'color',
 			'css'   => [ [ 'property' => 'color', 'selector' => '.cb-dictionary-search-results__link:hover .cb-dictionary-search-results__title' ] ],
+		];
+		$this->controls['resultTitleSelectedColor'] = [
+			'tab'   => 'content',
+			'group' => 'resultItems',
+			'label' => esc_html__( 'Selected title color', 'core-blueprint-dictionary' ),
+			'type'  => 'color',
+			'css'   => [ [ 'property' => 'color', 'selector' => '.cb-dictionary-search-results__item[aria-selected="true"] .cb-dictionary-search-results__title' ] ],
 		];
 		$this->controls['countTypography'] = [
 			'tab'   => 'content',

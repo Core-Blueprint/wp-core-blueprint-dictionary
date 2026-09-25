@@ -218,12 +218,26 @@ final class SearchResults extends \Bricks\Element {
 			'type'  => 'color',
 			'css'   => [ [ 'property' => 'background-color', 'selector' => '.cb-dictionary-search-results__item:hover' ] ],
 		];
+		$this->controls['itemSelectedBackground'] = [
+			'tab'   => 'content',
+			'group' => 'items',
+			'label' => esc_html__( 'Selected background color', 'core-blueprint-dictionary' ),
+			'type'  => 'color',
+			'css'   => [ [ 'property' => 'background-color', 'selector' => '.cb-dictionary-search-results__item[aria-selected="true"]' ] ],
+		];
 		$this->controls['titleHoverColor'] = [
 			'tab'   => 'content',
 			'group' => 'items',
 			'label' => esc_html__( 'Title hover color', 'core-blueprint-dictionary' ),
 			'type'  => 'color',
 			'css'   => [ [ 'property' => 'color', 'selector' => '.cb-dictionary-search-results__link:hover .cb-dictionary-search-results__title' ] ],
+		];
+		$this->controls['titleSelectedColor'] = [
+			'tab'   => 'content',
+			'group' => 'items',
+			'label' => esc_html__( 'Selected title color', 'core-blueprint-dictionary' ),
+			'type'  => 'color',
+			'css'   => [ [ 'property' => 'color', 'selector' => '.cb-dictionary-search-results__item[aria-selected="true"] .cb-dictionary-search-results__title' ] ],
 		];
 		$this->controls['countTypography'] = [
 			'tab'   => 'content',

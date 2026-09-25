@@ -61,6 +61,8 @@ namespace {
 			"'resultsListDisplay'",
 			"'resultsListStyleType'",
 			"'resultItemBackground'",
+			"'resultItemSelectedBackground'",
+			"'resultTitleSelectedColor'",
 			"'countTypography'",
 		],
 		'SearchResults.php' => [
@@ -69,7 +71,9 @@ namespace {
 			"'listStyleType'",
 			"'listColumns'",
 			"'itemShadow'",
+			"'itemSelectedBackground'",
 			"'titleHoverColor'",
+			"'titleSelectedColor'",
 			"'statusTypography'",
 		],
 		'Alphabet.php' => [

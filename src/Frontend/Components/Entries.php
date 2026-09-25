@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace CB\Dictionary\Frontend\Components;
 
+use CB\Dictionary\Frontend\ArchiveContext;
 use CB\Dictionary\Frontend\Queries;
 
 defined( 'ABSPATH' ) || exit;
@@ -25,10 +26,15 @@ final class Entries {
 		$query_args = [
 			'posts_per_page' => $limit,
 		];
-		$tax_query = Queries::taxonomy_filter(
+		$filters = ArchiveContext::taxonomy_filters(
 			(string) $args['category'],
 			(string) $args['tag'],
 			(string) $args['letter']
+		);
+		$tax_query = Queries::taxonomy_filter(
+			$filters['category'],
+			$filters['tag'],
+			$filters['letter']
 		);
 		if ( [] !== $tax_query ) {
 			$query_args['tax_query'] = $tax_query;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace CB\Dictionary\Integration\Builders\Bricks\Elements;
 
 use CB\Dictionary\Frontend\Components\Alphabet as AlphabetComponent;
+use CB\Dictionary\Integration\Builders\Bricks\ControlOptions;
 use CB\Dictionary\Integration\Builders\Bricks\ElementRegistry;
 
 defined( 'ABSPATH' ) || exit;
@@ -119,6 +120,7 @@ final class Alphabet extends \Bricks\Element {
 			'group' => 'layout',
 			'label' => esc_html__( 'Gap', 'core-blueprint-dictionary' ),
 			'type'  => 'slider',
+			'units' => ControlOptions::spacing_units(),
 			'css'   => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-alphabet__items' ] ],
 		];
 		$this->controls['justifyContent'] = [

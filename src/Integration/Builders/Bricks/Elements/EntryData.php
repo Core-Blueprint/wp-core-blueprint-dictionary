@@ -5,6 +5,7 @@ namespace CB\Dictionary\Integration\Builders\Bricks\Elements;
 
 use CB\Dictionary\Frontend\Components\Meta as MetaComponent;
 use CB\Dictionary\Integration\Builders\Bricks\Context;
+use CB\Dictionary\Integration\Builders\Bricks\ControlOptions;
 use CB\Dictionary\Integration\Builders\Bricks\ElementRegistry;
 
 defined( 'ABSPATH' ) || exit;
@@ -98,6 +99,7 @@ final class EntryData extends \Bricks\Element {
 			'group' => 'layout',
 			'label' => esc_html__( 'Gap', 'core-blueprint-dictionary' ),
 			'type'  => 'slider',
+			'units' => ControlOptions::spacing_units(),
 			'css'   => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-meta' ] ],
 			'required' => [ 'metaDisplay', '=', [ 'flex', 'grid' ] ],
 		];
@@ -133,6 +135,7 @@ final class EntryData extends \Bricks\Element {
 			'group' => 'items',
 			'label' => esc_html__( 'Row gap', 'core-blueprint-dictionary' ),
 			'type'  => 'slider',
+			'units' => ControlOptions::spacing_units(),
 			'css'   => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-meta__item' ] ],
 			'required' => [ 'rowDisplay', '=', [ 'flex', 'grid' ] ],
 		];
@@ -201,6 +204,7 @@ final class EntryData extends \Bricks\Element {
 			'group' => 'labels',
 			'label' => esc_html__( 'Width', 'core-blueprint-dictionary' ),
 			'type'  => 'slider',
+			'units' => ControlOptions::width_units(),
 			'css'   => [ [ 'property' => 'width', 'selector' => '.cb-dictionary-meta__label' ] ],
 		];
 

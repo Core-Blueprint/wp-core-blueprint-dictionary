@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace CB\Dictionary\Integration\Builders\Bricks\Elements;
 
 use CB\Dictionary\Frontend\Components\Search as SearchComponent;
+use CB\Dictionary\Integration\Builders\Bricks\ControlOptions;
 use CB\Dictionary\Integration\Builders\Bricks\ElementRegistry;
 
 defined( 'ABSPATH' ) || exit;
@@ -150,6 +151,7 @@ final class Search extends \Bricks\Element {
 			'group' => 'form',
 			'label' => esc_html__( 'Gap', 'core-blueprint-dictionary' ),
 			'type'  => 'slider',
+			'units' => ControlOptions::spacing_units(),
 			'css'   => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-search__form' ] ],
 			'required' => [ 'formDisplay', '=', [ 'flex', 'grid' ] ],
 		];
@@ -211,6 +213,7 @@ final class Search extends \Bricks\Element {
 			'group' => 'input',
 			'label' => esc_html__( 'Minimum height', 'core-blueprint-dictionary' ),
 			'type'  => 'slider',
+			'units' => ControlOptions::size_units(),
 			'css'   => [ [ 'property' => 'min-height', 'selector' => '.cb-dictionary-search__input' ] ],
 		];
 		$this->controls['inputFocusBorder'] = [
@@ -302,6 +305,7 @@ final class Search extends \Bricks\Element {
 			'group'    => 'button',
 			'label'    => esc_html__( 'Overlay inset', 'core-blueprint-dictionary' ),
 			'type'     => 'slider',
+			'units' => ControlOptions::spacing_units(),
 			'css'      => [ [ 'property' => '--cb-dictionary-search-button-inset', 'selector' => '.cb-dictionary-search__form' ] ],
 			'required' => [ [ 'buttonMode', '!=', 'hidden' ], [ 'buttonPlacement', '=', 'overlay' ] ],
 		];
@@ -310,6 +314,7 @@ final class Search extends \Bricks\Element {
 			'group' => 'button',
 			'label' => esc_html__( 'Icon gap', 'core-blueprint-dictionary' ),
 			'type'  => 'slider',
+			'units' => ControlOptions::spacing_units(),
 			'css'   => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-search__submit--text-icon' ] ],
 			'required' => [ 'buttonMode', '=', 'text-icon' ],
 		];
@@ -318,6 +323,7 @@ final class Search extends \Bricks\Element {
 			'group' => 'button',
 			'label' => esc_html__( 'Icon size', 'core-blueprint-dictionary' ),
 			'type'  => 'slider',
+			'units' => ControlOptions::icon_units(),
 			'css'   => [
 				[ 'property' => 'font-size', 'selector' => '.cb-dictionary-search__submit-icon' ],
 				[ 'property' => 'width', 'selector' => '.cb-dictionary-search__submit-icon svg' ],
@@ -379,6 +385,7 @@ final class Search extends \Bricks\Element {
 			'group' => 'button',
 			'label' => esc_html__( 'Minimum height', 'core-blueprint-dictionary' ),
 			'type'  => 'slider',
+			'units' => ControlOptions::size_units(),
 			'css'   => [ [ 'property' => 'min-height', 'selector' => '.cb-dictionary-search__submit' ] ],
 			'required' => [ 'buttonMode', '!=', 'hidden' ]
 		];
@@ -519,6 +526,7 @@ final class Search extends \Bricks\Element {
 			'group' => 'results',
 			'label' => esc_html__( 'List gap', 'core-blueprint-dictionary' ),
 			'type'  => 'slider',
+			'units' => ControlOptions::spacing_units(),
 			'css'   => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-search-results__items' ] ],
 			'required' => [ [ 'resultsMode', '=', 'inline' ], [ 'resultsListDisplay', '=', [ 'flex', 'grid' ] ] ],
 		];

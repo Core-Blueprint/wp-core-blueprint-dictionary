@@ -50,6 +50,7 @@ $expected = [
 	'src/Integration/Builders/Bootstrap.php',
 	'src/Integration/Builders/Readiness.php',
 	'src/Integration/Builders/Bricks/Bootstrap.php',
+	'src/Integration/Builders/Bricks/ControlOptions.php',
 	'src/Integration/Builders/Bricks/ElementRegistry.php',
 	'src/Integration/Builders/Bricks/Elements/Search.php',
 	'src/Integration/Builders/Bricks/Elements/SearchResults.php',
@@ -135,6 +136,13 @@ $meta_component = (string) file_get_contents( $root . '/src/Frontend/Components/
 foreach ( [ 'DEFAULT_FIELDS', "'categories'", "'tags'", 'normalize_fields', "'fields'" ] as $required ) {
 	if ( ! str_contains( $meta_component, $required ) ) {
 		$failures[] = 'Dictionary Entry Data field-selection contract is missing ' . $required . '.';
+	}
+}
+
+$bricks_control_options = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/ControlOptions.php' );
+foreach ( [ 'spacing_units', 'size_units', 'icon_units', 'width_units' ] as $required ) {
+	if ( ! str_contains( $bricks_control_options, 'function ' . $required . '()' ) ) {
+		$failures[] = 'Dictionary Bricks slider unit profile is missing ' . $required . '.';
 	}
 }
 

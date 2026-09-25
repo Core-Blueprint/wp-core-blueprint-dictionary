@@ -27,8 +27,20 @@ final class Alphabet extends \Bricks\Element {
 			'title' => esc_html__( 'Alphabet', 'core-blueprint-dictionary' ),
 			'tab'   => 'content',
 		];
+		$this->control_groups['layout'] = [
+			'title' => esc_html__( 'Layout', 'core-blueprint-dictionary' ),
+			'tab'   => 'style',
+		];
 		$this->control_groups['letters'] = [
 			'title' => esc_html__( 'Letters', 'core-blueprint-dictionary' ),
+			'tab'   => 'style',
+		];
+		$this->control_groups['current'] = [
+			'title' => esc_html__( 'Current letter', 'core-blueprint-dictionary' ),
+			'tab'   => 'style',
+		];
+		$this->control_groups['empty'] = [
+			'title' => esc_html__( 'Empty letters', 'core-blueprint-dictionary' ),
 			'tab'   => 'style',
 		];
 	}
@@ -41,6 +53,53 @@ final class Alphabet extends \Bricks\Element {
 			'type'    => 'checkbox',
 			'default' => false,
 		];
+		$this->controls['listDisplay'] = [
+			'tab'     => 'style',
+			'group'   => 'layout',
+			'label'   => esc_html__( 'Display', 'core-blueprint-dictionary' ),
+			'type'    => 'select',
+			'options' => [
+				'flex' => 'flex',
+				'grid' => 'grid',
+			],
+			'css'     => [ [ 'property' => 'display', 'selector' => '.cb-dictionary-alphabet__items' ] ],
+		];
+		$this->controls['listColumns'] = [
+			'tab'      => 'style',
+			'group'    => 'layout',
+			'label'    => esc_html__( 'Grid columns', 'core-blueprint-dictionary' ),
+			'type'     => 'select',
+			'options'  => [
+				'repeat(4, minmax(0, 1fr))'  => '4',
+				'repeat(6, minmax(0, 1fr))'  => '6',
+				'repeat(8, minmax(0, 1fr))'  => '8',
+				'repeat(13, minmax(0, 1fr))' => '13',
+			],
+			'css'      => [ [ 'property' => 'grid-template-columns', 'selector' => '.cb-dictionary-alphabet__items' ] ],
+			'required' => [ 'listDisplay', '=', 'grid' ],
+		];
+		$this->controls['listGap'] = [
+			'tab'   => 'style',
+			'group' => 'layout',
+			'label' => esc_html__( 'Gap', 'core-blueprint-dictionary' ),
+			'type'  => 'slider',
+			'css'   => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-alphabet__items' ] ],
+		];
+		$this->controls['justifyContent'] = [
+			'tab'   => 'style',
+			'group' => 'layout',
+			'label' => esc_html__( 'Justify content', 'core-blueprint-dictionary' ),
+			'type'  => 'justify-content',
+			'css'   => [ [ 'property' => 'justify-content', 'selector' => '.cb-dictionary-alphabet__items' ] ],
+		];
+		$this->controls['alignItems'] = [
+			'tab'   => 'style',
+			'group' => 'layout',
+			'label' => esc_html__( 'Align items', 'core-blueprint-dictionary' ),
+			'type'  => 'align-items',
+			'css'   => [ [ 'property' => 'align-items', 'selector' => '.cb-dictionary-alphabet__items' ] ],
+		];
+
 		$this->controls['typography'] = [
 			'tab'   => 'style',
 			'group' => 'letters',
@@ -80,6 +139,84 @@ final class Alphabet extends \Bricks\Element {
 				[ 'property' => 'padding', 'selector' => '.cb-dictionary-alphabet__link' ],
 				[ 'property' => 'padding', 'selector' => '.cb-dictionary-alphabet__label' ],
 			],
+		];
+		$this->controls['shadow'] = [
+			'tab'   => 'style',
+			'group' => 'letters',
+			'label' => esc_html__( 'Box shadow', 'core-blueprint-dictionary' ),
+			'type'  => 'box-shadow',
+			'css'   => [
+				[ 'property' => 'box-shadow', 'selector' => '.cb-dictionary-alphabet__link' ],
+				[ 'property' => 'box-shadow', 'selector' => '.cb-dictionary-alphabet__label' ],
+			],
+		];
+		$this->controls['hoverColor'] = [
+			'tab'   => 'style',
+			'group' => 'letters',
+			'label' => esc_html__( 'Hover text color', 'core-blueprint-dictionary' ),
+			'type'  => 'color',
+			'css'   => [ [ 'property' => 'color', 'selector' => '.cb-dictionary-alphabet__link:hover' ] ],
+		];
+		$this->controls['hoverBackground'] = [
+			'tab'   => 'style',
+			'group' => 'letters',
+			'label' => esc_html__( 'Hover background color', 'core-blueprint-dictionary' ),
+			'type'  => 'color',
+			'css'   => [ [ 'property' => 'background-color', 'selector' => '.cb-dictionary-alphabet__link:hover' ] ],
+		];
+
+		$this->controls['currentTypography'] = [
+			'tab'   => 'style',
+			'group' => 'current',
+			'label' => esc_html__( 'Typography', 'core-blueprint-dictionary' ),
+			'type'  => 'typography',
+			'css'   => [ [ 'property' => 'typography', 'selector' => '.cb-dictionary-alphabet__item--current .cb-dictionary-alphabet__link' ] ],
+		];
+		$this->controls['currentBackground'] = [
+			'tab'   => 'style',
+			'group' => 'current',
+			'label' => esc_html__( 'Background', 'core-blueprint-dictionary' ),
+			'type'  => 'background',
+			'css'   => [ [ 'property' => 'background', 'selector' => '.cb-dictionary-alphabet__item--current .cb-dictionary-alphabet__link' ] ],
+		];
+		$this->controls['currentBorder'] = [
+			'tab'   => 'style',
+			'group' => 'current',
+			'label' => esc_html__( 'Border', 'core-blueprint-dictionary' ),
+			'type'  => 'border',
+			'css'   => [ [ 'property' => 'border', 'selector' => '.cb-dictionary-alphabet__item--current .cb-dictionary-alphabet__link' ] ],
+		];
+
+		$this->controls['emptyTypography'] = [
+			'tab'   => 'style',
+			'group' => 'empty',
+			'label' => esc_html__( 'Typography', 'core-blueprint-dictionary' ),
+			'type'  => 'typography',
+			'css'   => [ [ 'property' => 'typography', 'selector' => '.cb-dictionary-alphabet__label--empty' ] ],
+		];
+		$this->controls['emptyBackground'] = [
+			'tab'   => 'style',
+			'group' => 'empty',
+			'label' => esc_html__( 'Background', 'core-blueprint-dictionary' ),
+			'type'  => 'background',
+			'css'   => [ [ 'property' => 'background', 'selector' => '.cb-dictionary-alphabet__label--empty' ] ],
+		];
+		$this->controls['emptyBorder'] = [
+			'tab'   => 'style',
+			'group' => 'empty',
+			'label' => esc_html__( 'Border', 'core-blueprint-dictionary' ),
+			'type'  => 'border',
+			'css'   => [ [ 'property' => 'border', 'selector' => '.cb-dictionary-alphabet__label--empty' ] ],
+		];
+		$this->controls['emptyOpacity'] = [
+			'tab'   => 'style',
+			'group' => 'empty',
+			'label' => esc_html__( 'Opacity', 'core-blueprint-dictionary' ),
+			'type'  => 'number',
+			'min'   => 0,
+			'max'   => 1,
+			'step'  => 0.1,
+			'css'   => [ [ 'property' => 'opacity', 'selector' => '.cb-dictionary-alphabet__label--empty' ] ],
 		];
 	}
 

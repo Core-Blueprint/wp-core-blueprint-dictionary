@@ -27,8 +27,20 @@ final class SearchResults extends \Bricks\Element {
 			'title' => esc_html__( 'Results', 'core-blueprint-dictionary' ),
 			'tab'   => 'content',
 		];
+		$this->control_groups['container'] = [
+			'title' => esc_html__( 'Container', 'core-blueprint-dictionary' ),
+			'tab'   => 'style',
+		];
+		$this->control_groups['list'] = [
+			'title' => esc_html__( 'List layout', 'core-blueprint-dictionary' ),
+			'tab'   => 'style',
+		];
 		$this->control_groups['items'] = [
 			'title' => esc_html__( 'Result items', 'core-blueprint-dictionary' ),
+			'tab'   => 'style',
+		];
+		$this->control_groups['status'] = [
+			'title' => esc_html__( 'Count & status', 'core-blueprint-dictionary' ),
 			'tab'   => 'style',
 		];
 	}
@@ -73,6 +85,69 @@ final class SearchResults extends \Bricks\Element {
 			'default' => false,
 		];
 
+		$this->controls['containerBackground'] = [
+			'tab'   => 'style',
+			'group' => 'container',
+			'label' => esc_html__( 'Background', 'core-blueprint-dictionary' ),
+			'type'  => 'background',
+			'css'   => [ [ 'property' => 'background', 'selector' => '.cb-dictionary-search-results' ] ],
+		];
+		$this->controls['containerBorder'] = [
+			'tab'   => 'style',
+			'group' => 'container',
+			'label' => esc_html__( 'Border', 'core-blueprint-dictionary' ),
+			'type'  => 'border',
+			'css'   => [ [ 'property' => 'border', 'selector' => '.cb-dictionary-search-results' ] ],
+		];
+		$this->controls['containerPadding'] = [
+			'tab'   => 'style',
+			'group' => 'container',
+			'label' => esc_html__( 'Padding', 'core-blueprint-dictionary' ),
+			'type'  => 'dimensions',
+			'css'   => [ [ 'property' => 'padding', 'selector' => '.cb-dictionary-search-results' ] ],
+		];
+		$this->controls['containerShadow'] = [
+			'tab'   => 'style',
+			'group' => 'container',
+			'label' => esc_html__( 'Box shadow', 'core-blueprint-dictionary' ),
+			'type'  => 'box-shadow',
+			'css'   => [ [ 'property' => 'box-shadow', 'selector' => '.cb-dictionary-search-results' ] ],
+		];
+
+		$this->controls['listDisplay'] = [
+			'tab'     => 'style',
+			'group'   => 'list',
+			'label'   => esc_html__( 'Display', 'core-blueprint-dictionary' ),
+			'type'    => 'select',
+			'options' => [
+				'grid'  => 'grid',
+				'flex'  => 'flex',
+				'block' => 'block',
+			],
+			'css'     => [ [ 'property' => 'display', 'selector' => '.cb-dictionary-search-results__items' ] ],
+		];
+		$this->controls['listColumns'] = [
+			'tab'      => 'style',
+			'group'    => 'list',
+			'label'    => esc_html__( 'Grid columns', 'core-blueprint-dictionary' ),
+			'type'     => 'select',
+			'options'  => [
+				'1fr'                       => '1',
+				'repeat(2, minmax(0, 1fr))' => '2',
+				'repeat(3, minmax(0, 1fr))' => '3',
+				'repeat(4, minmax(0, 1fr))' => '4',
+			],
+			'css'      => [ [ 'property' => 'grid-template-columns', 'selector' => '.cb-dictionary-search-results__items' ] ],
+			'required' => [ 'listDisplay', '=', 'grid' ],
+		];
+		$this->controls['listGap'] = [
+			'tab'   => 'style',
+			'group' => 'list',
+			'label' => esc_html__( 'Gap', 'core-blueprint-dictionary' ),
+			'type'  => 'slider',
+			'css'   => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-search-results__items' ] ],
+		];
+
 		$this->controls['titleTypography'] = [
 			'tab'   => 'style',
 			'group' => 'items',
@@ -107,6 +182,41 @@ final class SearchResults extends \Bricks\Element {
 			'label' => esc_html__( 'Padding', 'core-blueprint-dictionary' ),
 			'type'  => 'dimensions',
 			'css'   => [ [ 'property' => 'padding', 'selector' => '.cb-dictionary-search-results__item' ] ],
+		];
+		$this->controls['itemShadow'] = [
+			'tab'   => 'style',
+			'group' => 'items',
+			'label' => esc_html__( 'Box shadow', 'core-blueprint-dictionary' ),
+			'type'  => 'box-shadow',
+			'css'   => [ [ 'property' => 'box-shadow', 'selector' => '.cb-dictionary-search-results__item' ] ],
+		];
+		$this->controls['itemHoverBackground'] = [
+			'tab'   => 'style',
+			'group' => 'items',
+			'label' => esc_html__( 'Hover background color', 'core-blueprint-dictionary' ),
+			'type'  => 'color',
+			'css'   => [ [ 'property' => 'background-color', 'selector' => '.cb-dictionary-search-results__item:hover' ] ],
+		];
+		$this->controls['titleHoverColor'] = [
+			'tab'   => 'style',
+			'group' => 'items',
+			'label' => esc_html__( 'Title hover color', 'core-blueprint-dictionary' ),
+			'type'  => 'color',
+			'css'   => [ [ 'property' => 'color', 'selector' => '.cb-dictionary-search-results__link:hover .cb-dictionary-search-results__title' ] ],
+		];
+		$this->controls['countTypography'] = [
+			'tab'   => 'style',
+			'group' => 'status',
+			'label' => esc_html__( 'Result count typography', 'core-blueprint-dictionary' ),
+			'type'  => 'typography',
+			'css'   => [ [ 'property' => 'typography', 'selector' => '.cb-dictionary-search-results__count' ] ],
+		];
+		$this->controls['statusTypography'] = [
+			'tab'   => 'style',
+			'group' => 'status',
+			'label' => esc_html__( 'Status typography', 'core-blueprint-dictionary' ),
+			'type'  => 'typography',
+			'css'   => [ [ 'property' => 'typography', 'selector' => '.cb-dictionary-search-results__status' ] ],
 		];
 	}
 

@@ -27,8 +27,16 @@ final class Entries extends \Bricks\Element {
 			'title' => esc_html__( 'Entries', 'core-blueprint-dictionary' ),
 			'tab'   => 'content',
 		];
+		$this->control_groups['layout'] = [
+			'title' => esc_html__( 'List layout', 'core-blueprint-dictionary' ),
+			'tab'   => 'style',
+		];
 		$this->control_groups['items'] = [
 			'title' => esc_html__( 'Items', 'core-blueprint-dictionary' ),
+			'tab'   => 'style',
+		];
+		$this->control_groups['empty'] = [
+			'title' => esc_html__( 'Empty state', 'core-blueprint-dictionary' ),
 			'tab'   => 'style',
 		];
 	}
@@ -62,6 +70,40 @@ final class Entries extends \Bricks\Element {
 			'label'   => esc_html__( 'Show excerpts', 'core-blueprint-dictionary' ),
 			'type'    => 'checkbox',
 			'default' => true,
+		];
+
+		$this->controls['listDisplay'] = [
+			'tab'     => 'style',
+			'group'   => 'layout',
+			'label'   => esc_html__( 'Display', 'core-blueprint-dictionary' ),
+			'type'    => 'select',
+			'options' => [
+				'grid'  => 'grid',
+				'flex'  => 'flex',
+				'block' => 'block',
+			],
+			'css'     => [ [ 'property' => 'display', 'selector' => '.cb-dictionary-list__items' ] ],
+		];
+		$this->controls['listColumns'] = [
+			'tab'      => 'style',
+			'group'    => 'layout',
+			'label'    => esc_html__( 'Grid columns', 'core-blueprint-dictionary' ),
+			'type'     => 'select',
+			'options'  => [
+				'1fr'                       => '1',
+				'repeat(2, minmax(0, 1fr))' => '2',
+				'repeat(3, minmax(0, 1fr))' => '3',
+				'repeat(4, minmax(0, 1fr))' => '4',
+			],
+			'css'      => [ [ 'property' => 'grid-template-columns', 'selector' => '.cb-dictionary-list__items' ] ],
+			'required' => [ 'listDisplay', '=', 'grid' ],
+		];
+		$this->controls['listGap'] = [
+			'tab'   => 'style',
+			'group' => 'layout',
+			'label' => esc_html__( 'Gap', 'core-blueprint-dictionary' ),
+			'type'  => 'slider',
+			'css'   => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-list__items' ] ],
 		];
 
 		$this->controls['linkTypography'] = [
@@ -98,6 +140,63 @@ final class Entries extends \Bricks\Element {
 			'label' => esc_html__( 'Padding', 'core-blueprint-dictionary' ),
 			'type'  => 'dimensions',
 			'css'   => [ [ 'property' => 'padding', 'selector' => '.cb-dictionary-list__item' ] ],
+		];
+		$this->controls['itemShadow'] = [
+			'tab'   => 'style',
+			'group' => 'items',
+			'label' => esc_html__( 'Box shadow', 'core-blueprint-dictionary' ),
+			'type'  => 'box-shadow',
+			'css'   => [ [ 'property' => 'box-shadow', 'selector' => '.cb-dictionary-list__item' ] ],
+		];
+		$this->controls['itemHoverBackground'] = [
+			'tab'   => 'style',
+			'group' => 'items',
+			'label' => esc_html__( 'Hover background color', 'core-blueprint-dictionary' ),
+			'type'  => 'color',
+			'css'   => [ [ 'property' => 'background-color', 'selector' => '.cb-dictionary-list__item:hover' ] ],
+		];
+		$this->controls['linkHoverColor'] = [
+			'tab'   => 'style',
+			'group' => 'items',
+			'label' => esc_html__( 'Title hover color', 'core-blueprint-dictionary' ),
+			'type'  => 'color',
+			'css'   => [ [ 'property' => 'color', 'selector' => '.cb-dictionary-list__link:hover' ] ],
+		];
+		$this->controls['excerptSpacing'] = [
+			'tab'   => 'style',
+			'group' => 'items',
+			'label' => esc_html__( 'Excerpt margin', 'core-blueprint-dictionary' ),
+			'type'  => 'dimensions',
+			'css'   => [ [ 'property' => 'margin', 'selector' => '.cb-dictionary-list__excerpt' ] ],
+		];
+
+		$this->controls['emptyTypography'] = [
+			'tab'   => 'style',
+			'group' => 'empty',
+			'label' => esc_html__( 'Typography', 'core-blueprint-dictionary' ),
+			'type'  => 'typography',
+			'css'   => [ [ 'property' => 'typography', 'selector' => '.cb-dictionary-list--empty' ] ],
+		];
+		$this->controls['emptyBackground'] = [
+			'tab'   => 'style',
+			'group' => 'empty',
+			'label' => esc_html__( 'Background', 'core-blueprint-dictionary' ),
+			'type'  => 'background',
+			'css'   => [ [ 'property' => 'background', 'selector' => '.cb-dictionary-list--empty' ] ],
+		];
+		$this->controls['emptyBorder'] = [
+			'tab'   => 'style',
+			'group' => 'empty',
+			'label' => esc_html__( 'Border', 'core-blueprint-dictionary' ),
+			'type'  => 'border',
+			'css'   => [ [ 'property' => 'border', 'selector' => '.cb-dictionary-list--empty' ] ],
+		];
+		$this->controls['emptyPadding'] = [
+			'tab'   => 'style',
+			'group' => 'empty',
+			'label' => esc_html__( 'Padding', 'core-blueprint-dictionary' ),
+			'type'  => 'dimensions',
+			'css'   => [ [ 'property' => 'padding', 'selector' => '.cb-dictionary-list--empty' ] ],
 		];
 	}
 

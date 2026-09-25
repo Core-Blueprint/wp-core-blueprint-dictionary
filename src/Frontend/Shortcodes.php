@@ -113,7 +113,14 @@ final class Shortcodes {
 
 	/** @param array<string,mixed>|string $atts */
 	public static function meta( array|string $atts = [] ): string {
-		$atts = shortcode_atts( [ 'id' => 0 ], is_array( $atts ) ? $atts : [], 'cb_dictionary_meta' );
+		$atts = shortcode_atts(
+			[
+				'id'     => 0,
+				'fields' => implode( ',', MetaComponent::DEFAULT_FIELDS ),
+			],
+			is_array( $atts ) ? $atts : [],
+			'cb_dictionary_meta'
+		);
 		return MetaComponent::render( $atts );
 	}
 }

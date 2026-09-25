@@ -131,6 +131,20 @@ foreach ( [
 	}
 }
 
+$meta_component = (string) file_get_contents( $root . '/src/Frontend/Components/Meta.php' );
+foreach ( [ 'DEFAULT_FIELDS', "'categories'", "'tags'", 'normalize_fields', "'fields'" ] as $required ) {
+	if ( ! str_contains( $meta_component, $required ) ) {
+		$failures[] = 'Dictionary Entry Data field-selection contract is missing ' . $required . '.';
+	}
+}
+
+$entry_data_element = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/Elements/EntryData.php' );
+foreach ( [ "'fields'", "'multiple'    => true", 'MetaComponent::field_options()', 'MetaComponent::DEFAULT_FIELDS' ] as $required ) {
+	if ( ! str_contains( $entry_data_element, $required ) ) {
+		$failures[] = 'Dictionary Entry Data Bricks multiselect contract is missing ' . $required . '.';
+	}
+}
+
 $search_provider = (string) file_get_contents( $root . '/src/Frontend/Search.php' );
 foreach ( [ 'Meta::ABBREVIATION', 'Meta::SYNONYMS', 'Queries::entries', 'str_starts_with' ] as $required ) {
 	if ( ! str_contains( $search_provider, $required ) ) {

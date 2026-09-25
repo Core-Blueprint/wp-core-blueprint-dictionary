@@ -56,6 +56,18 @@ final class EntryData extends \Bricks\Element {
 			'min'         => 0,
 			'description' => esc_html__( 'Leave at 0 to use the current Dictionary entry context.', 'core-blueprint-dictionary' ),
 		];
+		$this->controls['fields'] = [
+			'tab'         => 'content',
+			'group'       => 'entry',
+			'label'       => esc_html__( 'Fields', 'core-blueprint-dictionary' ),
+			'type'        => 'select',
+			'options'     => MetaComponent::field_options(),
+			'default'     => MetaComponent::DEFAULT_FIELDS,
+			'multiple'    => true,
+			'searchable'  => true,
+			'clearable'   => true,
+			'description' => esc_html__( 'Select one or more entry data fields to display. Empty values are skipped.', 'core-blueprint-dictionary' ),
+		];
 		$this->controls['metaDisplay'] = [
 			'tab'     => 'content',
 			'group'   => 'layout',
@@ -203,7 +215,9 @@ final class EntryData extends \Bricks\Element {
 			$entry_id = Context::entry_id();
 		}
 
+		$fields = $settings['fields'] ?? MetaComponent::DEFAULT_FIELDS;
+
 		$this->set_attribute( '_root', 'class', 'cb-dictionary-bricks-entry-data' );
-		echo '<div ' . $this->render_attributes( '_root' ) . '>' . MetaComponent::render( [ 'id' => $entry_id ] ) . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- trusted builder-neutral Dictionary renderer output.
+		echo '<div ' . $this->render_attributes( '_root' ) . '>' . MetaComponent::render( [ 'id' => $entry_id, 'fields' => $fields ] ) . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- trusted builder-neutral Dictionary renderer output.
 	}
 }

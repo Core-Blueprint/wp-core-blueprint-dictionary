@@ -104,6 +104,10 @@ namespace {
 			"'emptyPadding'",
 		],
 		'EntryData.php' => [
+			"'fields'",
+			"'multiple'    => true",
+			'MetaComponent::field_options()',
+			'MetaComponent::DEFAULT_FIELDS',
 			"'metaDisplay'",
 			"'metaColumns'",
 			"'rowDisplay'",

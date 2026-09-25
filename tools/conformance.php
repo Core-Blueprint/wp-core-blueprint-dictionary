@@ -34,6 +34,7 @@ $expected = [
 	'src/Admin/SettingsPage.php',
 	'src/Admin/IntegrationReadiness.php',
 	'src/Frontend/Data.php',
+	'src/Frontend/ArchiveContext.php',
 	'src/Frontend/Queries.php',
 	'src/Frontend/Conditions.php',
 	'src/Frontend/Shortcodes.php',
@@ -42,6 +43,7 @@ $expected = [
 	'src/Frontend/Assets.php',
 	'src/Frontend/Components/Entries.php',
 	'src/Frontend/Components/Alphabet.php',
+	'src/Frontend/Components/Categories.php',
 	'src/Frontend/Components/Meta.php',
 	'src/Frontend/Components/Search.php',
 	'src/Frontend/Components/SearchResults.php',
@@ -54,6 +56,7 @@ $expected = [
 	'src/Integration/Builders/Bricks/Elements/Search.php',
 	'src/Integration/Builders/Bricks/Elements/SearchResults.php',
 	'src/Integration/Builders/Bricks/Elements/Alphabet.php',
+	'src/Integration/Builders/Bricks/Elements/Categories.php',
 	'src/Integration/Builders/Bricks/Elements/Entries.php',
 	'src/Integration/Builders/Bricks/Elements/EntryData.php',
 	'src/Integration/Builders/Bricks/Context.php',
@@ -123,6 +126,7 @@ foreach ( [
 	'SearchComponent::render',
 	'SearchResultsComponent::render',
 	'AlphabetComponent::render',
+	'CategoriesComponent::render',
 	'MetaComponent::render',
 	'cb_dictionary_search_results',
 ] as $required ) {
@@ -142,6 +146,7 @@ foreach ( [
 	'src/Integration/Builders/Bricks/Elements/Search.php',
 	'src/Integration/Builders/Bricks/Elements/SearchResults.php',
 	'src/Integration/Builders/Bricks/Elements/Alphabet.php',
+	'src/Integration/Builders/Bricks/Elements/Categories.php',
 	'src/Integration/Builders/Bricks/Elements/Entries.php',
 	'src/Integration/Builders/Bricks/Elements/EntryData.php',
 ] as $bricks_element_file ) {
@@ -152,6 +157,26 @@ foreach ( [
 	if ( str_contains( $bricks_element_content, 'ControlOptions' ) ) {
 		$failures[] = $bricks_element_file . ' must not use the retired custom slider unit helper.';
 	}
+}
+
+$archive_context = (string) file_get_contents( $root . '/src/Frontend/ArchiveContext.php' );
+foreach ( [ 'Taxonomies::CATEGORY', 'Taxonomies::TAG', 'Taxonomies::LETTER', 'get_queried_object()', 'sanitize_title' ] as $required ) {
+	if ( ! str_contains( $archive_context, $required ) ) {
+		$failures[] = 'Dictionary archive context contract is missing ' . $required . '.';
+	}
+}
+if ( str_contains( $archive_context, '\\Bricks\\' ) ) {
+	$failures[] = 'Builder-neutral Dictionary archive context must not depend on Bricks.';
+}
+
+$categories_component = (string) file_get_contents( $root . '/src/Frontend/Components/Categories.php' );
+foreach ( [ 'Taxonomies::CATEGORY', "'parent'     => 0", 'cb-dictionary-categories__items', 'cb-dictionary-categories__item--current', 'cb-dictionary-categories__item--empty', 'aria-current="page"' ] as $required ) {
+	if ( ! str_contains( $categories_component, $required ) ) {
+		$failures[] = 'Dictionary Categories component contract is missing ' . $required . '.';
+	}
+}
+if ( str_contains( $categories_component, '\\Bricks\\' ) ) {
+	$failures[] = 'Builder-neutral Dictionary Categories component must not depend on Bricks.';
 }
 
 $entry_data_element = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/Elements/EntryData.php' );
@@ -295,6 +320,13 @@ foreach ( [ '\\CB\\Core\\Admin\\PageRegistry', '\\CB\\Core\\Admin\\Page' ] as $l
 $bricks_context = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/Context.php' );
 $bricks_queries = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/Queries.php' );
 $bricks_conditions = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/Conditions.php' );
+$alphabet_element = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/Elements/Alphabet.php' );
+foreach ( [ "\$this->controls['justifyContent']", "\$this->controls['alignItems']" ] as $obsolete_alphabet_control ) {
+	if ( str_contains( $alphabet_element, $obsolete_alphabet_control ) ) {
+		$failures[] = 'Dictionary Alphabet contains obsolete duplicate layout control: ' . $obsolete_alphabet_control . '.';
+	}
+}
+
 if ( ! str_contains( $bricks_context, 'Frontend\\Data' ) || ! str_contains( $bricks_context, 'Data::entry' ) ) {
 	$failures[] = 'Bricks context must delegate data projection to the builder-neutral Frontend\\Data contract.';
 }
@@ -306,7 +338,7 @@ if ( ! str_contains( $bricks_conditions, 'FrontendConditions::' ) ) {
 }
 
 $element_registry = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/ElementRegistry.php' );
-foreach ( [ 'cb-dictionary-search', 'cb-dictionary-search-results', 'cb-dictionary-alphabet', 'cb-dictionary-entries', 'cb-dictionary-entry-data' ] as $element_name ) {
+foreach ( [ 'cb-dictionary-search', 'cb-dictionary-search-results', 'cb-dictionary-alphabet', 'cb-dictionary-categories', 'cb-dictionary-entries', 'cb-dictionary-entry-data' ] as $element_name ) {
 	if ( ! str_contains( $element_registry, $element_name ) ) {
 		$failures[] = 'Dictionary Bricks element registry is missing ' . $element_name . '.';
 	}
@@ -316,6 +348,7 @@ foreach ( [
 	'Search.php'        => 'SearchComponent::render',
 	'SearchResults.php' => 'SearchResultsComponent::render',
 	'Alphabet.php'      => 'AlphabetComponent::render',
+	'Categories.php'    => 'CategoriesComponent::render',
 	'Entries.php'       => 'EntriesComponent::render',
 	'EntryData.php'     => 'MetaComponent::render',
 ] as $element_file => $required_delegate ) {

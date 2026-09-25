@@ -23,6 +23,10 @@ final class ElementRegistry {
 			'name'  => 'cb-dictionary-alphabet',
 			'class' => Elements\Alphabet::class,
 		],
+		'Elements/Categories.php' => [
+			'name'  => 'cb-dictionary-categories',
+			'class' => Elements\Categories::class,
+		],
 		'Elements/Entries.php' => [
 			'name'  => 'cb-dictionary-entries',
 			'class' => Elements\Entries::class,

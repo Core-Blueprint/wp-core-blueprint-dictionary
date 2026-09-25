@@ -37,6 +37,11 @@ $expected = [
 	'src/Frontend/Queries.php',
 	'src/Frontend/Conditions.php',
 	'src/Frontend/Shortcodes.php',
+	'src/Frontend/Components/Entries.php',
+	'src/Frontend/Components/Alphabet.php',
+	'src/Frontend/Components/Meta.php',
+	'src/Frontend/Components/Search.php',
+	'src/Frontend/Components/SearchResults.php',
 	'src/Governance/Events.php',
 	'src/Integration/Suite.php',
 	'src/Integration/Builders/Bootstrap.php',
@@ -107,6 +112,20 @@ foreach ( [ 'DEFAULT_REWRITE_BASE', 'REWRITE_DIRTY_OPTION', 'flush_rewrite_rules
 }
 if ( str_contains( $settings, "'page'                  => SettingsPage::SLUG" ) ) {
 	$failures[] = 'Settings save flow must not redirect to the removed flat settings route.';
+}
+
+$shortcodes = (string) file_get_contents( $root . '/src/Frontend/Shortcodes.php' );
+foreach ( [
+	'EntriesComponent::render',
+	'SearchComponent::render',
+	'SearchResultsComponent::render',
+	'AlphabetComponent::render',
+	'MetaComponent::render',
+	'cb_dictionary_search_results',
+] as $required ) {
+	if ( ! str_contains( $shortcodes, $required ) ) {
+		$failures[] = 'Builder-neutral shortcode/component contract is missing ' . $required . '.';
+	}
 }
 
 $events = (string) file_get_contents( $root . '/src/Governance/Events.php' );

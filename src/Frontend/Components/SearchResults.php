@@ -101,6 +101,9 @@ final class SearchResults {
 	}
 
 	public static function source_key( mixed $source ): string {
+		if ( ! is_scalar( $source ) ) {
+			return 'default';
+		}
 		$key = sanitize_key( (string) $source );
 		return '' === $key ? 'default' : $key;
 	}

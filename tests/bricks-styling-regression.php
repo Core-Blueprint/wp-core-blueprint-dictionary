@@ -50,6 +50,9 @@ $element_components = [
 	'Alphabet.php' => [
 		'src/Frontend/Components/Alphabet.php',
 	],
+	'Categories.php' => [
+		'src/Frontend/Components/Categories.php',
+	],
 	'Entries.php' => [
 		'src/Frontend/Components/Entries.php',
 	],
@@ -113,6 +116,11 @@ $native_length_controls = [
 		'listRowGap',
 		'listGridGap',
 	],
+	'Categories.php' => [
+		'listColumnGap',
+		'listRowGap',
+		'listGridGap',
+	],
 	'Entries.php' => [
 		'listColumnGap',
 		'listRowGap',
@@ -153,6 +161,9 @@ $flex_contracts = [
 		[ 'list', 'listDisplay' ],
 	],
 	'Alphabet.php' => [
+		[ 'list', 'listDisplay' ],
+	],
+	'Categories.php' => [
 		[ 'list', 'listDisplay' ],
 	],
 	'Entries.php' => [
@@ -214,6 +225,11 @@ foreach ( [ "'listMargin'", "'listPadding'", "'listFlexWrap'", "'listGridGap'", 
 	cbd_styling_assert( str_contains( $alphabet, $needle ), 'Alphabet Golden styling state contract missing: ' . $needle );
 }
 
+$categories = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/Elements/Categories.php' );
+foreach ( [ "'listMargin'", "'listPadding'", "'listFlexWrap'", "'listGridGap'", "'linkFocusColor'", "'currentTypography'", "[ 'showEmpty', '=', true ]" ] as $needle ) {
+	cbd_styling_assert( str_contains( $categories, $needle ), 'Categories Golden styling state contract missing: ' . $needle );
+}
+
 $entries = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/Elements/Entries.php' );
 foreach ( [ "'listMargin'", "'listPadding'", "'listFlexWrap'", "'listGridGap'", "[ 'showExcerpt', '=', true ]" ] as $needle ) {
 	cbd_styling_assert( str_contains( $entries, $needle ), 'Entries Golden styling state contract missing: ' . $needle );
@@ -238,6 +254,7 @@ foreach ( [
 	'.cb-dictionary-search-results__count,',
 	'.cb-dictionary-search-results__link,',
 	'.cb-dictionary-alphabet__link,',
+	'.cb-dictionary-categories__link',
 	'.cb-dictionary-list__excerpt > :first-child',
 	'.cb-dictionary-list__excerpt > :last-child',
 	'.cb-dictionary-meta__label,',

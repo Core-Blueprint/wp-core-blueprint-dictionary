@@ -125,9 +125,13 @@ namespace {
 			);
 		}
 		if ( 'Search.php' === $file ) {
-			foreach ( [ "'type'    => 'icon'", "method_exists( self::class, 'render_icon' )", "method_exists( '\\\\Bricks\\\\Helpers', 'render_control_icon' )", "'button_mode'", "'button_placement'" ] as $search_contract ) {
+			foreach ( [ "'type'    => 'icon'", "method_exists( self::class, 'render_icon' )", "'render_control_icon'", "'button_mode'", "'button_placement'" ] as $search_contract ) {
 				cbd_elements_assert( str_contains( $content, $search_contract ), 'Search.php missing Golden search-button contract ' . $search_contract );
 			}
+			cbd_elements_assert(
+				substr_count( $content, "method_exists(" ) >= 2,
+				'Search.php must guard both supported Bricks icon rendering paths with method_exists'
+			);
 		}
 		cbd_elements_assert(
 			! str_contains( $content, "'tab'   => 'style'" )

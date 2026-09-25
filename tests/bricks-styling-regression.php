@@ -25,25 +25,18 @@ function cbd_styling_selector_classes( string $content ): array {
 	return array_values( array_unique( $classes ) );
 }
 
-$slider_unit_profiles = [
-	'spacing_units',
-	'size_units',
-	'icon_units',
-	'width_units',
-];
+/** Return one Bricks control block from an element source file. */
+function cbd_styling_control_block( string $content, string $name ): string {
+	$marker = "\t\t\$this->controls['" . $name . "'] = [";
+	$start  = strpos( $content, $marker );
+	cbd_styling_assert( false !== $start, 'Missing Bricks control: ' . $name );
 
-$control_options = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/ControlOptions.php' );
-foreach ( $slider_unit_profiles as $profile ) {
-	cbd_styling_assert(
-		str_contains( $control_options, 'function ' . $profile . '()' ),
-		'Dictionary Bricks slider unit profile missing: ' . $profile
-	);
-}
-foreach ( [ "'px'", "'rem'", "'em'", "'%'" ] as $unit ) {
-	cbd_styling_assert(
-		str_contains( $control_options, $unit ),
-		'Dictionary Bricks slider unit configuration missing unit: ' . $unit
-	);
+	$next   = strpos( $content, "\n\t\t\$this->controls[", (int) $start + strlen( $marker ) );
+	$render = strpos( $content, "\n\t}\n\n\tpublic function render", (int) $start + strlen( $marker ) );
+	$end    = false !== $next ? $next : $render;
+	cbd_styling_assert( false !== $end, 'Could not delimit Bricks control: ' . $name );
+
+	return substr( $content, (int) $start, (int) $end - (int) $start );
 }
 
 $element_components = [
@@ -72,21 +65,10 @@ foreach ( $element_components as $element_file => $component_files ) {
 		$markup .= "\n" . (string) file_get_contents( $root . '/' . $component_file );
 	}
 
-	$control_blocks = preg_split( '/\\n\\t\\t\\$this->controls\\[/', $element ) ?: [];
-	foreach ( $control_blocks as $control_block ) {
-		if ( ! preg_match( "/'type'\\s*=>\\s*'slider'/", $control_block ) ) {
-			continue;
-		}
-
-		cbd_styling_assert(
-			str_contains( $control_block, "'units' => ControlOptions::" ),
-			$element_file . ' contains a slider without explicit Bricks CSS units'
-		);
-		cbd_styling_assert(
-			str_contains( $control_block, "'unitless' => false" ),
-			$element_file . ' contains a CSS length slider that is still configured as unitless'
-		);
-	}
+	cbd_styling_assert(
+		! preg_match( "/'type'\\s*=>\\s*'slider'/", $element ),
+		$element_file . ' must use native Bricks number + units controls for CSS lengths, not slider controls'
+	);
 
 	foreach ( cbd_styling_selector_classes( $element ) as $class ) {
 		$dynamic_search_modifier = 'Search.php' === $element_file
@@ -107,12 +89,114 @@ foreach ( $element_components as $element_file => $component_files ) {
 	);
 }
 
+$native_length_controls = [
+	'Search.php' => [
+		'inputMinHeight',
+		'buttonOverlayInset',
+		'buttonIconGap',
+		'buttonIconSize',
+		'buttonMinHeight',
+		'formColumnGap',
+		'formRowGap',
+		'formGridGap',
+		'resultsListColumnGap',
+		'resultsListRowGap',
+		'resultsGridGap',
+	],
+	'SearchResults.php' => [
+		'listColumnGap',
+		'listRowGap',
+		'listGridGap',
+	],
+	'Alphabet.php' => [
+		'listColumnGap',
+		'listRowGap',
+		'listGridGap',
+	],
+	'Entries.php' => [
+		'listColumnGap',
+		'listRowGap',
+		'listGridGap',
+	],
+	'EntryData.php' => [
+		'metaColumnGap',
+		'metaRowGap',
+		'metaGridGap',
+		'rowColumnGap',
+		'rowRowGap',
+		'rowGridGap',
+		'labelWidth',
+	],
+];
+
+foreach ( $native_length_controls as $element_file => $control_names ) {
+	$content = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/Elements/' . $element_file );
+	foreach ( $control_names as $control_name ) {
+		$block = cbd_styling_control_block( $content, $control_name );
+		cbd_styling_assert(
+			(bool) preg_match( "/'type'\\s*=>\\s*'number'/", $block ),
+			$element_file . ' control ' . $control_name . ' must use native Bricks number control'
+		);
+		cbd_styling_assert(
+			(bool) preg_match( "/'units'\\s*=>\\s*true/", $block ),
+			$element_file . ' control ' . $control_name . ' must enable native Bricks units'
+		);
+	}
+}
+
+$flex_contracts = [
+	'Search.php' => [
+		[ 'form', 'formDisplay' ],
+		[ 'resultsList', 'resultsListDisplay' ],
+	],
+	'SearchResults.php' => [
+		[ 'list', 'listDisplay' ],
+	],
+	'Alphabet.php' => [
+		[ 'list', 'listDisplay' ],
+	],
+	'Entries.php' => [
+		[ 'list', 'listDisplay' ],
+	],
+	'EntryData.php' => [
+		[ 'meta', 'metaDisplay' ],
+		[ 'row', 'rowDisplay' ],
+	],
+];
+
+foreach ( $flex_contracts as $element_file => $contracts ) {
+	$content = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/Elements/' . $element_file );
+	foreach ( $contracts as [ $prefix, $display_control ] ) {
+		foreach ( [
+			$prefix . 'FlexWrap'        => 'flex-wrap',
+			$prefix . 'Direction'       => 'flex-direction',
+			$prefix . 'JustifyContent'  => 'justify-content',
+			$prefix . 'AlignItems'      => 'align-items',
+			$prefix . 'ColumnGap'       => 'column-gap',
+			$prefix . 'RowGap'          => 'row-gap',
+		] as $control_name => $property ) {
+			$block = cbd_styling_control_block( $content, $control_name );
+			cbd_styling_assert(
+				str_contains( $block, "'property' => '" . $property . "'" ),
+				$element_file . ' control ' . $control_name . ' must target ' . $property
+			);
+			cbd_styling_assert(
+				str_contains( $block, "'" . $display_control . "'" )
+					&& str_contains( $block, "'flex'" ),
+				$element_file . ' control ' . $control_name . ' must only appear for flex display'
+			);
+		}
+	}
+}
+
 $search = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/Elements/Search.php' );
 foreach ( [
 	"'resultsListMargin'",
 	"'resultsListPadding'",
-	"[ [ 'resultsMode', '=', 'inline' ], [ 'resultsListDisplay', '=', 'grid' ] ]",
-	"[ [ 'resultsMode', '=', 'inline' ], [ 'resultsListDisplay', '=', [ 'flex', 'grid' ] ] ]",
+	"'formFlexWrap'",
+	"'formGridGap'",
+	"'resultsListFlexWrap'",
+	"'resultsGridGap'",
 	"[ [ 'resultsMode', '=', 'inline' ], [ 'showExcerpt', '=', true ] ]",
 	"[ [ 'resultsMode', '=', 'inline' ], [ 'showCount', '=', true ] ]",
 	"[ [ 'buttonMode', '!=', 'hidden' ], [ 'buttonPlacement', '=', 'overlay' ] ]",
@@ -121,17 +205,17 @@ foreach ( [
 }
 
 $search_results = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/Elements/SearchResults.php' );
-foreach ( [ "'listMargin'", "'listPadding'", "[ 'listDisplay', '=', [ 'flex', 'grid' ] ]", "[ 'showExcerpt', '=', true ]", "[ 'showCount', '=', true ]" ] as $needle ) {
+foreach ( [ "'listMargin'", "'listPadding'", "'listFlexWrap'", "'listGridGap'", "[ 'showExcerpt', '=', true ]", "[ 'showCount', '=', true ]" ] as $needle ) {
 	cbd_styling_assert( str_contains( $search_results, $needle ), 'Search Results Golden styling state contract missing: ' . $needle );
 }
 
 $alphabet = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/Elements/Alphabet.php' );
-foreach ( [ "'listMargin'", "'listPadding'", "[ 'showEmpty', '=', true ]" ] as $needle ) {
+foreach ( [ "'listMargin'", "'listPadding'", "'listFlexWrap'", "'listGridGap'", "[ 'showEmpty', '=', true ]" ] as $needle ) {
 	cbd_styling_assert( str_contains( $alphabet, $needle ), 'Alphabet Golden styling state contract missing: ' . $needle );
 }
 
 $entries = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/Elements/Entries.php' );
-foreach ( [ "'listMargin'", "'listPadding'", "[ 'listDisplay', '=', [ 'flex', 'grid' ] ]", "[ 'showExcerpt', '=', true ]" ] as $needle ) {
+foreach ( [ "'listMargin'", "'listPadding'", "'listFlexWrap'", "'listGridGap'", "[ 'showExcerpt', '=', true ]" ] as $needle ) {
 	cbd_styling_assert( str_contains( $entries, $needle ), 'Entries Golden styling state contract missing: ' . $needle );
 }
 
@@ -139,8 +223,10 @@ $entry_data = (string) file_get_contents( $root . '/src/Integration/Builders/Bri
 foreach ( [
 	"'rowColumns'",
 	"'max-content minmax(0, 1fr)'",
-	"[ 'metaDisplay', '=', [ 'flex', 'grid' ] ]",
-	"[ 'rowDisplay', '=', [ 'flex', 'grid' ] ]",
+	"'metaFlexWrap'",
+	"'metaGridGap'",
+	"'rowFlexWrap'",
+	"'rowGridGap'",
 ] as $needle ) {
 	cbd_styling_assert( str_contains( $entry_data, $needle ), 'Entry Data Golden styling state contract missing: ' . $needle );
 }

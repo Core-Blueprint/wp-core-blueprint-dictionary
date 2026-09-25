@@ -50,7 +50,6 @@ $expected = [
 	'src/Integration/Builders/Bootstrap.php',
 	'src/Integration/Builders/Readiness.php',
 	'src/Integration/Builders/Bricks/Bootstrap.php',
-	'src/Integration/Builders/Bricks/ControlOptions.php',
 	'src/Integration/Builders/Bricks/ElementRegistry.php',
 	'src/Integration/Builders/Bricks/Elements/Search.php',
 	'src/Integration/Builders/Bricks/Elements/SearchResults.php',
@@ -147,17 +146,11 @@ foreach ( [
 	'src/Integration/Builders/Bricks/Elements/EntryData.php',
 ] as $bricks_element_file ) {
 	$bricks_element_content = (string) file_get_contents( $root . '/' . $bricks_element_file );
-	$slider_count = preg_match_all( "/'type'\\s*=>\\s*'slider'/", $bricks_element_content );
-	$unitless_false_count = preg_match_all( "/'unitless'\\s*=>\\s*false/", $bricks_element_content );
-	if ( $slider_count !== $unitless_false_count ) {
-		$failures[] = $bricks_element_file . ' must configure every CSS slider with unitless => false.';
+	if ( preg_match( "/'type'\\s*=>\\s*'slider'/", $bricks_element_content ) ) {
+		$failures[] = $bricks_element_file . ' must not use slider controls for CSS lengths; use native Bricks number + units controls.';
 	}
-}
-
-$bricks_control_options = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/ControlOptions.php' );
-foreach ( [ 'spacing_units', 'size_units', 'icon_units', 'width_units' ] as $required ) {
-	if ( ! str_contains( $bricks_control_options, 'function ' . $required . '()' ) ) {
-		$failures[] = 'Dictionary Bricks slider unit profile is missing ' . $required . '.';
+	if ( str_contains( $bricks_element_content, 'ControlOptions' ) ) {
+		$failures[] = $bricks_element_file . ' must not use the retired custom slider unit helper.';
 	}
 }
 

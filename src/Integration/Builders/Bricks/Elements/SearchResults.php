@@ -298,6 +298,15 @@ final class SearchResults extends \Bricks\Element {
 			'type'  => 'color',
 			'css'   => [ [ 'property' => 'background-color', 'selector' => '.cb-dictionary-search-results__item:hover' ] ],
 		];
+
+		$this->controls['itemFocusBackground'] = [
+			'tab'   => 'content',
+			'group' => 'items',
+			'label' => esc_html__( 'Focus background color', 'core-blueprint-dictionary' ),
+			'type'  => 'color',
+			'css'   => [ [ 'property' => 'background-color', 'selector' => '.cb-dictionary-search-results__item:focus-within' ] ],
+		];
+
 		$this->controls['itemSelectedBackground'] = [
 			'tab'   => 'content',
 			'group' => 'items',
@@ -312,6 +321,15 @@ final class SearchResults extends \Bricks\Element {
 			'type'  => 'color',
 			'css'   => [ [ 'property' => 'color', 'selector' => '.cb-dictionary-search-results__link:hover .cb-dictionary-search-results__title' ] ],
 		];
+
+		$this->controls['titleFocusColor'] = [
+			'tab'   => 'content',
+			'group' => 'items',
+			'label' => esc_html__( 'Title focus color', 'core-blueprint-dictionary' ),
+			'type'  => 'color',
+			'css'   => [ [ 'property' => 'color', 'selector' => '.cb-dictionary-search-results__link:focus-visible .cb-dictionary-search-results__title' ] ],
+		];
+
 		$this->controls['titleSelectedColor'] = [
 			'tab'   => 'content',
 			'group' => 'items',

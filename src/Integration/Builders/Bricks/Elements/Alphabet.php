@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace CB\Dictionary\Integration\Builders\Bricks\Elements;
 
 use CB\Dictionary\Frontend\Components\Alphabet as AlphabetComponent;
-use CB\Dictionary\Integration\Builders\Bricks\ControlOptions;
 use CB\Dictionary\Integration\Builders\Bricks\ElementRegistry;
 
 defined( 'ABSPATH' ) || exit;
@@ -115,15 +114,76 @@ final class Alphabet extends \Bricks\Element {
 			'css'      => [ [ 'property' => 'grid-template-columns', 'selector' => '.cb-dictionary-alphabet__items' ] ],
 			'required' => [ 'listDisplay', '=', 'grid' ],
 		];
-		$this->controls['listGap'] = [
-			'tab'   => 'content',
-			'group' => 'layout',
-			'label' => esc_html__( 'Gap', 'core-blueprint-dictionary' ),
-			'type'  => 'slider',
-			'units' => ControlOptions::spacing_units(),
-			'unitless' => false,
-			'css'   => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-alphabet__items' ] ],
+
+		$this->controls['listFlexWrap'] = [
+			'tab'      => 'content',
+			'group'    => 'layout',
+			'label'    => esc_html__( 'Flex wrap', 'core-blueprint-dictionary' ),
+			'type'     => 'select',
+			'options'  => [
+				'nowrap'       => esc_html__( 'No wrap', 'core-blueprint-dictionary' ),
+				'wrap'         => esc_html__( 'Wrap', 'core-blueprint-dictionary' ),
+				'wrap-reverse' => esc_html__( 'Wrap reverse', 'core-blueprint-dictionary' ),
+			],
+			'inline'   => true,
+			'css'      => [ [ 'property' => 'flex-wrap', 'selector' => '.cb-dictionary-alphabet__items' ] ],
+			'required' => [ 'listDisplay', '=', 'flex' ],
 		];
+		$this->controls['listDirection'] = [
+			'tab'      => 'content',
+			'group'    => 'layout',
+			'label'    => esc_html__( 'Direction', 'core-blueprint-dictionary' ),
+			'type'     => 'direction',
+			'inline'   => true,
+			'rerender' => true,
+			'css'      => [ [ 'property' => 'flex-direction', 'selector' => '.cb-dictionary-alphabet__items' ] ],
+			'required' => [ 'listDisplay', '=', 'flex' ],
+		];
+		$this->controls['listJustifyContent'] = [
+			'tab'      => 'content',
+			'group'    => 'layout',
+			'label'    => esc_html__( 'Align main axis', 'core-blueprint-dictionary' ),
+			'type'     => 'justify-content',
+			'css'      => [ [ 'property' => 'justify-content', 'selector' => '.cb-dictionary-alphabet__items' ] ],
+			'required' => [ 'listDisplay', '=', 'flex' ],
+		];
+		$this->controls['listAlignItems'] = [
+			'tab'      => 'content',
+			'group'    => 'layout',
+			'label'    => esc_html__( 'Align cross axis', 'core-blueprint-dictionary' ),
+			'type'     => 'align-items',
+			'css'      => [ [ 'property' => 'align-items', 'selector' => '.cb-dictionary-alphabet__items' ] ],
+			'required' => [ 'listDisplay', '=', 'flex' ],
+		];
+		$this->controls['listColumnGap'] = [
+			'tab'      => 'content',
+			'group'    => 'layout',
+			'label'    => esc_html__( 'Column gap', 'core-blueprint-dictionary' ),
+			'type'     => 'number',
+			'units'    => true,
+			'css'      => [ [ 'property' => 'column-gap', 'selector' => '.cb-dictionary-alphabet__items' ] ],
+			'required' => [ 'listDisplay', '=', 'flex' ],
+		];
+		$this->controls['listRowGap'] = [
+			'tab'      => 'content',
+			'group'    => 'layout',
+			'label'    => esc_html__( 'Row gap', 'core-blueprint-dictionary' ),
+			'type'     => 'number',
+			'units'    => true,
+			'css'      => [ [ 'property' => 'row-gap', 'selector' => '.cb-dictionary-alphabet__items' ] ],
+			'required' => [ 'listDisplay', '=', 'flex' ],
+		];
+
+		$this->controls['listGridGap'] = [
+			'tab'      => 'content',
+			'group'    => 'layout',
+			'label'    => esc_html__( 'Grid gap', 'core-blueprint-dictionary' ),
+			'type'     => 'number',
+			'units'    => true,
+			'css'      => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-alphabet__items' ] ],
+			'required' => [ 'listDisplay', '=', 'grid' ],
+		];
+
 		$this->controls['justifyContent'] = [
 			'tab'   => 'content',
 			'group' => 'layout',

@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace CB\Dictionary\Integration\Builders\Bricks\Elements;
 
 use CB\Dictionary\Frontend\Components\Search as SearchComponent;
-use CB\Dictionary\Integration\Builders\Bricks\ControlOptions;
 use CB\Dictionary\Integration\Builders\Bricks\ElementRegistry;
 
 defined( 'ABSPATH' ) || exit;
@@ -146,31 +145,84 @@ final class Search extends \Bricks\Element {
 			],
 			'css'     => [ [ 'property' => 'display', 'selector' => '.cb-dictionary-search__form' ] ],
 		];
-		$this->controls['formGap'] = [
-			'tab'   => 'content',
-			'group' => 'form',
-			'label' => esc_html__( 'Gap', 'core-blueprint-dictionary' ),
-			'type'  => 'slider',
-			'units' => ControlOptions::spacing_units(),
-			'unitless' => false,
-			'css'   => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-search__form' ] ],
-			'required' => [ 'formDisplay', '=', [ 'flex', 'grid' ] ],
+
+
+
+		$this->controls['formFlexWrap'] = [
+			'tab'      => 'content',
+			'group'    => 'form',
+			'label'    => esc_html__( 'Flex wrap', 'core-blueprint-dictionary' ),
+			'type'     => 'select',
+			'options'  => [
+				'nowrap'       => esc_html__( 'No wrap', 'core-blueprint-dictionary' ),
+				'wrap'         => esc_html__( 'Wrap', 'core-blueprint-dictionary' ),
+				'wrap-reverse' => esc_html__( 'Wrap reverse', 'core-blueprint-dictionary' ),
+			],
+			'inline'   => true,
+			'css'      => [ [ 'property' => 'flex-wrap', 'selector' => '.cb-dictionary-search__form' ] ],
+			'required' => [ 'formDisplay', '=', 'flex' ],
 		];
-		$this->controls['formAlignItems'] = [
-			'tab'   => 'content',
-			'group' => 'form',
-			'label' => esc_html__( 'Align items', 'core-blueprint-dictionary' ),
-			'type'  => 'align-items',
-			'css'   => [ [ 'property' => 'align-items', 'selector' => '.cb-dictionary-search__form' ] ],
-			'required' => [ 'formDisplay', '=', [ 'flex', 'grid' ] ],
+		$this->controls['formDirection'] = [
+			'tab'      => 'content',
+			'group'    => 'form',
+			'label'    => esc_html__( 'Direction', 'core-blueprint-dictionary' ),
+			'type'     => 'direction',
+			'inline'   => true,
+			'rerender' => true,
+			'css'      => [ [ 'property' => 'flex-direction', 'selector' => '.cb-dictionary-search__form' ] ],
+			'required' => [ 'formDisplay', '=', 'flex' ],
 		];
 		$this->controls['formJustifyContent'] = [
-			'tab'   => 'content',
-			'group' => 'form',
-			'label' => esc_html__( 'Justify content', 'core-blueprint-dictionary' ),
-			'type'  => 'justify-content',
-			'css'   => [ [ 'property' => 'justify-content', 'selector' => '.cb-dictionary-search__form' ] ],
-			'required' => [ 'formDisplay', '=', [ 'flex', 'grid' ] ],
+			'tab'      => 'content',
+			'group'    => 'form',
+			'label'    => esc_html__( 'Align main axis', 'core-blueprint-dictionary' ),
+			'type'     => 'justify-content',
+			'css'      => [ [ 'property' => 'justify-content', 'selector' => '.cb-dictionary-search__form' ] ],
+			'required' => [ 'formDisplay', '=', 'flex' ],
+		];
+		$this->controls['formAlignItems'] = [
+			'tab'      => 'content',
+			'group'    => 'form',
+			'label'    => esc_html__( 'Align cross axis', 'core-blueprint-dictionary' ),
+			'type'     => 'align-items',
+			'css'      => [ [ 'property' => 'align-items', 'selector' => '.cb-dictionary-search__form' ] ],
+			'required' => [ 'formDisplay', '=', 'flex' ],
+		];
+		$this->controls['formColumnGap'] = [
+			'tab'      => 'content',
+			'group'    => 'form',
+			'label'    => esc_html__( 'Column gap', 'core-blueprint-dictionary' ),
+			'type'     => 'number',
+			'units'    => true,
+			'css'      => [ [ 'property' => 'column-gap', 'selector' => '.cb-dictionary-search__form' ] ],
+			'required' => [ 'formDisplay', '=', 'flex' ],
+		];
+		$this->controls['formRowGap'] = [
+			'tab'      => 'content',
+			'group'    => 'form',
+			'label'    => esc_html__( 'Row gap', 'core-blueprint-dictionary' ),
+			'type'     => 'number',
+			'units'    => true,
+			'css'      => [ [ 'property' => 'row-gap', 'selector' => '.cb-dictionary-search__form' ] ],
+			'required' => [ 'formDisplay', '=', 'flex' ],
+		];
+
+		$this->controls['formGridGap'] = [
+			'tab'      => 'content',
+			'group'    => 'form',
+			'label'    => esc_html__( 'Grid gap', 'core-blueprint-dictionary' ),
+			'type'     => 'number',
+			'units'    => true,
+			'css'      => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-search__form' ] ],
+			'required' => [ 'formDisplay', '=', 'grid' ],
+		];
+		$this->controls['formGridColumns'] = [
+			'tab'      => 'content',
+			'group'    => 'form',
+			'label'    => esc_html__( 'Grid template columns', 'core-blueprint-dictionary' ),
+			'type'     => 'text',
+			'css'      => [ [ 'property' => 'grid-template-columns', 'selector' => '.cb-dictionary-search__form' ] ],
+			'required' => [ 'formDisplay', '=', 'grid' ],
 		];
 
 		$this->controls['inputTypography'] = [
@@ -213,9 +265,8 @@ final class Search extends \Bricks\Element {
 			'tab'   => 'content',
 			'group' => 'input',
 			'label' => esc_html__( 'Minimum height', 'core-blueprint-dictionary' ),
-			'type'  => 'slider',
-			'units' => ControlOptions::size_units(),
-			'unitless' => false,
+			'type'  => 'number',
+			'units' => true,
 			'css'   => [ [ 'property' => 'min-height', 'selector' => '.cb-dictionary-search__input' ] ],
 		];
 		$this->controls['inputFocusBorder'] = [
@@ -306,9 +357,8 @@ final class Search extends \Bricks\Element {
 			'tab'      => 'content',
 			'group'    => 'button',
 			'label'    => esc_html__( 'Overlay inset', 'core-blueprint-dictionary' ),
-			'type'     => 'slider',
-			'units' => ControlOptions::spacing_units(),
-			'unitless' => false,
+			'type'  => 'number',
+			'units' => true,
 			'css'      => [ [ 'property' => '--cb-dictionary-search-button-inset', 'selector' => '.cb-dictionary-search__form' ] ],
 			'required' => [ [ 'buttonMode', '!=', 'hidden' ], [ 'buttonPlacement', '=', 'overlay' ] ],
 		];
@@ -316,9 +366,8 @@ final class Search extends \Bricks\Element {
 			'tab'   => 'content',
 			'group' => 'button',
 			'label' => esc_html__( 'Icon gap', 'core-blueprint-dictionary' ),
-			'type'  => 'slider',
-			'units' => ControlOptions::spacing_units(),
-			'unitless' => false,
+			'type'  => 'number',
+			'units' => true,
 			'css'   => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-search__submit--text-icon' ] ],
 			'required' => [ 'buttonMode', '=', 'text-icon' ],
 		];
@@ -326,9 +375,8 @@ final class Search extends \Bricks\Element {
 			'tab'   => 'content',
 			'group' => 'button',
 			'label' => esc_html__( 'Icon size', 'core-blueprint-dictionary' ),
-			'type'  => 'slider',
-			'units' => ControlOptions::icon_units(),
-			'unitless' => false,
+			'type'  => 'number',
+			'units' => true,
 			'css'   => [
 				[ 'property' => 'font-size', 'selector' => '.cb-dictionary-search__submit-icon' ],
 				[ 'property' => 'width', 'selector' => '.cb-dictionary-search__submit-icon svg' ],
@@ -389,9 +437,8 @@ final class Search extends \Bricks\Element {
 			'tab'   => 'content',
 			'group' => 'button',
 			'label' => esc_html__( 'Minimum height', 'core-blueprint-dictionary' ),
-			'type'  => 'slider',
-			'units' => ControlOptions::size_units(),
-			'unitless' => false,
+			'type'  => 'number',
+			'units' => true,
 			'css'   => [ [ 'property' => 'min-height', 'selector' => '.cb-dictionary-search__submit' ] ],
 			'required' => [ 'buttonMode', '!=', 'hidden' ]
 		];
@@ -527,15 +574,74 @@ final class Search extends \Bricks\Element {
 			'css'      => [ [ 'property' => 'grid-template-columns', 'selector' => '.cb-dictionary-search-results__items' ] ],
 			'required' => [ [ 'resultsMode', '=', 'inline' ], [ 'resultsListDisplay', '=', 'grid' ] ],
 		];
-		$this->controls['resultsGap'] = [
-			'tab'   => 'content',
-			'group' => 'results',
-			'label' => esc_html__( 'List gap', 'core-blueprint-dictionary' ),
-			'type'  => 'slider',
-			'units' => ControlOptions::spacing_units(),
-			'unitless' => false,
-			'css'   => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-search-results__items' ] ],
-			'required' => [ [ 'resultsMode', '=', 'inline' ], [ 'resultsListDisplay', '=', [ 'flex', 'grid' ] ] ],
+
+		$this->controls['resultsListFlexWrap'] = [
+			'tab'      => 'content',
+			'group'    => 'results',
+			'label'    => esc_html__( 'Flex wrap', 'core-blueprint-dictionary' ),
+			'type'     => 'select',
+			'options'  => [
+				'nowrap'       => esc_html__( 'No wrap', 'core-blueprint-dictionary' ),
+				'wrap'         => esc_html__( 'Wrap', 'core-blueprint-dictionary' ),
+				'wrap-reverse' => esc_html__( 'Wrap reverse', 'core-blueprint-dictionary' ),
+			],
+			'inline'   => true,
+			'css'      => [ [ 'property' => 'flex-wrap', 'selector' => '.cb-dictionary-search-results__items' ] ],
+			'required' => [ [ 'resultsListDisplay', '=', 'flex' ], [ 'resultsMode', '=', 'inline' ] ],
+		];
+		$this->controls['resultsListDirection'] = [
+			'tab'      => 'content',
+			'group'    => 'results',
+			'label'    => esc_html__( 'Direction', 'core-blueprint-dictionary' ),
+			'type'     => 'direction',
+			'inline'   => true,
+			'rerender' => true,
+			'css'      => [ [ 'property' => 'flex-direction', 'selector' => '.cb-dictionary-search-results__items' ] ],
+			'required' => [ [ 'resultsListDisplay', '=', 'flex' ], [ 'resultsMode', '=', 'inline' ] ],
+		];
+		$this->controls['resultsListJustifyContent'] = [
+			'tab'      => 'content',
+			'group'    => 'results',
+			'label'    => esc_html__( 'Align main axis', 'core-blueprint-dictionary' ),
+			'type'     => 'justify-content',
+			'css'      => [ [ 'property' => 'justify-content', 'selector' => '.cb-dictionary-search-results__items' ] ],
+			'required' => [ [ 'resultsListDisplay', '=', 'flex' ], [ 'resultsMode', '=', 'inline' ] ],
+		];
+		$this->controls['resultsListAlignItems'] = [
+			'tab'      => 'content',
+			'group'    => 'results',
+			'label'    => esc_html__( 'Align cross axis', 'core-blueprint-dictionary' ),
+			'type'     => 'align-items',
+			'css'      => [ [ 'property' => 'align-items', 'selector' => '.cb-dictionary-search-results__items' ] ],
+			'required' => [ [ 'resultsListDisplay', '=', 'flex' ], [ 'resultsMode', '=', 'inline' ] ],
+		];
+		$this->controls['resultsListColumnGap'] = [
+			'tab'      => 'content',
+			'group'    => 'results',
+			'label'    => esc_html__( 'Column gap', 'core-blueprint-dictionary' ),
+			'type'     => 'number',
+			'units'    => true,
+			'css'      => [ [ 'property' => 'column-gap', 'selector' => '.cb-dictionary-search-results__items' ] ],
+			'required' => [ [ 'resultsListDisplay', '=', 'flex' ], [ 'resultsMode', '=', 'inline' ] ],
+		];
+		$this->controls['resultsListRowGap'] = [
+			'tab'      => 'content',
+			'group'    => 'results',
+			'label'    => esc_html__( 'Row gap', 'core-blueprint-dictionary' ),
+			'type'     => 'number',
+			'units'    => true,
+			'css'      => [ [ 'property' => 'row-gap', 'selector' => '.cb-dictionary-search-results__items' ] ],
+			'required' => [ [ 'resultsListDisplay', '=', 'flex' ], [ 'resultsMode', '=', 'inline' ] ],
+		];
+
+		$this->controls['resultsGridGap'] = [
+			'tab'      => 'content',
+			'group'    => 'results',
+			'label'    => esc_html__( 'Grid gap', 'core-blueprint-dictionary' ),
+			'type'     => 'number',
+			'units'    => true,
+			'css'      => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-search-results__items' ] ],
+			'required' => [ [ 'resultsListDisplay', '=', 'grid' ], [ 'resultsMode', '=', 'inline' ] ],
 		];
 
 		$this->controls['resultItemBackground'] = [

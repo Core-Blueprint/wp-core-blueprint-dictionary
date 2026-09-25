@@ -5,7 +5,6 @@ namespace CB\Dictionary\Integration\Builders\Bricks\Elements;
 
 use CB\Dictionary\Frontend\Components\Meta as MetaComponent;
 use CB\Dictionary\Integration\Builders\Bricks\Context;
-use CB\Dictionary\Integration\Builders\Bricks\ControlOptions;
 use CB\Dictionary\Integration\Builders\Bricks\ElementRegistry;
 
 defined( 'ABSPATH' ) || exit;
@@ -94,15 +93,74 @@ final class EntryData extends \Bricks\Element {
 			'css'      => [ [ 'property' => 'grid-template-columns', 'selector' => '.cb-dictionary-meta' ] ],
 			'required' => [ 'metaDisplay', '=', 'grid' ],
 		];
-		$this->controls['metaGap'] = [
-			'tab'   => 'content',
-			'group' => 'layout',
-			'label' => esc_html__( 'Gap', 'core-blueprint-dictionary' ),
-			'type'  => 'slider',
-			'units' => ControlOptions::spacing_units(),
-			'unitless' => false,
-			'css'   => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-meta' ] ],
-			'required' => [ 'metaDisplay', '=', [ 'flex', 'grid' ] ],
+
+		$this->controls['metaFlexWrap'] = [
+			'tab'      => 'content',
+			'group'    => 'layout',
+			'label'    => esc_html__( 'Flex wrap', 'core-blueprint-dictionary' ),
+			'type'     => 'select',
+			'options'  => [
+				'nowrap'       => esc_html__( 'No wrap', 'core-blueprint-dictionary' ),
+				'wrap'         => esc_html__( 'Wrap', 'core-blueprint-dictionary' ),
+				'wrap-reverse' => esc_html__( 'Wrap reverse', 'core-blueprint-dictionary' ),
+			],
+			'inline'   => true,
+			'css'      => [ [ 'property' => 'flex-wrap', 'selector' => '.cb-dictionary-meta' ] ],
+			'required' => [ 'metaDisplay', '=', 'flex' ],
+		];
+		$this->controls['metaDirection'] = [
+			'tab'      => 'content',
+			'group'    => 'layout',
+			'label'    => esc_html__( 'Direction', 'core-blueprint-dictionary' ),
+			'type'     => 'direction',
+			'inline'   => true,
+			'rerender' => true,
+			'css'      => [ [ 'property' => 'flex-direction', 'selector' => '.cb-dictionary-meta' ] ],
+			'required' => [ 'metaDisplay', '=', 'flex' ],
+		];
+		$this->controls['metaJustifyContent'] = [
+			'tab'      => 'content',
+			'group'    => 'layout',
+			'label'    => esc_html__( 'Align main axis', 'core-blueprint-dictionary' ),
+			'type'     => 'justify-content',
+			'css'      => [ [ 'property' => 'justify-content', 'selector' => '.cb-dictionary-meta' ] ],
+			'required' => [ 'metaDisplay', '=', 'flex' ],
+		];
+		$this->controls['metaAlignItems'] = [
+			'tab'      => 'content',
+			'group'    => 'layout',
+			'label'    => esc_html__( 'Align cross axis', 'core-blueprint-dictionary' ),
+			'type'     => 'align-items',
+			'css'      => [ [ 'property' => 'align-items', 'selector' => '.cb-dictionary-meta' ] ],
+			'required' => [ 'metaDisplay', '=', 'flex' ],
+		];
+		$this->controls['metaColumnGap'] = [
+			'tab'      => 'content',
+			'group'    => 'layout',
+			'label'    => esc_html__( 'Column gap', 'core-blueprint-dictionary' ),
+			'type'     => 'number',
+			'units'    => true,
+			'css'      => [ [ 'property' => 'column-gap', 'selector' => '.cb-dictionary-meta' ] ],
+			'required' => [ 'metaDisplay', '=', 'flex' ],
+		];
+		$this->controls['metaRowGap'] = [
+			'tab'      => 'content',
+			'group'    => 'layout',
+			'label'    => esc_html__( 'Row gap', 'core-blueprint-dictionary' ),
+			'type'     => 'number',
+			'units'    => true,
+			'css'      => [ [ 'property' => 'row-gap', 'selector' => '.cb-dictionary-meta' ] ],
+			'required' => [ 'metaDisplay', '=', 'flex' ],
+		];
+
+		$this->controls['metaGridGap'] = [
+			'tab'      => 'content',
+			'group'    => 'layout',
+			'label'    => esc_html__( 'Grid gap', 'core-blueprint-dictionary' ),
+			'type'     => 'number',
+			'units'    => true,
+			'css'      => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-meta' ] ],
+			'required' => [ 'metaDisplay', '=', 'grid' ],
 		];
 
 		$this->controls['rowDisplay'] = [
@@ -131,24 +189,77 @@ final class EntryData extends \Bricks\Element {
 			'required' => [ 'rowDisplay', '=', 'grid' ],
 		];
 
-		$this->controls['rowGap'] = [
-			'tab'   => 'content',
-			'group' => 'items',
-			'label' => esc_html__( 'Row gap', 'core-blueprint-dictionary' ),
-			'type'  => 'slider',
-			'units' => ControlOptions::spacing_units(),
-			'unitless' => false,
-			'css'   => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-meta__item' ] ],
-			'required' => [ 'rowDisplay', '=', [ 'flex', 'grid' ] ],
+
+
+		$this->controls['rowFlexWrap'] = [
+			'tab'      => 'content',
+			'group'    => 'items',
+			'label'    => esc_html__( 'Flex wrap', 'core-blueprint-dictionary' ),
+			'type'     => 'select',
+			'options'  => [
+				'nowrap'       => esc_html__( 'No wrap', 'core-blueprint-dictionary' ),
+				'wrap'         => esc_html__( 'Wrap', 'core-blueprint-dictionary' ),
+				'wrap-reverse' => esc_html__( 'Wrap reverse', 'core-blueprint-dictionary' ),
+			],
+			'inline'   => true,
+			'css'      => [ [ 'property' => 'flex-wrap', 'selector' => '.cb-dictionary-meta__item' ] ],
+			'required' => [ 'rowDisplay', '=', 'flex' ],
+		];
+		$this->controls['rowDirection'] = [
+			'tab'      => 'content',
+			'group'    => 'items',
+			'label'    => esc_html__( 'Direction', 'core-blueprint-dictionary' ),
+			'type'     => 'direction',
+			'inline'   => true,
+			'rerender' => true,
+			'css'      => [ [ 'property' => 'flex-direction', 'selector' => '.cb-dictionary-meta__item' ] ],
+			'required' => [ 'rowDisplay', '=', 'flex' ],
+		];
+		$this->controls['rowJustifyContent'] = [
+			'tab'      => 'content',
+			'group'    => 'items',
+			'label'    => esc_html__( 'Align main axis', 'core-blueprint-dictionary' ),
+			'type'     => 'justify-content',
+			'css'      => [ [ 'property' => 'justify-content', 'selector' => '.cb-dictionary-meta__item' ] ],
+			'required' => [ 'rowDisplay', '=', 'flex' ],
 		];
 		$this->controls['rowAlignItems'] = [
-			'tab'   => 'content',
-			'group' => 'items',
-			'label' => esc_html__( 'Align items', 'core-blueprint-dictionary' ),
-			'type'  => 'align-items',
-			'css'   => [ [ 'property' => 'align-items', 'selector' => '.cb-dictionary-meta__item' ] ],
-			'required' => [ 'rowDisplay', '=', [ 'flex', 'grid' ] ],
+			'tab'      => 'content',
+			'group'    => 'items',
+			'label'    => esc_html__( 'Align cross axis', 'core-blueprint-dictionary' ),
+			'type'     => 'align-items',
+			'css'      => [ [ 'property' => 'align-items', 'selector' => '.cb-dictionary-meta__item' ] ],
+			'required' => [ 'rowDisplay', '=', 'flex' ],
 		];
+		$this->controls['rowColumnGap'] = [
+			'tab'      => 'content',
+			'group'    => 'items',
+			'label'    => esc_html__( 'Column gap', 'core-blueprint-dictionary' ),
+			'type'     => 'number',
+			'units'    => true,
+			'css'      => [ [ 'property' => 'column-gap', 'selector' => '.cb-dictionary-meta__item' ] ],
+			'required' => [ 'rowDisplay', '=', 'flex' ],
+		];
+		$this->controls['rowRowGap'] = [
+			'tab'      => 'content',
+			'group'    => 'items',
+			'label'    => esc_html__( 'Row gap', 'core-blueprint-dictionary' ),
+			'type'     => 'number',
+			'units'    => true,
+			'css'      => [ [ 'property' => 'row-gap', 'selector' => '.cb-dictionary-meta__item' ] ],
+			'required' => [ 'rowDisplay', '=', 'flex' ],
+		];
+
+		$this->controls['rowGridGap'] = [
+			'tab'      => 'content',
+			'group'    => 'items',
+			'label'    => esc_html__( 'Grid gap', 'core-blueprint-dictionary' ),
+			'type'     => 'number',
+			'units'    => true,
+			'css'      => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-meta__item' ] ],
+			'required' => [ 'rowDisplay', '=', 'grid' ],
+		];
+
 		$this->controls['rowBackground'] = [
 			'tab'   => 'content',
 			'group' => 'items',
@@ -205,9 +316,8 @@ final class EntryData extends \Bricks\Element {
 			'tab'   => 'content',
 			'group' => 'labels',
 			'label' => esc_html__( 'Width', 'core-blueprint-dictionary' ),
-			'type'  => 'slider',
-			'units' => ControlOptions::width_units(),
-			'unitless' => false,
+			'type'  => 'number',
+			'units' => true,
 			'css'   => [ [ 'property' => 'width', 'selector' => '.cb-dictionary-meta__label' ] ],
 		];
 

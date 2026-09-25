@@ -4,7 +4,7 @@ Core Blueprint Dictionary is a lightweight, builder-agnostic digital dictionary 
 
 It provides a ready-made native WordPress dictionary model: install it, add terms, organise them, and build the frontend with Gutenberg, Bricks, another builder, a theme, REST consumers or normal WordPress code.
 
-## v0.1.0-rc1 scope
+## v1.0.0-rc1 scope
 
 - Native public `cb_dictionary` post type.
 - Configurable public URL base, default `/dictionary/`.

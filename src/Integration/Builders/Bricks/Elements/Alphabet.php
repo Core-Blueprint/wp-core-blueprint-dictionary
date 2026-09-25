@@ -184,20 +184,6 @@ final class Alphabet extends \Bricks\Element {
 			'required' => [ 'listDisplay', '=', 'grid' ],
 		];
 
-		$this->controls['justifyContent'] = [
-			'tab'   => 'content',
-			'group' => 'layout',
-			'label' => esc_html__( 'Justify content', 'core-blueprint-dictionary' ),
-			'type'  => 'justify-content',
-			'css'   => [ [ 'property' => 'justify-content', 'selector' => '.cb-dictionary-alphabet__items' ] ],
-		];
-		$this->controls['alignItems'] = [
-			'tab'   => 'content',
-			'group' => 'layout',
-			'label' => esc_html__( 'Align items', 'core-blueprint-dictionary' ),
-			'type'  => 'align-items',
-			'css'   => [ [ 'property' => 'align-items', 'selector' => '.cb-dictionary-alphabet__items' ] ],
-		];
 
 		$this->controls['typography'] = [
 			'tab'   => 'content',

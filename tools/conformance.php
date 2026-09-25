@@ -42,6 +42,12 @@ $expected = [
 	'src/Integration/Builders/Bootstrap.php',
 	'src/Integration/Builders/Readiness.php',
 	'src/Integration/Builders/Bricks/Bootstrap.php',
+	'src/Integration/Builders/Bricks/ElementRegistry.php',
+	'src/Integration/Builders/Bricks/Elements/Search.php',
+	'src/Integration/Builders/Bricks/Elements/SearchResults.php',
+	'src/Integration/Builders/Bricks/Elements/Alphabet.php',
+	'src/Integration/Builders/Bricks/Elements/Entries.php',
+	'src/Integration/Builders/Bricks/Elements/EntryData.php',
 	'src/Integration/Builders/Bricks/Context.php',
 	'src/Integration/Builders/Bricks/DynamicData.php',
 	'src/Integration/Builders/Bricks/Queries.php',
@@ -187,6 +193,26 @@ if ( ! str_contains( $bricks_queries, 'FrontendQueries::entries' ) ) {
 }
 if ( ! str_contains( $bricks_conditions, 'FrontendConditions::' ) ) {
 	$failures[] = 'Bricks conditions must delegate to the builder-neutral Frontend\\Conditions contract.';
+}
+
+$element_registry = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/ElementRegistry.php' );
+foreach ( [ 'cb-dictionary-search', 'cb-dictionary-search-results', 'cb-dictionary-alphabet', 'cb-dictionary-entries', 'cb-dictionary-entry-data' ] as $element_name ) {
+	if ( ! str_contains( $element_registry, $element_name ) ) {
+		$failures[] = 'Dictionary Bricks element registry is missing ' . $element_name . '.';
+	}
+}
+
+foreach ( [
+	'Search.php'        => 'SearchComponent::render',
+	'SearchResults.php' => 'SearchResultsComponent::render',
+	'Alphabet.php'      => 'AlphabetComponent::render',
+	'Entries.php'       => 'EntriesComponent::render',
+	'EntryData.php'     => 'MetaComponent::render',
+] as $element_file => $required_delegate ) {
+	$content = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/Elements/' . $element_file );
+	if ( ! str_contains( $content, $required_delegate ) ) {
+		$failures[] = 'Dictionary Bricks element must delegate to builder-neutral frontend component: ' . $element_file . '.';
+	}
 }
 
 foreach ( cb_dictionary_files_with_extension( $root . '/src/Integration/Builders/Bricks', 'php' ) as $file ) {

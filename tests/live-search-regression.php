@@ -42,7 +42,7 @@ foreach ( [ 'Assets::enqueue_search( $live )', 'data-live-search', 'data-endpoin
 }
 
 $bricks_search = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/Elements/Search.php' );
-foreach ( [ "method_exists( self::class, 'render_icon' )", "method_exists( '\\Bricks\\Helpers', 'render_control_icon' )", 'sanitize_html_class' ] as $needle ) {
+foreach ( [ "method_exists( self::class, 'render_icon' )", "method_exists( '\\\\Bricks\\\\Helpers', 'render_control_icon' )", 'sanitize_html_class' ] as $needle ) {
 	if ( ! str_contains( $bricks_search, $needle ) ) {
 		$failures[] = 'Bricks icon compatibility contract missing: ' . $needle;
 	}

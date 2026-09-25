@@ -125,7 +125,7 @@ namespace {
 			);
 		}
 		if ( 'Search.php' === $file ) {
-			foreach ( [ "'type'    => 'icon'", "method_exists( self::class, 'render_icon' )", "method_exists( '\\Bricks\\Helpers', 'render_control_icon' )", "'button_mode'", "'button_placement'" ] as $search_contract ) {
+			foreach ( [ "'type'    => 'icon'", "method_exists( self::class, 'render_icon' )", "method_exists( '\\\\Bricks\\\\Helpers', 'render_control_icon' )", "'button_mode'", "'button_placement'" ] as $search_contract ) {
 				cbd_elements_assert( str_contains( $content, $search_contract ), 'Search.php missing Golden search-button contract ' . $search_contract );
 			}
 		}

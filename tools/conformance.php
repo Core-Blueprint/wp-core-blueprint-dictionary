@@ -192,8 +192,12 @@ foreach ( [ 'Notice', 'IntegrationGrid' ] as $presentation_only_contract ) {
 		$failures[] = 'Admin presentation contract must not be a hard Dictionary boot dependency: ' . $presentation_only_contract . '.';
 	}
 }
-if ( ! str_contains( $bootstrap, '\\CB\\Core\\Admin\\SettingsRegistry' ) ) {
-	$failures[] = 'Dictionary bootstrap must require the public SettingsRegistry contract.';
+if ( ! str_contains( $bootstrap, '\\CB\\Dictionary\\Support\\Requirements::runtime_ready()' ) ) {
+	$failures[] = 'Dictionary bootstrap must delegate runtime dependency validation to Support\\Requirements.';
+}
+$requirements = (string) file_get_contents( $root . '/src/Support/Requirements.php' );
+if ( ! str_contains( $requirements, "'\\\\CB\\\\Core\\\\Admin\\\\SettingsRegistry'" ) ) {
+	$failures[] = 'Dictionary requirements must include the public SettingsRegistry contract.';
 }
 foreach ( [ '\\CB\\Core\\Admin\\PageRegistry', '\\CB\\Core\\Admin\\Page' ] as $legacy_boot_contract ) {
 	if ( str_contains( $bootstrap, $legacy_boot_contract ) ) {

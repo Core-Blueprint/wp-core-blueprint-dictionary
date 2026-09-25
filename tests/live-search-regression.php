@@ -71,7 +71,7 @@ foreach ( [ 'SearchProvider::entries', 'data-cb-dictionary-results', 'data-show-
 }
 
 $css = (string) file_get_contents( $root . '/assets/css/dictionary-search.css' );
-foreach ( [ 'data-button-placement="overlay"', 'cb-dictionary-search__submit--overlay', 'cb-dictionary-search__submit--hidden', '--cb-dictionary-search-button-inset' ] as $needle ) {
+foreach ( [ 'data-button-placement="overlay"', 'cb-dictionary-search__submit--overlay', 'cb-dictionary-search__submit--hidden', '--cb-dictionary-search-button-inset', '.cb-dictionary-meta__value', 'margin-inline-start: 0' ] as $needle ) {
 	if ( ! str_contains( $css, $needle ) ) {
 		$failures[] = 'Search presentation CSS contract missing: ' . $needle;
 	}

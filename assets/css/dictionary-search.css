@@ -51,3 +51,7 @@
 .cb-dictionary-search__submit--hidden {
 	display: none;
 }
+
+.cb-dictionary-meta__value {
+	margin-inline-start: 0;
+}

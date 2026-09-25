@@ -110,6 +110,7 @@ namespace {
 			"'rowShadow'",
 			"'labelWidth'",
 			"'valuePadding'",
+			'Context::entry_id()',
 		],
 	];
 

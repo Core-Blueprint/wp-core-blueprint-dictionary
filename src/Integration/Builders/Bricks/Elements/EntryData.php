@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace CB\Dictionary\Integration\Builders\Bricks\Elements;
 
 use CB\Dictionary\Frontend\Components\Meta as MetaComponent;
+use CB\Dictionary\Integration\Builders\Bricks\Context;
 use CB\Dictionary\Integration\Builders\Bricks\ElementRegistry;
 
 defined( 'ABSPATH' ) || exit;
@@ -197,7 +198,12 @@ final class EntryData extends \Bricks\Element {
 
 	public function render(): void {
 		$settings = $this->settings;
+		$entry_id = absint( $settings['entryId'] ?? 0 );
+		if ( 0 === $entry_id ) {
+			$entry_id = Context::entry_id();
+		}
+
 		$this->set_attribute( '_root', 'class', 'cb-dictionary-bricks-entry-data' );
-		echo '<div ' . $this->render_attributes( '_root' ) . '>' . MetaComponent::render( [ 'id' => $settings['entryId'] ?? 0 ] ) . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- trusted builder-neutral Dictionary renderer output.
+		echo '<div ' . $this->render_attributes( '_root' ) . '>' . MetaComponent::render( [ 'id' => $entry_id ] ) . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- trusted builder-neutral Dictionary renderer output.
 	}
 }

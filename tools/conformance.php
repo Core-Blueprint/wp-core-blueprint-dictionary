@@ -148,6 +148,18 @@ if ( str_contains( $search_component, '\\Bricks\\' ) ) {
 	$failures[] = 'Builder-neutral Dictionary Search component must not depend on Bricks.';
 }
 
+$frontend_assets = (string) file_get_contents( $root . '/src/Frontend/Assets.php' );
+foreach ( [ "add_action( 'wp_enqueue_scripts'", 'enqueue_search_styles' ] as $required ) {
+	if ( ! str_contains( $frontend_assets, $required ) ) {
+		$failures[] = 'Dictionary search asset bootstrap is missing ' . $required . '.';
+	}
+}
+
+$entry_data_element = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/Elements/EntryData.php' );
+if ( ! str_contains( $entry_data_element, 'Context::entry_id()' ) ) {
+	$failures[] = 'Dictionary Entry Data must resolve the active Bricks Dictionary context when Entry ID is 0.';
+}
+
 $rest_search = (string) file_get_contents( $root . '/src/Frontend/RestSearch.php' );
 foreach ( [ 'cb-dictionary/v1', 'WP_REST_Server::READABLE', "'permission_callback' => '__return_true'", "'Cache-Control'", "'Vary'" ] as $required ) {
 	if ( ! str_contains( $rest_search, $required ) ) {

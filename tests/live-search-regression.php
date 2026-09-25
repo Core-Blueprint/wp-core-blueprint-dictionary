@@ -34,6 +34,18 @@ foreach ( [ 'cb-dictionary/v1', "'/search'", 'WP_REST_Server::READABLE', "'permi
 	}
 }
 
+$assets = (string) file_get_contents( $root . '/src/Frontend/Assets.php' );
+foreach ( [ "add_action( 'wp_enqueue_scripts'", 'enqueue_search_styles', 'wp_enqueue_style', 'wp_enqueue_script' ] as $needle ) {
+	if ( ! str_contains( $assets, $needle ) ) {
+		$failures[] = 'Search asset loading contract missing: ' . $needle;
+	}
+}
+
+$plugin = (string) file_get_contents( $root . '/src/Plugin.php' );
+if ( ! str_contains( $plugin, 'Assets::init()' ) ) {
+	$failures[] = 'Dictionary plugin must initialize search presentation assets before render time.';
+}
+
 $search_component = (string) file_get_contents( $root . '/src/Frontend/Components/Search.php' );
 foreach ( [ 'Assets::enqueue_search( $live )', 'data-live-search', 'data-endpoint', 'data-min-chars', 'data-button-mode', 'data-button-placement', 'data-button-side', 'role="combobox"', 'aria-autocomplete="list"', "'text-icon'", "'hidden'" ] as $needle ) {
 	if ( ! str_contains( $search_component, $needle ) ) {

@@ -9,6 +9,7 @@ use CB\Dictionary\Content\Alphabet;
 use CB\Dictionary\Content\Meta;
 use CB\Dictionary\Content\PostType;
 use CB\Dictionary\Content\Taxonomies;
+use CB\Dictionary\Frontend\Assets;
 use CB\Dictionary\Frontend\RestSearch;
 use CB\Dictionary\Frontend\Shortcodes;
 use CB\Dictionary\Governance\Events;
@@ -35,6 +36,7 @@ final class Plugin {
 		add_action( 'init', [ Meta::class, 'register' ], 7 );
 
 		Alphabet::init();
+		Assets::init();
 		Shortcodes::init();
 		RestSearch::init();
 		BuilderBootstrap::init();

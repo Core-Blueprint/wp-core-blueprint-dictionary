@@ -79,6 +79,11 @@
 	justify-content: center;
 }
 
+.cb-dictionary-categories__link {
+	display: block;
+	min-width: 0;
+}
+
 .cb-dictionary-list__excerpt > :first-child {
 	margin-block-start: 0;
 }

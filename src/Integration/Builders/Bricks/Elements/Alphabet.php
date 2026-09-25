@@ -29,19 +29,19 @@ final class Alphabet extends \Bricks\Element {
 		];
 		$this->control_groups['layout'] = [
 			'title' => esc_html__( 'Layout', 'core-blueprint-dictionary' ),
-			'tab'   => 'style',
+			'tab'   => 'content',
 		];
 		$this->control_groups['letters'] = [
 			'title' => esc_html__( 'Letters', 'core-blueprint-dictionary' ),
-			'tab'   => 'style',
+			'tab'   => 'content',
 		];
 		$this->control_groups['current'] = [
 			'title' => esc_html__( 'Current letter', 'core-blueprint-dictionary' ),
-			'tab'   => 'style',
+			'tab'   => 'content',
 		];
 		$this->control_groups['empty'] = [
 			'title' => esc_html__( 'Empty letters', 'core-blueprint-dictionary' ),
-			'tab'   => 'style',
+			'tab'   => 'content',
 		];
 	}
 
@@ -54,7 +54,7 @@ final class Alphabet extends \Bricks\Element {
 			'default' => false,
 		];
 		$this->controls['listDisplay'] = [
-			'tab'     => 'style',
+			'tab'     => 'content',
 			'group'   => 'layout',
 			'label'   => esc_html__( 'Display', 'core-blueprint-dictionary' ),
 			'type'    => 'select',
@@ -65,7 +65,7 @@ final class Alphabet extends \Bricks\Element {
 			'css'     => [ [ 'property' => 'display', 'selector' => '.cb-dictionary-alphabet__items' ] ],
 		];
 		$this->controls['listColumns'] = [
-			'tab'      => 'style',
+			'tab'      => 'content',
 			'group'    => 'layout',
 			'label'    => esc_html__( 'Grid columns', 'core-blueprint-dictionary' ),
 			'type'     => 'select',
@@ -79,21 +79,21 @@ final class Alphabet extends \Bricks\Element {
 			'required' => [ 'listDisplay', '=', 'grid' ],
 		];
 		$this->controls['listGap'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'layout',
 			'label' => esc_html__( 'Gap', 'core-blueprint-dictionary' ),
 			'type'  => 'slider',
 			'css'   => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-alphabet__items' ] ],
 		];
 		$this->controls['justifyContent'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'layout',
 			'label' => esc_html__( 'Justify content', 'core-blueprint-dictionary' ),
 			'type'  => 'justify-content',
 			'css'   => [ [ 'property' => 'justify-content', 'selector' => '.cb-dictionary-alphabet__items' ] ],
 		];
 		$this->controls['alignItems'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'layout',
 			'label' => esc_html__( 'Align items', 'core-blueprint-dictionary' ),
 			'type'  => 'align-items',
@@ -101,7 +101,7 @@ final class Alphabet extends \Bricks\Element {
 		];
 
 		$this->controls['typography'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'letters',
 			'label' => esc_html__( 'Typography', 'core-blueprint-dictionary' ),
 			'type'  => 'typography',
@@ -111,7 +111,7 @@ final class Alphabet extends \Bricks\Element {
 			],
 		];
 		$this->controls['background'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'letters',
 			'label' => esc_html__( 'Background', 'core-blueprint-dictionary' ),
 			'type'  => 'background',
@@ -121,7 +121,7 @@ final class Alphabet extends \Bricks\Element {
 			],
 		];
 		$this->controls['border'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'letters',
 			'label' => esc_html__( 'Border', 'core-blueprint-dictionary' ),
 			'type'  => 'border',
@@ -131,7 +131,7 @@ final class Alphabet extends \Bricks\Element {
 			],
 		];
 		$this->controls['padding'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'letters',
 			'label' => esc_html__( 'Padding', 'core-blueprint-dictionary' ),
 			'type'  => 'dimensions',
@@ -141,7 +141,7 @@ final class Alphabet extends \Bricks\Element {
 			],
 		];
 		$this->controls['shadow'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'letters',
 			'label' => esc_html__( 'Box shadow', 'core-blueprint-dictionary' ),
 			'type'  => 'box-shadow',
@@ -151,14 +151,14 @@ final class Alphabet extends \Bricks\Element {
 			],
 		];
 		$this->controls['hoverColor'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'letters',
 			'label' => esc_html__( 'Hover text color', 'core-blueprint-dictionary' ),
 			'type'  => 'color',
 			'css'   => [ [ 'property' => 'color', 'selector' => '.cb-dictionary-alphabet__link:hover' ] ],
 		];
 		$this->controls['hoverBackground'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'letters',
 			'label' => esc_html__( 'Hover background color', 'core-blueprint-dictionary' ),
 			'type'  => 'color',
@@ -166,21 +166,21 @@ final class Alphabet extends \Bricks\Element {
 		];
 
 		$this->controls['currentTypography'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'current',
 			'label' => esc_html__( 'Typography', 'core-blueprint-dictionary' ),
 			'type'  => 'typography',
 			'css'   => [ [ 'property' => 'typography', 'selector' => '.cb-dictionary-alphabet__item--current .cb-dictionary-alphabet__link' ] ],
 		];
 		$this->controls['currentBackground'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'current',
 			'label' => esc_html__( 'Background', 'core-blueprint-dictionary' ),
 			'type'  => 'background',
 			'css'   => [ [ 'property' => 'background', 'selector' => '.cb-dictionary-alphabet__item--current .cb-dictionary-alphabet__link' ] ],
 		];
 		$this->controls['currentBorder'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'current',
 			'label' => esc_html__( 'Border', 'core-blueprint-dictionary' ),
 			'type'  => 'border',
@@ -188,28 +188,28 @@ final class Alphabet extends \Bricks\Element {
 		];
 
 		$this->controls['emptyTypography'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'empty',
 			'label' => esc_html__( 'Typography', 'core-blueprint-dictionary' ),
 			'type'  => 'typography',
 			'css'   => [ [ 'property' => 'typography', 'selector' => '.cb-dictionary-alphabet__label--empty' ] ],
 		];
 		$this->controls['emptyBackground'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'empty',
 			'label' => esc_html__( 'Background', 'core-blueprint-dictionary' ),
 			'type'  => 'background',
 			'css'   => [ [ 'property' => 'background', 'selector' => '.cb-dictionary-alphabet__label--empty' ] ],
 		];
 		$this->controls['emptyBorder'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'empty',
 			'label' => esc_html__( 'Border', 'core-blueprint-dictionary' ),
 			'type'  => 'border',
 			'css'   => [ [ 'property' => 'border', 'selector' => '.cb-dictionary-alphabet__label--empty' ] ],
 		];
 		$this->controls['emptyOpacity'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'empty',
 			'label' => esc_html__( 'Opacity', 'core-blueprint-dictionary' ),
 			'type'  => 'number',

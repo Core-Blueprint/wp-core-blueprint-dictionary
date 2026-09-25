@@ -29,19 +29,19 @@ final class EntryData extends \Bricks\Element {
 		];
 		$this->control_groups['layout'] = [
 			'title' => esc_html__( 'Layout', 'core-blueprint-dictionary' ),
-			'tab'   => 'style',
+			'tab'   => 'content',
 		];
 		$this->control_groups['items'] = [
 			'title' => esc_html__( 'Rows', 'core-blueprint-dictionary' ),
-			'tab'   => 'style',
+			'tab'   => 'content',
 		];
 		$this->control_groups['labels'] = [
 			'title' => esc_html__( 'Labels', 'core-blueprint-dictionary' ),
-			'tab'   => 'style',
+			'tab'   => 'content',
 		];
 		$this->control_groups['values'] = [
 			'title' => esc_html__( 'Values', 'core-blueprint-dictionary' ),
-			'tab'   => 'style',
+			'tab'   => 'content',
 		];
 	}
 
@@ -56,7 +56,7 @@ final class EntryData extends \Bricks\Element {
 			'description' => esc_html__( 'Leave at 0 to use the current Dictionary entry context.', 'core-blueprint-dictionary' ),
 		];
 		$this->controls['metaDisplay'] = [
-			'tab'     => 'style',
+			'tab'     => 'content',
 			'group'   => 'layout',
 			'label'   => esc_html__( 'Display', 'core-blueprint-dictionary' ),
 			'type'    => 'select',
@@ -68,7 +68,7 @@ final class EntryData extends \Bricks\Element {
 			'css'     => [ [ 'property' => 'display', 'selector' => '.cb-dictionary-meta' ] ],
 		];
 		$this->controls['metaColumns'] = [
-			'tab'      => 'style',
+			'tab'      => 'content',
 			'group'    => 'layout',
 			'label'    => esc_html__( 'Grid columns', 'core-blueprint-dictionary' ),
 			'type'     => 'select',
@@ -81,7 +81,7 @@ final class EntryData extends \Bricks\Element {
 			'required' => [ 'metaDisplay', '=', 'grid' ],
 		];
 		$this->controls['metaGap'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'layout',
 			'label' => esc_html__( 'Gap', 'core-blueprint-dictionary' ),
 			'type'  => 'slider',
@@ -89,7 +89,7 @@ final class EntryData extends \Bricks\Element {
 		];
 
 		$this->controls['rowDisplay'] = [
-			'tab'     => 'style',
+			'tab'     => 'content',
 			'group'   => 'items',
 			'label'   => esc_html__( 'Row display', 'core-blueprint-dictionary' ),
 			'type'    => 'select',
@@ -101,42 +101,42 @@ final class EntryData extends \Bricks\Element {
 			'css'     => [ [ 'property' => 'display', 'selector' => '.cb-dictionary-meta__item' ] ],
 		];
 		$this->controls['rowGap'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'items',
 			'label' => esc_html__( 'Row gap', 'core-blueprint-dictionary' ),
 			'type'  => 'slider',
 			'css'   => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-meta__item' ] ],
 		];
 		$this->controls['rowAlignItems'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'items',
 			'label' => esc_html__( 'Align items', 'core-blueprint-dictionary' ),
 			'type'  => 'align-items',
 			'css'   => [ [ 'property' => 'align-items', 'selector' => '.cb-dictionary-meta__item' ] ],
 		];
 		$this->controls['rowBackground'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'items',
 			'label' => esc_html__( 'Background', 'core-blueprint-dictionary' ),
 			'type'  => 'background',
 			'css'   => [ [ 'property' => 'background', 'selector' => '.cb-dictionary-meta__item' ] ],
 		];
 		$this->controls['rowBorder'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'items',
 			'label' => esc_html__( 'Border', 'core-blueprint-dictionary' ),
 			'type'  => 'border',
 			'css'   => [ [ 'property' => 'border', 'selector' => '.cb-dictionary-meta__item' ] ],
 		];
 		$this->controls['rowPadding'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'items',
 			'label' => esc_html__( 'Padding', 'core-blueprint-dictionary' ),
 			'type'  => 'dimensions',
 			'css'   => [ [ 'property' => 'padding', 'selector' => '.cb-dictionary-meta__item' ] ],
 		];
 		$this->controls['rowShadow'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'items',
 			'label' => esc_html__( 'Box shadow', 'core-blueprint-dictionary' ),
 			'type'  => 'box-shadow',
@@ -144,28 +144,28 @@ final class EntryData extends \Bricks\Element {
 		];
 
 		$this->controls['labelTypography'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'labels',
 			'label' => esc_html__( 'Typography', 'core-blueprint-dictionary' ),
 			'type'  => 'typography',
 			'css'   => [ [ 'property' => 'typography', 'selector' => '.cb-dictionary-meta__label' ] ],
 		];
 		$this->controls['labelBackground'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'labels',
 			'label' => esc_html__( 'Background', 'core-blueprint-dictionary' ),
 			'type'  => 'background',
 			'css'   => [ [ 'property' => 'background', 'selector' => '.cb-dictionary-meta__label' ] ],
 		];
 		$this->controls['labelPadding'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'labels',
 			'label' => esc_html__( 'Padding', 'core-blueprint-dictionary' ),
 			'type'  => 'dimensions',
 			'css'   => [ [ 'property' => 'padding', 'selector' => '.cb-dictionary-meta__label' ] ],
 		];
 		$this->controls['labelWidth'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'labels',
 			'label' => esc_html__( 'Width', 'core-blueprint-dictionary' ),
 			'type'  => 'slider',
@@ -173,21 +173,21 @@ final class EntryData extends \Bricks\Element {
 		];
 
 		$this->controls['valueTypography'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'values',
 			'label' => esc_html__( 'Typography', 'core-blueprint-dictionary' ),
 			'type'  => 'typography',
 			'css'   => [ [ 'property' => 'typography', 'selector' => '.cb-dictionary-meta__value' ] ],
 		];
 		$this->controls['valueBackground'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'values',
 			'label' => esc_html__( 'Background', 'core-blueprint-dictionary' ),
 			'type'  => 'background',
 			'css'   => [ [ 'property' => 'background', 'selector' => '.cb-dictionary-meta__value' ] ],
 		];
 		$this->controls['valuePadding'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'values',
 			'label' => esc_html__( 'Padding', 'core-blueprint-dictionary' ),
 			'type'  => 'dimensions',

@@ -51,7 +51,7 @@ namespace {
 	cbd_elements_assert( isset( $GLOBALS['cbd_element_filters']['bricks/builder/i18n'] ), 'Dictionary Bricks category i18n must register' );
 
 	$root = dirname( __DIR__ );
-	$style_contracts = [
+	$custom_control_contracts = [
 		'Search.php' => [
 			"'formGap'",
 			"'inputFocusBorder'",
@@ -94,11 +94,17 @@ namespace {
 		],
 	];
 
-	foreach ( $style_contracts as $file => $needles ) {
+	foreach ( $custom_control_contracts as $file => $needles ) {
 		$content = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/Elements/' . $file );
 		foreach ( $needles as $needle ) {
-			cbd_elements_assert( str_contains( $content, $needle ), $file . ' missing styling contract ' . $needle );
+			cbd_elements_assert( str_contains( $content, $needle ), $file . ' missing custom control contract ' . $needle );
 		}
+		cbd_elements_assert(
+			! str_contains( $content, "'tab'   => 'style'" )
+				&& ! str_contains( $content, "'tab'     => 'style'" )
+				&& ! str_contains( $content, "'tab'      => 'style'" ),
+			$file . ' must keep Dictionary-specific controls under the Content tab'
+		);
 	}
 
 	fwrite( STDOUT, "Dictionary Bricks elements regression: PASS\n" );

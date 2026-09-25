@@ -29,27 +29,27 @@ final class Search extends \Bricks\Element {
 		];
 		$this->control_groups['form'] = [
 			'title' => esc_html__( 'Form layout', 'core-blueprint-dictionary' ),
-			'tab'   => 'style',
+			'tab'   => 'content',
 		];
 		$this->control_groups['input'] = [
 			'title' => esc_html__( 'Input', 'core-blueprint-dictionary' ),
-			'tab'   => 'style',
+			'tab'   => 'content',
 		];
 		$this->control_groups['button'] = [
 			'title' => esc_html__( 'Button', 'core-blueprint-dictionary' ),
-			'tab'   => 'style',
+			'tab'   => 'content',
 		];
 		$this->control_groups['results'] = [
 			'title' => esc_html__( 'Inline results', 'core-blueprint-dictionary' ),
-			'tab'   => 'style',
+			'tab'   => 'content',
 		];
 		$this->control_groups['resultItems'] = [
 			'title' => esc_html__( 'Result items', 'core-blueprint-dictionary' ),
-			'tab'   => 'style',
+			'tab'   => 'content',
 		];
 		$this->control_groups['status'] = [
 			'title' => esc_html__( 'Count & status', 'core-blueprint-dictionary' ),
-			'tab'   => 'style',
+			'tab'   => 'content',
 		];
 	}
 
@@ -112,7 +112,7 @@ final class Search extends \Bricks\Element {
 		];
 
 		$this->controls['formDisplay'] = [
-			'tab'     => 'style',
+			'tab'     => 'content',
 			'group'   => 'form',
 			'label'   => esc_html__( 'Display', 'core-blueprint-dictionary' ),
 			'type'    => 'select',
@@ -124,21 +124,21 @@ final class Search extends \Bricks\Element {
 			'css'     => [ [ 'property' => 'display', 'selector' => '.cb-dictionary-search__form' ] ],
 		];
 		$this->controls['formGap'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'form',
 			'label' => esc_html__( 'Gap', 'core-blueprint-dictionary' ),
 			'type'  => 'slider',
 			'css'   => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-search__form' ] ],
 		];
 		$this->controls['formAlignItems'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'form',
 			'label' => esc_html__( 'Align items', 'core-blueprint-dictionary' ),
 			'type'  => 'align-items',
 			'css'   => [ [ 'property' => 'align-items', 'selector' => '.cb-dictionary-search__form' ] ],
 		];
 		$this->controls['formJustifyContent'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'form',
 			'label' => esc_html__( 'Justify content', 'core-blueprint-dictionary' ),
 			'type'  => 'justify-content',
@@ -146,56 +146,56 @@ final class Search extends \Bricks\Element {
 		];
 
 		$this->controls['inputTypography'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'input',
 			'label' => esc_html__( 'Typography', 'core-blueprint-dictionary' ),
 			'type'  => 'typography',
 			'css'   => [ [ 'property' => 'typography', 'selector' => '.cb-dictionary-search__input' ] ],
 		];
 		$this->controls['inputBackground'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'input',
 			'label' => esc_html__( 'Background', 'core-blueprint-dictionary' ),
 			'type'  => 'background',
 			'css'   => [ [ 'property' => 'background', 'selector' => '.cb-dictionary-search__input' ] ],
 		];
 		$this->controls['inputBorder'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'input',
 			'label' => esc_html__( 'Border', 'core-blueprint-dictionary' ),
 			'type'  => 'border',
 			'css'   => [ [ 'property' => 'border', 'selector' => '.cb-dictionary-search__input' ] ],
 		];
 		$this->controls['inputPadding'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'input',
 			'label' => esc_html__( 'Padding', 'core-blueprint-dictionary' ),
 			'type'  => 'dimensions',
 			'css'   => [ [ 'property' => 'padding', 'selector' => '.cb-dictionary-search__input' ] ],
 		];
 		$this->controls['inputShadow'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'input',
 			'label' => esc_html__( 'Box shadow', 'core-blueprint-dictionary' ),
 			'type'  => 'box-shadow',
 			'css'   => [ [ 'property' => 'box-shadow', 'selector' => '.cb-dictionary-search__input' ] ],
 		];
 		$this->controls['inputMinHeight'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'input',
 			'label' => esc_html__( 'Minimum height', 'core-blueprint-dictionary' ),
 			'type'  => 'slider',
 			'css'   => [ [ 'property' => 'min-height', 'selector' => '.cb-dictionary-search__input' ] ],
 		];
 		$this->controls['inputFocusBorder'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'input',
 			'label' => esc_html__( 'Focus border', 'core-blueprint-dictionary' ),
 			'type'  => 'border',
 			'css'   => [ [ 'property' => 'border', 'selector' => '.cb-dictionary-search__input:focus' ] ],
 		];
 		$this->controls['inputFocusShadow'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'input',
 			'label' => esc_html__( 'Focus shadow', 'core-blueprint-dictionary' ),
 			'type'  => 'box-shadow',
@@ -203,63 +203,63 @@ final class Search extends \Bricks\Element {
 		];
 
 		$this->controls['buttonTypography'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'button',
 			'label' => esc_html__( 'Typography', 'core-blueprint-dictionary' ),
 			'type'  => 'typography',
 			'css'   => [ [ 'property' => 'typography', 'selector' => '.cb-dictionary-search__submit' ] ],
 		];
 		$this->controls['buttonBackground'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'button',
 			'label' => esc_html__( 'Background', 'core-blueprint-dictionary' ),
 			'type'  => 'background',
 			'css'   => [ [ 'property' => 'background', 'selector' => '.cb-dictionary-search__submit' ] ],
 		];
 		$this->controls['buttonBorder'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'button',
 			'label' => esc_html__( 'Border', 'core-blueprint-dictionary' ),
 			'type'  => 'border',
 			'css'   => [ [ 'property' => 'border', 'selector' => '.cb-dictionary-search__submit' ] ],
 		];
 		$this->controls['buttonPadding'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'button',
 			'label' => esc_html__( 'Padding', 'core-blueprint-dictionary' ),
 			'type'  => 'dimensions',
 			'css'   => [ [ 'property' => 'padding', 'selector' => '.cb-dictionary-search__submit' ] ],
 		];
 		$this->controls['buttonShadow'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'button',
 			'label' => esc_html__( 'Box shadow', 'core-blueprint-dictionary' ),
 			'type'  => 'box-shadow',
 			'css'   => [ [ 'property' => 'box-shadow', 'selector' => '.cb-dictionary-search__submit' ] ],
 		];
 		$this->controls['buttonMinHeight'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'button',
 			'label' => esc_html__( 'Minimum height', 'core-blueprint-dictionary' ),
 			'type'  => 'slider',
 			'css'   => [ [ 'property' => 'min-height', 'selector' => '.cb-dictionary-search__submit' ] ],
 		];
 		$this->controls['buttonHoverColor'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'button',
 			'label' => esc_html__( 'Hover text color', 'core-blueprint-dictionary' ),
 			'type'  => 'color',
 			'css'   => [ [ 'property' => 'color', 'selector' => '.cb-dictionary-search__submit:hover' ] ],
 		];
 		$this->controls['buttonHoverBackground'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'button',
 			'label' => esc_html__( 'Hover background color', 'core-blueprint-dictionary' ),
 			'type'  => 'color',
 			'css'   => [ [ 'property' => 'background-color', 'selector' => '.cb-dictionary-search__submit:hover' ] ],
 		];
 		$this->controls['buttonHoverBorder'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'button',
 			'label' => esc_html__( 'Hover border', 'core-blueprint-dictionary' ),
 			'type'  => 'border',
@@ -267,35 +267,35 @@ final class Search extends \Bricks\Element {
 		];
 
 		$this->controls['resultsBackground'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'results',
 			'label' => esc_html__( 'Background', 'core-blueprint-dictionary' ),
 			'type'  => 'background',
 			'css'   => [ [ 'property' => 'background', 'selector' => '.cb-dictionary-search-results' ] ],
 		];
 		$this->controls['resultsBorder'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'results',
 			'label' => esc_html__( 'Border', 'core-blueprint-dictionary' ),
 			'type'  => 'border',
 			'css'   => [ [ 'property' => 'border', 'selector' => '.cb-dictionary-search-results' ] ],
 		];
 		$this->controls['resultsPadding'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'results',
 			'label' => esc_html__( 'Padding', 'core-blueprint-dictionary' ),
 			'type'  => 'dimensions',
 			'css'   => [ [ 'property' => 'padding', 'selector' => '.cb-dictionary-search-results' ] ],
 		];
 		$this->controls['resultsShadow'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'results',
 			'label' => esc_html__( 'Box shadow', 'core-blueprint-dictionary' ),
 			'type'  => 'box-shadow',
 			'css'   => [ [ 'property' => 'box-shadow', 'selector' => '.cb-dictionary-search-results' ] ],
 		];
 		$this->controls['resultsListDisplay'] = [
-			'tab'     => 'style',
+			'tab'     => 'content',
 			'group'   => 'results',
 			'label'   => esc_html__( 'List display', 'core-blueprint-dictionary' ),
 			'type'    => 'select',
@@ -307,7 +307,7 @@ final class Search extends \Bricks\Element {
 			'css'     => [ [ 'property' => 'display', 'selector' => '.cb-dictionary-search-results__items' ] ],
 		];
 		$this->controls['resultsColumns'] = [
-			'tab'      => 'style',
+			'tab'      => 'content',
 			'group'    => 'results',
 			'label'    => esc_html__( 'Grid columns', 'core-blueprint-dictionary' ),
 			'type'     => 'select',
@@ -321,7 +321,7 @@ final class Search extends \Bricks\Element {
 			'required' => [ 'resultsListDisplay', '=', 'grid' ],
 		];
 		$this->controls['resultsGap'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'results',
 			'label' => esc_html__( 'List gap', 'core-blueprint-dictionary' ),
 			'type'  => 'slider',
@@ -329,35 +329,35 @@ final class Search extends \Bricks\Element {
 		];
 
 		$this->controls['resultItemBackground'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'resultItems',
 			'label' => esc_html__( 'Background', 'core-blueprint-dictionary' ),
 			'type'  => 'background',
 			'css'   => [ [ 'property' => 'background', 'selector' => '.cb-dictionary-search-results__item' ] ],
 		];
 		$this->controls['resultItemBorder'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'resultItems',
 			'label' => esc_html__( 'Border', 'core-blueprint-dictionary' ),
 			'type'  => 'border',
 			'css'   => [ [ 'property' => 'border', 'selector' => '.cb-dictionary-search-results__item' ] ],
 		];
 		$this->controls['resultItemPadding'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'resultItems',
 			'label' => esc_html__( 'Padding', 'core-blueprint-dictionary' ),
 			'type'  => 'dimensions',
 			'css'   => [ [ 'property' => 'padding', 'selector' => '.cb-dictionary-search-results__item' ] ],
 		];
 		$this->controls['resultItemShadow'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'resultItems',
 			'label' => esc_html__( 'Box shadow', 'core-blueprint-dictionary' ),
 			'type'  => 'box-shadow',
 			'css'   => [ [ 'property' => 'box-shadow', 'selector' => '.cb-dictionary-search-results__item' ] ],
 		];
 		$this->controls['resultItemHoverBackground'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'resultItems',
 			'label' => esc_html__( 'Hover background color', 'core-blueprint-dictionary' ),
 			'type'  => 'color',
@@ -365,35 +365,35 @@ final class Search extends \Bricks\Element {
 		];
 
 		$this->controls['resultsTitleTypography'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'resultItems',
 			'label' => esc_html__( 'Title typography', 'core-blueprint-dictionary' ),
 			'type'  => 'typography',
 			'css'   => [ [ 'property' => 'typography', 'selector' => '.cb-dictionary-search-results__title' ] ],
 		];
 		$this->controls['resultsExcerptTypography'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'resultItems',
 			'label' => esc_html__( 'Excerpt typography', 'core-blueprint-dictionary' ),
 			'type'  => 'typography',
 			'css'   => [ [ 'property' => 'typography', 'selector' => '.cb-dictionary-search-results__excerpt' ] ],
 		];
 		$this->controls['resultTitleHoverColor'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'resultItems',
 			'label' => esc_html__( 'Title hover color', 'core-blueprint-dictionary' ),
 			'type'  => 'color',
 			'css'   => [ [ 'property' => 'color', 'selector' => '.cb-dictionary-search-results__link:hover .cb-dictionary-search-results__title' ] ],
 		];
 		$this->controls['countTypography'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'status',
 			'label' => esc_html__( 'Result count typography', 'core-blueprint-dictionary' ),
 			'type'  => 'typography',
 			'css'   => [ [ 'property' => 'typography', 'selector' => '.cb-dictionary-search-results__count' ] ],
 		];
 		$this->controls['statusTypography'] = [
-			'tab'   => 'style',
+			'tab'   => 'content',
 			'group' => 'status',
 			'label' => esc_html__( 'Status typography', 'core-blueprint-dictionary' ),
 			'type'  => 'typography',

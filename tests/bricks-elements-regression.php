@@ -43,6 +43,7 @@ namespace {
 		'cb-dictionary-search',
 		'cb-dictionary-search-results',
 		'cb-dictionary-alphabet',
+		'cb-dictionary-categories',
 		'cb-dictionary-entries',
 		'cb-dictionary-entry-data',
 	];
@@ -126,6 +127,27 @@ namespace {
 			"'emptyTypography'",
 			"'emptyOpacity'",
 		],
+		'Categories.php' => [
+			"'showEmpty'",
+			"'listDisplay'",
+			"'listStyleType'",
+			"'listMargin'",
+			"'listPadding'",
+			"'listColumns'",
+			"'listFlexWrap'",
+			"'listDirection'",
+			"'listJustifyContent'",
+			"'listAlignItems'",
+			"'listColumnGap'",
+			"'listRowGap'",
+			"'listGridGap'",
+			"'linkTypography'",
+			"'linkHoverColor'",
+			"'linkFocusColor'",
+			"'currentTypography'",
+			"'emptyTypography'",
+			"'emptyOpacity'",
+		],
 		'Entries.php' => [
 			"'listDisplay'",
 			"'listStyleType'",
@@ -201,6 +223,10 @@ namespace {
 			$file . ' must keep Dictionary-specific controls under the Content tab'
 		);
 	}
+
+	$alphabet_source = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/Elements/Alphabet.php' );
+	cbd_elements_assert( ! str_contains( $alphabet_source, "\$this->controls['justifyContent']" ), 'Alphabet must not retain obsolete duplicate justifyContent control' );
+	cbd_elements_assert( ! str_contains( $alphabet_source, "\$this->controls['alignItems']" ), 'Alphabet must not retain obsolete duplicate alignItems control' );
 
 	fwrite( STDOUT, "Dictionary Bricks elements regression: PASS\n" );
 }

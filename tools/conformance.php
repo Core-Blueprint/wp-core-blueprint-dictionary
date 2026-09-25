@@ -37,11 +37,22 @@ $expected = [
 	'src/Frontend/Queries.php',
 	'src/Frontend/Conditions.php',
 	'src/Frontend/Shortcodes.php',
+	'src/Frontend/Components/Entries.php',
+	'src/Frontend/Components/Alphabet.php',
+	'src/Frontend/Components/Meta.php',
+	'src/Frontend/Components/Search.php',
+	'src/Frontend/Components/SearchResults.php',
 	'src/Governance/Events.php',
 	'src/Integration/Suite.php',
 	'src/Integration/Builders/Bootstrap.php',
 	'src/Integration/Builders/Readiness.php',
 	'src/Integration/Builders/Bricks/Bootstrap.php',
+	'src/Integration/Builders/Bricks/ElementRegistry.php',
+	'src/Integration/Builders/Bricks/Elements/Search.php',
+	'src/Integration/Builders/Bricks/Elements/SearchResults.php',
+	'src/Integration/Builders/Bricks/Elements/Alphabet.php',
+	'src/Integration/Builders/Bricks/Elements/Entries.php',
+	'src/Integration/Builders/Bricks/Elements/EntryData.php',
 	'src/Integration/Builders/Bricks/Context.php',
 	'src/Integration/Builders/Bricks/DynamicData.php',
 	'src/Integration/Builders/Bricks/Queries.php',
@@ -101,6 +112,20 @@ foreach ( [ 'DEFAULT_REWRITE_BASE', 'REWRITE_DIRTY_OPTION', 'flush_rewrite_rules
 }
 if ( str_contains( $settings, "'page'                  => SettingsPage::SLUG" ) ) {
 	$failures[] = 'Settings save flow must not redirect to the removed flat settings route.';
+}
+
+$shortcodes = (string) file_get_contents( $root . '/src/Frontend/Shortcodes.php' );
+foreach ( [
+	'EntriesComponent::render',
+	'SearchComponent::render',
+	'SearchResultsComponent::render',
+	'AlphabetComponent::render',
+	'MetaComponent::render',
+	'cb_dictionary_search_results',
+] as $required ) {
+	if ( ! str_contains( $shortcodes, $required ) ) {
+		$failures[] = 'Builder-neutral shortcode/component contract is missing ' . $required . '.';
+	}
 }
 
 $events = (string) file_get_contents( $root . '/src/Governance/Events.php' );
@@ -167,8 +192,12 @@ foreach ( [ 'Notice', 'IntegrationGrid' ] as $presentation_only_contract ) {
 		$failures[] = 'Admin presentation contract must not be a hard Dictionary boot dependency: ' . $presentation_only_contract . '.';
 	}
 }
-if ( ! str_contains( $bootstrap, '\\CB\\Core\\Admin\\SettingsRegistry' ) ) {
-	$failures[] = 'Dictionary bootstrap must require the public SettingsRegistry contract.';
+if ( ! str_contains( $bootstrap, '\\CB\\Dictionary\\Support\\Requirements::runtime_ready()' ) ) {
+	$failures[] = 'Dictionary bootstrap must delegate runtime dependency validation to Support\\Requirements.';
+}
+$requirements = (string) file_get_contents( $root . '/src/Support/Requirements.php' );
+if ( ! str_contains( $requirements, "'\\\\CB\\\\Core\\\\Admin\\\\SettingsRegistry'" ) ) {
+	$failures[] = 'Dictionary requirements must include the public SettingsRegistry contract.';
 }
 foreach ( [ '\\CB\\Core\\Admin\\PageRegistry', '\\CB\\Core\\Admin\\Page' ] as $legacy_boot_contract ) {
 	if ( str_contains( $bootstrap, $legacy_boot_contract ) ) {
@@ -187,6 +216,26 @@ if ( ! str_contains( $bricks_queries, 'FrontendQueries::entries' ) ) {
 }
 if ( ! str_contains( $bricks_conditions, 'FrontendConditions::' ) ) {
 	$failures[] = 'Bricks conditions must delegate to the builder-neutral Frontend\\Conditions contract.';
+}
+
+$element_registry = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/ElementRegistry.php' );
+foreach ( [ 'cb-dictionary-search', 'cb-dictionary-search-results', 'cb-dictionary-alphabet', 'cb-dictionary-entries', 'cb-dictionary-entry-data' ] as $element_name ) {
+	if ( ! str_contains( $element_registry, $element_name ) ) {
+		$failures[] = 'Dictionary Bricks element registry is missing ' . $element_name . '.';
+	}
+}
+
+foreach ( [
+	'Search.php'        => 'SearchComponent::render',
+	'SearchResults.php' => 'SearchResultsComponent::render',
+	'Alphabet.php'      => 'AlphabetComponent::render',
+	'Entries.php'       => 'EntriesComponent::render',
+	'EntryData.php'     => 'MetaComponent::render',
+] as $element_file => $required_delegate ) {
+	$content = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/Elements/' . $element_file );
+	if ( ! str_contains( $content, $required_delegate ) ) {
+		$failures[] = 'Dictionary Bricks element must delegate to builder-neutral frontend component: ' . $element_file . '.';
+	}
 }
 
 foreach ( cb_dictionary_files_with_extension( $root . '/src/Integration/Builders/Bricks', 'php' ) as $file ) {

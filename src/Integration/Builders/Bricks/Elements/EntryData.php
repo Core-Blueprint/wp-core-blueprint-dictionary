@@ -99,6 +99,7 @@ final class EntryData extends \Bricks\Element {
 			'label' => esc_html__( 'Gap', 'core-blueprint-dictionary' ),
 			'type'  => 'slider',
 			'css'   => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-meta' ] ],
+			'required' => [ 'metaDisplay', '=', [ 'flex', 'grid' ] ],
 		];
 
 		$this->controls['rowDisplay'] = [
@@ -113,12 +114,27 @@ final class EntryData extends \Bricks\Element {
 			],
 			'css'     => [ [ 'property' => 'display', 'selector' => '.cb-dictionary-meta__item' ] ],
 		];
+		$this->controls['rowColumns'] = [
+			'tab'      => 'content',
+			'group'    => 'items',
+			'label'    => esc_html__( 'Grid columns', 'core-blueprint-dictionary' ),
+			'type'     => 'select',
+			'options'  => [
+				'max-content minmax(0, 1fr)'                 => esc_html__( 'Label / flexible value', 'core-blueprint-dictionary' ),
+				'minmax(0, 1fr) minmax(0, 1fr)'             => esc_html__( 'Equal columns', 'core-blueprint-dictionary' ),
+				'minmax(0, 1fr) minmax(0, 2fr)'             => esc_html__( '1 / 2', 'core-blueprint-dictionary' ),
+			],
+			'css'      => [ [ 'property' => 'grid-template-columns', 'selector' => '.cb-dictionary-meta__item' ] ],
+			'required' => [ 'rowDisplay', '=', 'grid' ],
+		];
+
 		$this->controls['rowGap'] = [
 			'tab'   => 'content',
 			'group' => 'items',
 			'label' => esc_html__( 'Row gap', 'core-blueprint-dictionary' ),
 			'type'  => 'slider',
 			'css'   => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-meta__item' ] ],
+			'required' => [ 'rowDisplay', '=', [ 'flex', 'grid' ] ],
 		];
 		$this->controls['rowAlignItems'] = [
 			'tab'   => 'content',
@@ -126,12 +142,14 @@ final class EntryData extends \Bricks\Element {
 			'label' => esc_html__( 'Align items', 'core-blueprint-dictionary' ),
 			'type'  => 'align-items',
 			'css'   => [ [ 'property' => 'align-items', 'selector' => '.cb-dictionary-meta__item' ] ],
+			'required' => [ 'rowDisplay', '=', [ 'flex', 'grid' ] ],
 		];
 		$this->controls['rowBackground'] = [
 			'tab'   => 'content',
 			'group' => 'items',
 			'label' => esc_html__( 'Background', 'core-blueprint-dictionary' ),
 			'type'  => 'background',
+			'exclude' => [ 'videoUrl', 'videoScale' ],
 			'css'   => [ [ 'property' => 'background', 'selector' => '.cb-dictionary-meta__item' ] ],
 		];
 		$this->controls['rowBorder'] = [
@@ -168,6 +186,7 @@ final class EntryData extends \Bricks\Element {
 			'group' => 'labels',
 			'label' => esc_html__( 'Background', 'core-blueprint-dictionary' ),
 			'type'  => 'background',
+			'exclude' => [ 'videoUrl', 'videoScale' ],
 			'css'   => [ [ 'property' => 'background', 'selector' => '.cb-dictionary-meta__label' ] ],
 		];
 		$this->controls['labelPadding'] = [
@@ -197,6 +216,7 @@ final class EntryData extends \Bricks\Element {
 			'group' => 'values',
 			'label' => esc_html__( 'Background', 'core-blueprint-dictionary' ),
 			'type'  => 'background',
+			'exclude' => [ 'videoUrl', 'videoScale' ],
 			'css'   => [ [ 'property' => 'background', 'selector' => '.cb-dictionary-meta__value' ] ],
 		];
 		$this->controls['valuePadding'] = [

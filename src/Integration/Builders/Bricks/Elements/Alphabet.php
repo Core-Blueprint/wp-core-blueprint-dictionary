@@ -85,6 +85,21 @@ final class Alphabet extends \Bricks\Element {
 			'default' => '',
 			'css'     => [ [ 'property' => 'list-style-type', 'selector' => '.cb-dictionary-alphabet__items' ] ],
 		];
+		$this->controls['listMargin'] = [
+			'tab'   => 'content',
+			'group' => 'layout',
+			'label' => esc_html__( 'List margin', 'core-blueprint-dictionary' ),
+			'type'  => 'dimensions',
+			'css'   => [ [ 'property' => 'margin', 'selector' => '.cb-dictionary-alphabet__items' ] ],
+		];
+		$this->controls['listPadding'] = [
+			'tab'   => 'content',
+			'group' => 'layout',
+			'label' => esc_html__( 'List padding', 'core-blueprint-dictionary' ),
+			'type'  => 'dimensions',
+			'css'   => [ [ 'property' => 'padding', 'selector' => '.cb-dictionary-alphabet__items' ] ],
+		];
+
 		$this->controls['listColumns'] = [
 			'tab'      => 'content',
 			'group'    => 'layout',
@@ -136,6 +151,7 @@ final class Alphabet extends \Bricks\Element {
 			'group' => 'letters',
 			'label' => esc_html__( 'Background', 'core-blueprint-dictionary' ),
 			'type'  => 'background',
+			'exclude' => [ 'videoUrl', 'videoScale' ],
 			'css'   => [
 				[ 'property' => 'background', 'selector' => '.cb-dictionary-alphabet__link' ],
 				[ 'property' => 'background', 'selector' => '.cb-dictionary-alphabet__label' ],
@@ -198,6 +214,7 @@ final class Alphabet extends \Bricks\Element {
 			'group' => 'current',
 			'label' => esc_html__( 'Background', 'core-blueprint-dictionary' ),
 			'type'  => 'background',
+			'exclude' => [ 'videoUrl', 'videoScale' ],
 			'css'   => [ [ 'property' => 'background', 'selector' => '.cb-dictionary-alphabet__item--current .cb-dictionary-alphabet__link' ] ],
 		];
 		$this->controls['currentBorder'] = [
@@ -214,13 +231,16 @@ final class Alphabet extends \Bricks\Element {
 			'label' => esc_html__( 'Typography', 'core-blueprint-dictionary' ),
 			'type'  => 'typography',
 			'css'   => [ [ 'property' => 'typography', 'selector' => '.cb-dictionary-alphabet__label--empty' ] ],
+			'required' => [ 'showEmpty', '=', true ],
 		];
 		$this->controls['emptyBackground'] = [
 			'tab'   => 'content',
 			'group' => 'empty',
 			'label' => esc_html__( 'Background', 'core-blueprint-dictionary' ),
 			'type'  => 'background',
+			'exclude' => [ 'videoUrl', 'videoScale' ],
 			'css'   => [ [ 'property' => 'background', 'selector' => '.cb-dictionary-alphabet__label--empty' ] ],
+			'required' => [ 'showEmpty', '=', true ],
 		];
 		$this->controls['emptyBorder'] = [
 			'tab'   => 'content',
@@ -228,6 +248,7 @@ final class Alphabet extends \Bricks\Element {
 			'label' => esc_html__( 'Border', 'core-blueprint-dictionary' ),
 			'type'  => 'border',
 			'css'   => [ [ 'property' => 'border', 'selector' => '.cb-dictionary-alphabet__label--empty' ] ],
+			'required' => [ 'showEmpty', '=', true ],
 		];
 		$this->controls['emptyOpacity'] = [
 			'tab'   => 'content',
@@ -238,6 +259,7 @@ final class Alphabet extends \Bricks\Element {
 			'max'   => 1,
 			'step'  => 0.1,
 			'css'   => [ [ 'property' => 'opacity', 'selector' => '.cb-dictionary-alphabet__label--empty' ] ],
+			'required' => [ 'showEmpty', '=', true ],
 		];
 	}
 

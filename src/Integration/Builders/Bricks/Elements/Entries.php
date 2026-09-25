@@ -105,6 +105,21 @@ final class Entries extends \Bricks\Element {
 			'default' => '',
 			'css'     => [ [ 'property' => 'list-style-type', 'selector' => '.cb-dictionary-list__items' ] ],
 		];
+		$this->controls['listMargin'] = [
+			'tab'   => 'content',
+			'group' => 'layout',
+			'label' => esc_html__( 'List margin', 'core-blueprint-dictionary' ),
+			'type'  => 'dimensions',
+			'css'   => [ [ 'property' => 'margin', 'selector' => '.cb-dictionary-list__items' ] ],
+		];
+		$this->controls['listPadding'] = [
+			'tab'   => 'content',
+			'group' => 'layout',
+			'label' => esc_html__( 'List padding', 'core-blueprint-dictionary' ),
+			'type'  => 'dimensions',
+			'css'   => [ [ 'property' => 'padding', 'selector' => '.cb-dictionary-list__items' ] ],
+		];
+
 		$this->controls['listColumns'] = [
 			'tab'      => 'content',
 			'group'    => 'layout',
@@ -125,6 +140,7 @@ final class Entries extends \Bricks\Element {
 			'label' => esc_html__( 'Gap', 'core-blueprint-dictionary' ),
 			'type'  => 'slider',
 			'css'   => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-list__items' ] ],
+			'required' => [ 'listDisplay', '=', [ 'flex', 'grid' ] ],
 		];
 
 		$this->controls['linkTypography'] = [
@@ -140,12 +156,14 @@ final class Entries extends \Bricks\Element {
 			'label' => esc_html__( 'Excerpt typography', 'core-blueprint-dictionary' ),
 			'type'  => 'typography',
 			'css'   => [ [ 'property' => 'typography', 'selector' => '.cb-dictionary-list__excerpt' ] ],
+			'required' => [ 'showExcerpt', '=', true ],
 		];
 		$this->controls['itemBackground'] = [
 			'tab'   => 'content',
 			'group' => 'items',
 			'label' => esc_html__( 'Background', 'core-blueprint-dictionary' ),
 			'type'  => 'background',
+			'exclude' => [ 'videoUrl', 'videoScale' ],
 			'css'   => [ [ 'property' => 'background', 'selector' => '.cb-dictionary-list__item' ] ],
 		];
 		$this->controls['itemBorder'] = [
@@ -189,6 +207,7 @@ final class Entries extends \Bricks\Element {
 			'label' => esc_html__( 'Excerpt margin', 'core-blueprint-dictionary' ),
 			'type'  => 'dimensions',
 			'css'   => [ [ 'property' => 'margin', 'selector' => '.cb-dictionary-list__excerpt' ] ],
+			'required' => [ 'showExcerpt', '=', true ],
 		];
 
 		$this->controls['emptyTypography'] = [
@@ -203,6 +222,7 @@ final class Entries extends \Bricks\Element {
 			'group' => 'empty',
 			'label' => esc_html__( 'Background', 'core-blueprint-dictionary' ),
 			'type'  => 'background',
+			'exclude' => [ 'videoUrl', 'videoScale' ],
 			'css'   => [ [ 'property' => 'background', 'selector' => '.cb-dictionary-list--empty' ] ],
 		];
 		$this->controls['emptyBorder'] = [

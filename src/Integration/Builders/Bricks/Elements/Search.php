@@ -151,6 +151,7 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'Gap', 'core-blueprint-dictionary' ),
 			'type'  => 'slider',
 			'css'   => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-search__form' ] ],
+			'required' => [ 'formDisplay', '=', [ 'flex', 'grid' ] ],
 		];
 		$this->controls['formAlignItems'] = [
 			'tab'   => 'content',
@@ -158,6 +159,7 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'Align items', 'core-blueprint-dictionary' ),
 			'type'  => 'align-items',
 			'css'   => [ [ 'property' => 'align-items', 'selector' => '.cb-dictionary-search__form' ] ],
+			'required' => [ 'formDisplay', '=', [ 'flex', 'grid' ] ],
 		];
 		$this->controls['formJustifyContent'] = [
 			'tab'   => 'content',
@@ -165,6 +167,7 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'Justify content', 'core-blueprint-dictionary' ),
 			'type'  => 'justify-content',
 			'css'   => [ [ 'property' => 'justify-content', 'selector' => '.cb-dictionary-search__form' ] ],
+			'required' => [ 'formDisplay', '=', [ 'flex', 'grid' ] ],
 		];
 
 		$this->controls['inputTypography'] = [
@@ -179,6 +182,7 @@ final class Search extends \Bricks\Element {
 			'group' => 'input',
 			'label' => esc_html__( 'Background', 'core-blueprint-dictionary' ),
 			'type'  => 'background',
+			'exclude' => [ 'videoUrl', 'videoScale' ],
 			'css'   => [ [ 'property' => 'background', 'selector' => '.cb-dictionary-search__input' ] ],
 		];
 		$this->controls['inputBorder'] = [
@@ -291,7 +295,7 @@ final class Search extends \Bricks\Element {
 				'left'  => esc_html__( 'Left', 'core-blueprint-dictionary' ),
 			],
 			'default'  => 'right',
-			'required' => [ 'buttonPlacement', '=', 'overlay' ],
+			'required' => [ [ 'buttonMode', '!=', 'hidden' ], [ 'buttonPlacement', '=', 'overlay' ] ],
 		];
 		$this->controls['buttonOverlayInset'] = [
 			'tab'      => 'content',
@@ -299,7 +303,7 @@ final class Search extends \Bricks\Element {
 			'label'    => esc_html__( 'Overlay inset', 'core-blueprint-dictionary' ),
 			'type'     => 'slider',
 			'css'      => [ [ 'property' => '--cb-dictionary-search-button-inset', 'selector' => '.cb-dictionary-search__form' ] ],
-			'required' => [ 'buttonPlacement', '=', 'overlay' ],
+			'required' => [ [ 'buttonMode', '!=', 'hidden' ], [ 'buttonPlacement', '=', 'overlay' ] ],
 		];
 		$this->controls['buttonIconGap'] = [
 			'tab'   => 'content',
@@ -342,6 +346,7 @@ final class Search extends \Bricks\Element {
 			'group' => 'button',
 			'label' => esc_html__( 'Background', 'core-blueprint-dictionary' ),
 			'type'  => 'background',
+			'exclude' => [ 'videoUrl', 'videoScale' ],
 			'css'   => [ [ 'property' => 'background', 'selector' => '.cb-dictionary-search__submit' ] ],
 			'required' => [ 'buttonMode', '!=', 'hidden' ]
 		];
@@ -415,7 +420,9 @@ final class Search extends \Bricks\Element {
 			'group' => 'results',
 			'label' => esc_html__( 'Background', 'core-blueprint-dictionary' ),
 			'type'  => 'background',
+			'exclude' => [ 'videoUrl', 'videoScale' ],
 			'css'   => [ [ 'property' => 'background', 'selector' => '.cb-dictionary-search-results' ] ],
+			'required' => [ 'resultsMode', '=', 'inline' ],
 		];
 		$this->controls['resultsBorder'] = [
 			'tab'   => 'content',
@@ -423,6 +430,7 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'Border', 'core-blueprint-dictionary' ),
 			'type'  => 'border',
 			'css'   => [ [ 'property' => 'border', 'selector' => '.cb-dictionary-search-results' ] ],
+			'required' => [ 'resultsMode', '=', 'inline' ],
 		];
 		$this->controls['resultsPadding'] = [
 			'tab'   => 'content',
@@ -430,6 +438,7 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'Padding', 'core-blueprint-dictionary' ),
 			'type'  => 'dimensions',
 			'css'   => [ [ 'property' => 'padding', 'selector' => '.cb-dictionary-search-results' ] ],
+			'required' => [ 'resultsMode', '=', 'inline' ],
 		];
 		$this->controls['resultsShadow'] = [
 			'tab'   => 'content',
@@ -437,6 +446,7 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'Box shadow', 'core-blueprint-dictionary' ),
 			'type'  => 'box-shadow',
 			'css'   => [ [ 'property' => 'box-shadow', 'selector' => '.cb-dictionary-search-results' ] ],
+			'required' => [ 'resultsMode', '=', 'inline' ],
 		];
 		$this->controls['resultsListDisplay'] = [
 			'tab'     => 'content',
@@ -449,6 +459,7 @@ final class Search extends \Bricks\Element {
 				'block' => 'block',
 			],
 			'css'     => [ [ 'property' => 'display', 'selector' => '.cb-dictionary-search-results__items' ] ],
+			'required' => [ 'resultsMode', '=', 'inline' ],
 		];
 		$this->controls['resultsListStyleType'] = [
 			'tab'     => 'content',
@@ -470,7 +481,25 @@ final class Search extends \Bricks\Element {
 			],
 			'default' => '',
 			'css'     => [ [ 'property' => 'list-style-type', 'selector' => '.cb-dictionary-search-results__items' ] ],
+			'required' => [ 'resultsMode', '=', 'inline' ],
 		];
+		$this->controls['resultsListMargin'] = [
+			'tab'      => 'content',
+			'group'    => 'results',
+			'label'    => esc_html__( 'List margin', 'core-blueprint-dictionary' ),
+			'type'     => 'dimensions',
+			'css'      => [ [ 'property' => 'margin', 'selector' => '.cb-dictionary-search-results__items' ] ],
+			'required' => [ 'resultsMode', '=', 'inline' ],
+		];
+		$this->controls['resultsListPadding'] = [
+			'tab'      => 'content',
+			'group'    => 'results',
+			'label'    => esc_html__( 'List padding', 'core-blueprint-dictionary' ),
+			'type'     => 'dimensions',
+			'css'      => [ [ 'property' => 'padding', 'selector' => '.cb-dictionary-search-results__items' ] ],
+			'required' => [ 'resultsMode', '=', 'inline' ],
+		];
+
 		$this->controls['resultsColumns'] = [
 			'tab'      => 'content',
 			'group'    => 'results',
@@ -483,7 +512,7 @@ final class Search extends \Bricks\Element {
 				'repeat(4, minmax(0, 1fr))'   => '4',
 			],
 			'css'      => [ [ 'property' => 'grid-template-columns', 'selector' => '.cb-dictionary-search-results__items' ] ],
-			'required' => [ 'resultsListDisplay', '=', 'grid' ],
+			'required' => [ [ 'resultsMode', '=', 'inline' ], [ 'resultsListDisplay', '=', 'grid' ] ],
 		];
 		$this->controls['resultsGap'] = [
 			'tab'   => 'content',
@@ -491,6 +520,7 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'List gap', 'core-blueprint-dictionary' ),
 			'type'  => 'slider',
 			'css'   => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-search-results__items' ] ],
+			'required' => [ [ 'resultsMode', '=', 'inline' ], [ 'resultsListDisplay', '=', [ 'flex', 'grid' ] ] ],
 		];
 
 		$this->controls['resultItemBackground'] = [
@@ -498,7 +528,9 @@ final class Search extends \Bricks\Element {
 			'group' => 'resultItems',
 			'label' => esc_html__( 'Background', 'core-blueprint-dictionary' ),
 			'type'  => 'background',
+			'exclude' => [ 'videoUrl', 'videoScale' ],
 			'css'   => [ [ 'property' => 'background', 'selector' => '.cb-dictionary-search-results__item' ] ],
+			'required' => [ 'resultsMode', '=', 'inline' ],
 		];
 		$this->controls['resultItemBorder'] = [
 			'tab'   => 'content',
@@ -506,6 +538,7 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'Border', 'core-blueprint-dictionary' ),
 			'type'  => 'border',
 			'css'   => [ [ 'property' => 'border', 'selector' => '.cb-dictionary-search-results__item' ] ],
+			'required' => [ 'resultsMode', '=', 'inline' ],
 		];
 		$this->controls['resultItemPadding'] = [
 			'tab'   => 'content',
@@ -513,6 +546,7 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'Padding', 'core-blueprint-dictionary' ),
 			'type'  => 'dimensions',
 			'css'   => [ [ 'property' => 'padding', 'selector' => '.cb-dictionary-search-results__item' ] ],
+			'required' => [ 'resultsMode', '=', 'inline' ],
 		];
 		$this->controls['resultItemShadow'] = [
 			'tab'   => 'content',
@@ -520,6 +554,7 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'Box shadow', 'core-blueprint-dictionary' ),
 			'type'  => 'box-shadow',
 			'css'   => [ [ 'property' => 'box-shadow', 'selector' => '.cb-dictionary-search-results__item' ] ],
+			'required' => [ 'resultsMode', '=', 'inline' ],
 		];
 		$this->controls['resultItemHoverBackground'] = [
 			'tab'   => 'content',
@@ -527,6 +562,7 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'Hover background color', 'core-blueprint-dictionary' ),
 			'type'  => 'color',
 			'css'   => [ [ 'property' => 'background-color', 'selector' => '.cb-dictionary-search-results__item:hover' ] ],
+			'required' => [ 'resultsMode', '=', 'inline' ],
 		];
 		$this->controls['resultItemSelectedBackground'] = [
 			'tab'   => 'content',
@@ -534,6 +570,7 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'Selected background color', 'core-blueprint-dictionary' ),
 			'type'  => 'color',
 			'css'   => [ [ 'property' => 'background-color', 'selector' => '.cb-dictionary-search-results__item[aria-selected="true"]' ] ],
+			'required' => [ [ 'resultsMode', '=', 'inline' ], [ 'liveSearch', '=', true ] ],
 		];
 
 		$this->controls['resultsTitleTypography'] = [
@@ -542,6 +579,7 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'Title typography', 'core-blueprint-dictionary' ),
 			'type'  => 'typography',
 			'css'   => [ [ 'property' => 'typography', 'selector' => '.cb-dictionary-search-results__title' ] ],
+			'required' => [ 'resultsMode', '=', 'inline' ],
 		];
 		$this->controls['resultsExcerptTypography'] = [
 			'tab'   => 'content',
@@ -549,6 +587,7 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'Excerpt typography', 'core-blueprint-dictionary' ),
 			'type'  => 'typography',
 			'css'   => [ [ 'property' => 'typography', 'selector' => '.cb-dictionary-search-results__excerpt' ] ],
+			'required' => [ [ 'resultsMode', '=', 'inline' ], [ 'showExcerpt', '=', true ] ],
 		];
 		$this->controls['resultTitleHoverColor'] = [
 			'tab'   => 'content',
@@ -556,6 +595,7 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'Title hover color', 'core-blueprint-dictionary' ),
 			'type'  => 'color',
 			'css'   => [ [ 'property' => 'color', 'selector' => '.cb-dictionary-search-results__link:hover .cb-dictionary-search-results__title' ] ],
+			'required' => [ 'resultsMode', '=', 'inline' ],
 		];
 		$this->controls['resultTitleSelectedColor'] = [
 			'tab'   => 'content',
@@ -563,6 +603,7 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'Selected title color', 'core-blueprint-dictionary' ),
 			'type'  => 'color',
 			'css'   => [ [ 'property' => 'color', 'selector' => '.cb-dictionary-search-results__item[aria-selected="true"] .cb-dictionary-search-results__title' ] ],
+			'required' => [ [ 'resultsMode', '=', 'inline' ], [ 'liveSearch', '=', true ] ],
 		];
 		$this->controls['countTypography'] = [
 			'tab'   => 'content',
@@ -570,6 +611,7 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'Result count typography', 'core-blueprint-dictionary' ),
 			'type'  => 'typography',
 			'css'   => [ [ 'property' => 'typography', 'selector' => '.cb-dictionary-search-results__count' ] ],
+			'required' => [ [ 'resultsMode', '=', 'inline' ], [ 'showCount', '=', true ] ],
 		];
 		$this->controls['statusTypography'] = [
 			'tab'   => 'content',
@@ -577,6 +619,7 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'Status typography', 'core-blueprint-dictionary' ),
 			'type'  => 'typography',
 			'css'   => [ [ 'property' => 'typography', 'selector' => '.cb-dictionary-search-results__status' ] ],
+			'required' => [ 'resultsMode', '=', 'inline' ],
 		];
 	}
 

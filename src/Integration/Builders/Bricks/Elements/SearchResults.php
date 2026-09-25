@@ -90,6 +90,7 @@ final class SearchResults extends \Bricks\Element {
 			'group' => 'container',
 			'label' => esc_html__( 'Background', 'core-blueprint-dictionary' ),
 			'type'  => 'background',
+			'exclude' => [ 'videoUrl', 'videoScale' ],
 			'css'   => [ [ 'property' => 'background', 'selector' => '.cb-dictionary-search-results' ] ],
 		];
 		$this->controls['containerBorder'] = [
@@ -147,6 +148,21 @@ final class SearchResults extends \Bricks\Element {
 			'default' => '',
 			'css'     => [ [ 'property' => 'list-style-type', 'selector' => '.cb-dictionary-search-results__items' ] ],
 		];
+		$this->controls['listMargin'] = [
+			'tab'   => 'content',
+			'group' => 'list',
+			'label' => esc_html__( 'List margin', 'core-blueprint-dictionary' ),
+			'type'  => 'dimensions',
+			'css'   => [ [ 'property' => 'margin', 'selector' => '.cb-dictionary-search-results__items' ] ],
+		];
+		$this->controls['listPadding'] = [
+			'tab'   => 'content',
+			'group' => 'list',
+			'label' => esc_html__( 'List padding', 'core-blueprint-dictionary' ),
+			'type'  => 'dimensions',
+			'css'   => [ [ 'property' => 'padding', 'selector' => '.cb-dictionary-search-results__items' ] ],
+		];
+
 		$this->controls['listColumns'] = [
 			'tab'      => 'content',
 			'group'    => 'list',
@@ -167,6 +183,7 @@ final class SearchResults extends \Bricks\Element {
 			'label' => esc_html__( 'Gap', 'core-blueprint-dictionary' ),
 			'type'  => 'slider',
 			'css'   => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-search-results__items' ] ],
+			'required' => [ 'listDisplay', '=', [ 'flex', 'grid' ] ],
 		];
 
 		$this->controls['titleTypography'] = [
@@ -182,12 +199,14 @@ final class SearchResults extends \Bricks\Element {
 			'label' => esc_html__( 'Excerpt typography', 'core-blueprint-dictionary' ),
 			'type'  => 'typography',
 			'css'   => [ [ 'property' => 'typography', 'selector' => '.cb-dictionary-search-results__excerpt' ] ],
+			'required' => [ 'showExcerpt', '=', true ],
 		];
 		$this->controls['itemBackground'] = [
 			'tab'   => 'content',
 			'group' => 'items',
 			'label' => esc_html__( 'Background', 'core-blueprint-dictionary' ),
 			'type'  => 'background',
+			'exclude' => [ 'videoUrl', 'videoScale' ],
 			'css'   => [ [ 'property' => 'background', 'selector' => '.cb-dictionary-search-results__item' ] ],
 		];
 		$this->controls['itemBorder'] = [
@@ -245,6 +264,7 @@ final class SearchResults extends \Bricks\Element {
 			'label' => esc_html__( 'Result count typography', 'core-blueprint-dictionary' ),
 			'type'  => 'typography',
 			'css'   => [ [ 'property' => 'typography', 'selector' => '.cb-dictionary-search-results__count' ] ],
+			'required' => [ 'showCount', '=', true ],
 		];
 		$this->controls['statusTypography'] = [
 			'tab'   => 'content',

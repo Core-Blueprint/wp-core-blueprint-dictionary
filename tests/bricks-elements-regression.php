@@ -80,6 +80,8 @@ namespace {
 			"'containerBackground'",
 			"'listDisplay'",
 			"'listStyleType'",
+			"'listMargin'",
+			"'listPadding'",
 			"'listColumns'",
 			"'itemShadow'",
 			"'itemSelectedBackground'",
@@ -101,6 +103,8 @@ namespace {
 		'Entries.php' => [
 			"'listDisplay'",
 			"'listStyleType'",
+			"'listMargin'",
+			"'listPadding'",
 			"'listColumns'",
 			"'itemShadow'",
 			"'linkHoverColor'",

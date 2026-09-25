@@ -243,6 +243,7 @@ final class Search extends \Bricks\Element {
 			'label'   => esc_html__( 'Button text', 'core-blueprint-dictionary' ),
 			'type'    => 'text',
 			'default' => esc_html__( 'Search', 'core-blueprint-dictionary' ),
+			'required' => [ 'buttonMode', '=', [ 'text', 'icon', 'text-icon' ] ],
 		];
 		$this->controls['submitIcon'] = [
 			'tab'     => 'content',
@@ -253,6 +254,7 @@ final class Search extends \Bricks\Element {
 				'library' => 'themify',
 				'icon'    => 'ti-search',
 			],
+			'required' => [ 'buttonMode', '=', [ 'icon', 'text-icon' ] ],
 		];
 		$this->controls['buttonIconPosition'] = [
 			'tab'     => 'content',
@@ -276,6 +278,7 @@ final class Search extends \Bricks\Element {
 				'overlay' => esc_html__( 'Overlay', 'core-blueprint-dictionary' ),
 			],
 			'default'     => 'inline',
+			'required'    => [ 'buttonMode', '!=', 'hidden' ],
 			'description' => esc_html__( 'Overlay positions the submit button inside the search field area. Adjust input padding when needed to prevent text overlap.', 'core-blueprint-dictionary' ),
 		];
 		$this->controls['buttonOverlaySide'] = [
@@ -304,6 +307,7 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'Icon gap', 'core-blueprint-dictionary' ),
 			'type'  => 'slider',
 			'css'   => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-search__submit--text-icon' ] ],
+			'required' => [ 'buttonMode', '=', 'text-icon' ],
 		];
 		$this->controls['buttonIconSize'] = [
 			'tab'   => 'content',
@@ -315,6 +319,7 @@ final class Search extends \Bricks\Element {
 				[ 'property' => 'width', 'selector' => '.cb-dictionary-search__submit-icon svg' ],
 				[ 'property' => 'height', 'selector' => '.cb-dictionary-search__submit-icon svg' ],
 			],
+			'required' => [ 'buttonMode', '=', [ 'icon', 'text-icon' ] ],
 		];
 		$this->controls['buttonIconColor'] = [
 			'tab'   => 'content',
@@ -322,6 +327,7 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'Icon color', 'core-blueprint-dictionary' ),
 			'type'  => 'color',
 			'css'   => [ [ 'property' => 'color', 'selector' => '.cb-dictionary-search__submit-icon' ] ],
+			'required' => [ 'buttonMode', '=', [ 'icon', 'text-icon' ] ],
 		];
 		$this->controls['buttonTypography'] = [
 			'tab'   => 'content',
@@ -329,6 +335,7 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'Typography', 'core-blueprint-dictionary' ),
 			'type'  => 'typography',
 			'css'   => [ [ 'property' => 'typography', 'selector' => '.cb-dictionary-search__submit' ] ],
+			'required' => [ 'buttonMode', '!=', 'hidden' ]
 		];
 		$this->controls['buttonBackground'] = [
 			'tab'   => 'content',
@@ -336,6 +343,7 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'Background', 'core-blueprint-dictionary' ),
 			'type'  => 'background',
 			'css'   => [ [ 'property' => 'background', 'selector' => '.cb-dictionary-search__submit' ] ],
+			'required' => [ 'buttonMode', '!=', 'hidden' ]
 		];
 		$this->controls['buttonBorder'] = [
 			'tab'   => 'content',
@@ -343,6 +351,7 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'Border', 'core-blueprint-dictionary' ),
 			'type'  => 'border',
 			'css'   => [ [ 'property' => 'border', 'selector' => '.cb-dictionary-search__submit' ] ],
+			'required' => [ 'buttonMode', '!=', 'hidden' ]
 		];
 		$this->controls['buttonPadding'] = [
 			'tab'   => 'content',
@@ -350,6 +359,7 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'Padding', 'core-blueprint-dictionary' ),
 			'type'  => 'dimensions',
 			'css'   => [ [ 'property' => 'padding', 'selector' => '.cb-dictionary-search__submit' ] ],
+			'required' => [ 'buttonMode', '!=', 'hidden' ]
 		];
 		$this->controls['buttonShadow'] = [
 			'tab'   => 'content',
@@ -357,6 +367,7 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'Box shadow', 'core-blueprint-dictionary' ),
 			'type'  => 'box-shadow',
 			'css'   => [ [ 'property' => 'box-shadow', 'selector' => '.cb-dictionary-search__submit' ] ],
+			'required' => [ 'buttonMode', '!=', 'hidden' ]
 		];
 		$this->controls['buttonMinHeight'] = [
 			'tab'   => 'content',
@@ -364,6 +375,7 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'Minimum height', 'core-blueprint-dictionary' ),
 			'type'  => 'slider',
 			'css'   => [ [ 'property' => 'min-height', 'selector' => '.cb-dictionary-search__submit' ] ],
+			'required' => [ 'buttonMode', '!=', 'hidden' ]
 		];
 		$this->controls['buttonHoverColor'] = [
 			'tab'   => 'content',
@@ -371,6 +383,7 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'Hover text color', 'core-blueprint-dictionary' ),
 			'type'  => 'color',
 			'css'   => [ [ 'property' => 'color', 'selector' => '.cb-dictionary-search__submit:hover' ] ],
+			'required' => [ 'buttonMode', '!=', 'hidden' ]
 		];
 		$this->controls['buttonHoverBackground'] = [
 			'tab'   => 'content',
@@ -378,6 +391,7 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'Hover background color', 'core-blueprint-dictionary' ),
 			'type'  => 'color',
 			'css'   => [ [ 'property' => 'background-color', 'selector' => '.cb-dictionary-search__submit:hover' ] ],
+			'required' => [ 'buttonMode', '!=', 'hidden' ]
 		];
 		$this->controls['buttonHoverBorder'] = [
 			'tab'   => 'content',
@@ -385,6 +399,7 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'Hover border', 'core-blueprint-dictionary' ),
 			'type'  => 'border',
 			'css'   => [ [ 'property' => 'border', 'selector' => '.cb-dictionary-search__submit:hover' ] ],
+			'required' => [ 'buttonMode', '!=', 'hidden' ]
 		];
 		$this->controls['buttonHoverIconColor'] = [
 			'tab'   => 'content',
@@ -392,6 +407,7 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'Hover icon color', 'core-blueprint-dictionary' ),
 			'type'  => 'color',
 			'css'   => [ [ 'property' => 'color', 'selector' => '.cb-dictionary-search__submit:hover .cb-dictionary-search__submit-icon' ] ],
+			'required' => [ 'buttonMode', '=', [ 'icon', 'text-icon' ] ],
 		];
 
 		$this->controls['resultsBackground'] = [

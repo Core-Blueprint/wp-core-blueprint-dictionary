@@ -72,30 +72,16 @@ foreach ( $element_components as $element_file => $component_files ) {
 		$markup .= "\n" . (string) file_get_contents( $root . '/' . $component_file );
 	}
 
-	$control_offset = 0;
-	while ( preg_match( "/\\$this->controls\\['([^']+)'\\]\\s*=\\s*\\[/", $element, $control_match, PREG_OFFSET_CAPTURE, $control_offset ) ) {
-		$control_name  = (string) $control_match[1][0];
-		$control_start = (int) $control_match[0][1];
-		$next_control  = strpos( $element, "\n\t\t\\$this->controls[", $control_start + 1 );
-		$render_start  = strpos( $element, "\n\t}\n\n\tpublic function render", $control_start + 1 );
-		$control_end   = false !== $next_control ? $next_control : $render_start;
-		if ( false === $control_end ) {
-			break;
+	$control_blocks = preg_split( '/\\n\\t\\t\\$this->controls\\[/', $element ) ?: [];
+	foreach ( $control_blocks as $control_block ) {
+		if ( ! preg_match( "/'type'\\s*=>\\s*'slider'/", $control_block ) ) {
+			continue;
 		}
 
-		$control_block = substr( $element, $control_start, $control_end - $control_start );
-		if (
-			str_contains( $control_block, "'type'  => 'slider'" )
-			|| str_contains( $control_block, "'type'   => 'slider'" )
-			|| str_contains( $control_block, "'type'    => 'slider'" )
-		) {
-			cbd_styling_assert(
-				str_contains( $control_block, "'units' => ControlOptions::" ),
-				$element_file . ' slider ' . $control_name . ' must define explicit Bricks CSS units'
-			);
-		}
-
-		$control_offset = $control_end;
+		cbd_styling_assert(
+			str_contains( $control_block, "'units' => ControlOptions::" ),
+			$element_file . ' contains a slider without explicit Bricks CSS units'
+		);
 	}
 
 	foreach ( cbd_styling_selector_classes( $element ) as $class ) {

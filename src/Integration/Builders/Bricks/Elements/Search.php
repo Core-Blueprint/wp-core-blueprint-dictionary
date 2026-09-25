@@ -475,6 +475,40 @@ final class Search extends \Bricks\Element {
 			'required' => [ 'buttonMode', '=', [ 'icon', 'text-icon' ] ],
 		];
 
+
+		$this->controls['buttonFocusColor'] = [
+			'tab'      => 'content',
+			'group'    => 'button',
+			'label'    => esc_html__( 'Focus text color', 'core-blueprint-dictionary' ),
+			'type'     => 'color',
+			'css'      => [ [ 'property' => 'color', 'selector' => '.cb-dictionary-search__submit:focus-visible' ] ],
+			'required' => [ 'buttonMode', '!=', 'hidden' ],
+		];
+		$this->controls['buttonFocusBackground'] = [
+			'tab'      => 'content',
+			'group'    => 'button',
+			'label'    => esc_html__( 'Focus background color', 'core-blueprint-dictionary' ),
+			'type'     => 'color',
+			'css'      => [ [ 'property' => 'background-color', 'selector' => '.cb-dictionary-search__submit:focus-visible' ] ],
+			'required' => [ 'buttonMode', '!=', 'hidden' ],
+		];
+		$this->controls['buttonFocusBorder'] = [
+			'tab'      => 'content',
+			'group'    => 'button',
+			'label'    => esc_html__( 'Focus border', 'core-blueprint-dictionary' ),
+			'type'     => 'border',
+			'css'      => [ [ 'property' => 'border', 'selector' => '.cb-dictionary-search__submit:focus-visible' ] ],
+			'required' => [ 'buttonMode', '!=', 'hidden' ],
+		];
+		$this->controls['buttonFocusIconColor'] = [
+			'tab'      => 'content',
+			'group'    => 'button',
+			'label'    => esc_html__( 'Focus icon color', 'core-blueprint-dictionary' ),
+			'type'     => 'color',
+			'css'      => [ [ 'property' => 'color', 'selector' => '.cb-dictionary-search__submit:focus-visible .cb-dictionary-search__submit-icon' ] ],
+			'required' => [ 'buttonMode', '=', [ 'icon', 'text-icon' ] ],
+		];
+
 		$this->controls['resultsBackground'] = [
 			'tab'   => 'content',
 			'group' => 'results',
@@ -685,6 +719,16 @@ final class Search extends \Bricks\Element {
 			'css'   => [ [ 'property' => 'background-color', 'selector' => '.cb-dictionary-search-results__item:hover' ] ],
 			'required' => [ 'resultsMode', '=', 'inline' ],
 		];
+
+		$this->controls['resultItemFocusBackground'] = [
+			'tab'      => 'content',
+			'group'    => 'resultItems',
+			'label'    => esc_html__( 'Focus background color', 'core-blueprint-dictionary' ),
+			'type'     => 'color',
+			'css'      => [ [ 'property' => 'background-color', 'selector' => '.cb-dictionary-search-results__item:focus-within' ] ],
+			'required' => [ 'resultsMode', '=', 'inline' ],
+		];
+
 		$this->controls['resultItemSelectedBackground'] = [
 			'tab'   => 'content',
 			'group' => 'resultItems',
@@ -718,6 +762,16 @@ final class Search extends \Bricks\Element {
 			'css'   => [ [ 'property' => 'color', 'selector' => '.cb-dictionary-search-results__link:hover .cb-dictionary-search-results__title' ] ],
 			'required' => [ 'resultsMode', '=', 'inline' ],
 		];
+
+		$this->controls['resultTitleFocusColor'] = [
+			'tab'      => 'content',
+			'group'    => 'resultItems',
+			'label'    => esc_html__( 'Title focus color', 'core-blueprint-dictionary' ),
+			'type'     => 'color',
+			'css'      => [ [ 'property' => 'color', 'selector' => '.cb-dictionary-search-results__link:focus-visible .cb-dictionary-search-results__title' ] ],
+			'required' => [ 'resultsMode', '=', 'inline' ],
+		];
+
 		$this->controls['resultTitleSelectedColor'] = [
 			'tab'   => 'content',
 			'group' => 'resultItems',

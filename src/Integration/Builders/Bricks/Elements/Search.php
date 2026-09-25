@@ -366,7 +366,7 @@ final class Search extends \Bricks\Element {
 
 		$this->controls['resultsTitleTypography'] = [
 			'tab'   => 'style',
-			'group' => 'results',
+			'group' => 'resultItems',
 			'label' => esc_html__( 'Title typography', 'core-blueprint-dictionary' ),
 			'type'  => 'typography',
 			'css'   => [ [ 'property' => 'typography', 'selector' => '.cb-dictionary-search-results__title' ] ],
@@ -378,7 +378,6 @@ final class Search extends \Bricks\Element {
 			'type'  => 'typography',
 			'css'   => [ [ 'property' => 'typography', 'selector' => '.cb-dictionary-search-results__excerpt' ] ],
 		];
-		$this->controls['resultsTitleTypography']['group'] = 'resultItems';
 		$this->controls['resultTitleHoverColor'] = [
 			'tab'   => 'style',
 			'group' => 'resultItems',

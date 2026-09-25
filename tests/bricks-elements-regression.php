@@ -50,5 +50,56 @@ namespace {
 	cbd_elements_assert( $expected === $names, 'all Dictionary Bricks elements must register in stable order' );
 	cbd_elements_assert( isset( $GLOBALS['cbd_element_filters']['bricks/builder/i18n'] ), 'Dictionary Bricks category i18n must register' );
 
+	$root = dirname( __DIR__ );
+	$style_contracts = [
+		'Search.php' => [
+			"'formGap'",
+			"'inputFocusBorder'",
+			"'buttonHoverBackground'",
+			"'resultsListDisplay'",
+			"'resultItemBackground'",
+			"'countTypography'",
+		],
+		'SearchResults.php' => [
+			"'containerBackground'",
+			"'listDisplay'",
+			"'listColumns'",
+			"'itemShadow'",
+			"'titleHoverColor'",
+			"'statusTypography'",
+		],
+		'Alphabet.php' => [
+			"'listDisplay'",
+			"'listGap'",
+			"'hoverBackground'",
+			"'currentTypography'",
+			"'emptyTypography'",
+			"'emptyOpacity'",
+		],
+		'Entries.php' => [
+			"'listDisplay'",
+			"'listColumns'",
+			"'itemShadow'",
+			"'linkHoverColor'",
+			"'excerptSpacing'",
+			"'emptyPadding'",
+		],
+		'EntryData.php' => [
+			"'metaDisplay'",
+			"'metaColumns'",
+			"'rowDisplay'",
+			"'rowShadow'",
+			"'labelWidth'",
+			"'valuePadding'",
+		],
+	];
+
+	foreach ( $style_contracts as $file => $needles ) {
+		$content = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/Elements/' . $file );
+		foreach ( $needles as $needle ) {
+			cbd_elements_assert( str_contains( $content, $needle ), $file . ' missing styling contract ' . $needle );
+		}
+	}
+
 	fwrite( STDOUT, "Dictionary Bricks elements regression: PASS\n" );
 }

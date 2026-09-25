@@ -19,6 +19,16 @@ The public URL base is configurable under Core Blueprint > Dictionary and defaul
 
 Core Blueprint Base with Core API 1.0 is required.
 
+Dictionary stores its entries, taxonomies and metadata in native WordPress content structures. It does not send telemetry or tracking data to external services.
+
+== Installation ==
+
+1. Install and activate Core Blueprint Base.
+2. Install and activate Core Blueprint Dictionary.
+3. Add entries under Dictionary in WordPress Admin.
+4. Configure the public URL base under Core Blueprint > Dictionary.
+5. Build the frontend with your theme, Gutenberg, shortcodes or an optional supported builder adapter.
+
 == Shortcodes ==
 
 * `[cb_dictionary_list]`

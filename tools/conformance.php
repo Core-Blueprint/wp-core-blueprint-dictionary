@@ -77,7 +77,6 @@ $forbidden = [
 	'cb_core_event_labels' => 'legacy event-label mutation is not the Governance contract',
 	'CB\\Core\\Log\\AuditLog' => 'extensions must write through Governance\\Audit',
 	'CB\\Core\\Admin\\AdminAssetCatalog' => 'the Base asset catalog is private',
-	'Requires Plugins:' => 'first-party extensions use the runtime Base dependency guard',
 	'jquery' => 'Dictionary has no jQuery runtime',
 ];
 foreach ( $php_files as $file ) {
@@ -306,6 +305,9 @@ foreach ( [ 'Notice', 'IntegrationGrid' ] as $presentation_only_contract ) {
 }
 if ( ! str_contains( $bootstrap, '\\CB\\Dictionary\\Support\\Requirements::runtime_ready()' ) ) {
 	$failures[] = 'Dictionary bootstrap must delegate runtime dependency validation to Support\\Requirements.';
+}
+if ( ! preg_match( '/^ \\* Requires Plugins:\\s+core-blueprint\\s*$/m', $bootstrap ) ) {
+	$failures[] = 'Dictionary WordPress.org release must declare Requires Plugins: core-blueprint.';
 }
 $requirements = (string) file_get_contents( $root . '/src/Support/Requirements.php' );
 if ( ! str_contains( $requirements, "'\\\\CB\\\\Core\\\\Admin\\\\SettingsRegistry'" ) ) {

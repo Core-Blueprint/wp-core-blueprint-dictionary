@@ -1,0 +1,8 @@
+.cb-dictionary-search-results[hidden] {
+	display: none;
+}
+
+.cb-dictionary-search-results__item[aria-selected="true"] > .cb-dictionary-search-results__link {
+	outline: 2px solid currentColor;
+	outline-offset: -2px;
+}

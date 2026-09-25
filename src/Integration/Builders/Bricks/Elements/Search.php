@@ -612,10 +612,6 @@ final class Search extends \Bricks\Element {
 
 	/** @param array<string,mixed> $settings */
 	private static function icon_markup( array $settings ): string {
-		if ( ! class_exists( '\\Bricks\\Helpers' ) ) {
-			return '';
-		}
-
 		$icon = $settings['submitIcon'] ?? [
 			'library' => 'themify',
 			'icon'    => 'ti-search',
@@ -624,9 +620,44 @@ final class Search extends \Bricks\Element {
 			return '';
 		}
 
-		ob_start();
-		\Bricks\Helpers::render_control_icon( $icon, [ 'cb-dictionary-search__submit-icon-svg' ] );
-		return trim( (string) ob_get_clean() );
+		if ( method_exists( self::class, 'render_icon' ) ) {
+			ob_start();
+			$returned = self::render_icon( $icon, [ 'cb-dictionary-search__submit-icon-svg' ] );
+			$output = trim( (string) ob_get_clean() );
+			if ( '' !== $output ) {
+				return $output;
+			}
+			if ( is_string( $returned ) && '' !== trim( $returned ) ) {
+				return trim( $returned );
+			}
+		}
+
+		if ( class_exists( '\\Bricks\\Helpers' ) && method_exists( '\\Bricks\\Helpers', 'render_control_icon' ) ) {
+			ob_start();
+			\Bricks\Helpers::render_control_icon( $icon, [ 'cb-dictionary-search__submit-icon-svg' ] );
+			$output = trim( (string) ob_get_clean() );
+			if ( '' !== $output ) {
+				return $output;
+			}
+		}
+
+		$icon_class = $icon['icon'] ?? '';
+		if ( ! is_scalar( $icon_class ) || '' === trim( (string) $icon_class ) ) {
+			return '';
+		}
+
+		$classes = array_filter(
+			array_map(
+				'sanitize_html_class',
+				preg_split( '/\\s+/', trim( (string) $icon_class ) ) ?: []
+			)
+		);
+		if ( [] === $classes ) {
+			return '';
+		}
+
+		$classes[] = 'cb-dictionary-search__submit-icon-svg';
+		return '<i class="' . esc_attr( implode( ' ', array_unique( $classes ) ) ) . '" aria-hidden="true"></i>';
 	}
 
 	/** @param array<string,mixed> $settings */

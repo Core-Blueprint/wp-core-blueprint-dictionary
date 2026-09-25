@@ -41,6 +41,13 @@ foreach ( [ 'Assets::enqueue_search( $live )', 'data-live-search', 'data-endpoin
 	}
 }
 
+$bricks_search = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/Elements/Search.php' );
+foreach ( [ "method_exists( self::class, 'render_icon' )", "method_exists( '\\Bricks\\Helpers', 'render_control_icon' )", 'sanitize_html_class' ] as $needle ) {
+	if ( ! str_contains( $bricks_search, $needle ) ) {
+		$failures[] = 'Bricks icon compatibility contract missing: ' . $needle;
+	}
+}
+
 $results_component = (string) file_get_contents( $root . '/src/Frontend/Components/SearchResults.php' );
 foreach ( [ 'SearchProvider::entries', 'data-cb-dictionary-results', 'data-show-excerpt', 'data-show-count', 'role="listbox"', 'aria-selected="false"' ] as $needle ) {
 	if ( ! str_contains( $results_component, $needle ) ) {

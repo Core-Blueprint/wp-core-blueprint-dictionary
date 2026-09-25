@@ -255,6 +255,15 @@ final class Entries extends \Bricks\Element {
 			'type'  => 'color',
 			'css'   => [ [ 'property' => 'background-color', 'selector' => '.cb-dictionary-list__item:hover' ] ],
 		];
+
+		$this->controls['itemFocusBackground'] = [
+			'tab'   => 'content',
+			'group' => 'items',
+			'label' => esc_html__( 'Focus background color', 'core-blueprint-dictionary' ),
+			'type'  => 'color',
+			'css'   => [ [ 'property' => 'background-color', 'selector' => '.cb-dictionary-list__item:focus-within' ] ],
+		];
+
 		$this->controls['linkHoverColor'] = [
 			'tab'   => 'content',
 			'group' => 'items',
@@ -262,6 +271,15 @@ final class Entries extends \Bricks\Element {
 			'type'  => 'color',
 			'css'   => [ [ 'property' => 'color', 'selector' => '.cb-dictionary-list__link:hover' ] ],
 		];
+
+		$this->controls['linkFocusColor'] = [
+			'tab'   => 'content',
+			'group' => 'items',
+			'label' => esc_html__( 'Title focus color', 'core-blueprint-dictionary' ),
+			'type'  => 'color',
+			'css'   => [ [ 'property' => 'color', 'selector' => '.cb-dictionary-list__link:focus-visible' ] ],
+		];
+
 		$this->controls['excerptSpacing'] = [
 			'tab'   => 'content',
 			'group' => 'items',

@@ -208,6 +208,12 @@ foreach ( [
 	"'formGridGap'",
 	"'resultsListFlexWrap'",
 	"'resultsGridGap'",
+	"'buttonFocusColor'",
+	"'buttonFocusBackground'",
+	"'buttonFocusBorder'",
+	"'buttonFocusIconColor'",
+	"'resultItemFocusBackground'",
+	"'resultTitleFocusColor'",
 	"[ [ 'resultsMode', '=', 'inline' ], [ 'showExcerpt', '=', true ] ]",
 	"[ [ 'resultsMode', '=', 'inline' ], [ 'showCount', '=', true ] ]",
 	"[ [ 'buttonMode', '!=', 'hidden' ], [ 'buttonPlacement', '=', 'overlay' ] ]",
@@ -216,12 +222,12 @@ foreach ( [
 }
 
 $search_results = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/Elements/SearchResults.php' );
-foreach ( [ "'listMargin'", "'listPadding'", "'listFlexWrap'", "'listGridGap'", "[ 'showExcerpt', '=', true ]", "[ 'showCount', '=', true ]" ] as $needle ) {
+foreach ( [ "'listMargin'", "'listPadding'", "'listFlexWrap'", "'listGridGap'", "'itemFocusBackground'", "'titleFocusColor'", "[ 'showExcerpt', '=', true ]", "[ 'showCount', '=', true ]" ] as $needle ) {
 	cbd_styling_assert( str_contains( $search_results, $needle ), 'Search Results Golden styling state contract missing: ' . $needle );
 }
 
 $alphabet = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/Elements/Alphabet.php' );
-foreach ( [ "'listMargin'", "'listPadding'", "'listFlexWrap'", "'listGridGap'", "[ 'showEmpty', '=', true ]" ] as $needle ) {
+foreach ( [ "'listMargin'", "'listPadding'", "'listFlexWrap'", "'listGridGap'", "'focusColor'", "'focusBackground'", "[ 'showEmpty', '=', true ]" ] as $needle ) {
 	cbd_styling_assert( str_contains( $alphabet, $needle ), 'Alphabet Golden styling state contract missing: ' . $needle );
 }
 
@@ -231,7 +237,7 @@ foreach ( [ "'listMargin'", "'listPadding'", "'listFlexWrap'", "'listGridGap'", 
 }
 
 $entries = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/Elements/Entries.php' );
-foreach ( [ "'listMargin'", "'listPadding'", "'listFlexWrap'", "'listGridGap'", "[ 'showExcerpt', '=', true ]" ] as $needle ) {
+foreach ( [ "'listMargin'", "'listPadding'", "'listFlexWrap'", "'listGridGap'", "'itemFocusBackground'", "'linkFocusColor'", "[ 'showExcerpt', '=', true ]" ] as $needle ) {
 	cbd_styling_assert( str_contains( $entries, $needle ), 'Entries Golden styling state contract missing: ' . $needle );
 }
 

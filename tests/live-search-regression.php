@@ -35,7 +35,7 @@ foreach ( [ 'cb-dictionary/v1', "'/search'", 'WP_REST_Server::READABLE', "'permi
 }
 
 $search_component = (string) file_get_contents( $root . '/src/Frontend/Components/Search.php' );
-foreach ( [ 'Assets::enqueue_search()', 'data-live-search', 'data-endpoint', 'data-min-chars', 'role="combobox"', 'aria-autocomplete="list"' ] as $needle ) {
+foreach ( [ 'Assets::enqueue_search( $live )', 'data-live-search', 'data-endpoint', 'data-min-chars', 'data-button-mode', 'data-button-placement', 'data-button-side', 'role="combobox"', 'aria-autocomplete="list"', "'text-icon'", "'hidden'" ] as $needle ) {
 	if ( ! str_contains( $search_component, $needle ) ) {
 		$failures[] = 'Search component live-search contract missing: ' . $needle;
 	}
@@ -45,6 +45,13 @@ $results_component = (string) file_get_contents( $root . '/src/Frontend/Componen
 foreach ( [ 'SearchProvider::entries', 'data-cb-dictionary-results', 'data-show-excerpt', 'data-show-count', 'role="listbox"', 'aria-selected="false"' ] as $needle ) {
 	if ( ! str_contains( $results_component, $needle ) ) {
 		$failures[] = 'Search results component contract missing: ' . $needle;
+	}
+}
+
+$css = (string) file_get_contents( $root . '/assets/css/dictionary-search.css' );
+foreach ( [ 'data-button-placement="overlay"', 'cb-dictionary-search__submit--overlay', 'cb-dictionary-search__submit--hidden', '--cb-dictionary-search-button-inset' ] as $needle ) {
+	if ( ! str_contains( $css, $needle ) ) {
+		$failures[] = 'Search presentation CSS contract missing: ' . $needle;
 	}
 }
 

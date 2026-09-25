@@ -55,6 +55,15 @@ namespace {
 		'Search.php' => [
 			"'liveSearch'",
 			"'minChars'",
+			"'buttonMode'",
+			"'buttonText'",
+			"'submitIcon'",
+			"'buttonIconPosition'",
+			"'buttonPlacement'",
+			"'buttonOverlaySide'",
+			"'buttonOverlayInset'",
+			"'buttonIconSize'",
+			"'buttonHoverIconColor'",
 			"'formGap'",
 			"'inputFocusBorder'",
 			"'buttonHoverBackground'",
@@ -114,6 +123,11 @@ namespace {
 				str_contains( $content, "'property' => 'list-style-type'" ),
 				$file . ' must expose list-style-type for its semantic list output'
 			);
+		}
+		if ( 'Search.php' === $file ) {
+			foreach ( [ "'type'    => 'icon'", 'Helpers::render_control_icon', "'button_mode'", "'button_placement'" ] as $search_contract ) {
+				cbd_elements_assert( str_contains( $content, $search_contract ), 'Search.php missing Golden search-button contract ' . $search_contract );
+			}
 		}
 		cbd_elements_assert(
 			! str_contains( $content, "'tab'   => 'style'" )

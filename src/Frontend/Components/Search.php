@@ -21,36 +21,50 @@ final class Search {
 	 *     excerpt?:mixed,
 	 *     show_count?:mixed,
 	 *     live?:mixed,
-	 *     min_chars?:mixed
+	 *     min_chars?:mixed,
+	 *     button_mode?:mixed,
+	 *     button_text?:mixed,
+	 *     button_icon_position?:mixed,
+	 *     button_placement?:mixed,
+	 *     button_overlay_side?:mixed
 	 * } $args
 	 */
 	public static function render( array $args = [] ): string {
 		$args = wp_parse_args(
 			$args,
 			[
-				'placeholder' => __( 'Search dictionary…', 'core-blueprint-dictionary' ),
-				'source'      => 'default',
-				'results'     => 'inline',
-				'limit'       => 30,
-				'excerpt'     => false,
-				'show_count'  => false,
-				'live'        => true,
-				'min_chars'   => 2,
+				'placeholder'          => __( 'Search dictionary…', 'core-blueprint-dictionary' ),
+				'source'               => 'default',
+				'results'              => 'inline',
+				'limit'                => 30,
+				'excerpt'              => false,
+				'show_count'           => false,
+				'live'                 => true,
+				'min_chars'            => 2,
+				'button_mode'          => 'text',
+				'button_text'          => __( 'Search', 'core-blueprint-dictionary' ),
+				'button_icon_position' => 'before',
+				'button_placement'     => 'inline',
+				'button_overlay_side'  => 'right',
 			]
 		);
 
-		$placeholder  = sanitize_text_field( self::scalar_string( $args['placeholder'] ) );
-		$source       = SearchResults::source_key( $args['source'] );
-		$results_mode = 'external' === sanitize_key( self::scalar_string( $args['results'] ) ) ? 'external' : 'inline';
-		$live          = self::boolean( $args['live'], true );
-		$min_chars     = max( 1, min( 10, absint( $args['min_chars'] ) ?: 2 ) );
-		$query_string  = SearchResults::request_source() === '' || SearchResults::request_source() === $source
+		$placeholder          = sanitize_text_field( self::scalar_string( $args['placeholder'] ) );
+		$source               = SearchResults::source_key( $args['source'] );
+		$results_mode         = self::choice( $args['results'], [ 'inline', 'external' ], 'inline' );
+		$live                 = self::boolean( $args['live'], true );
+		$min_chars            = max( 1, min( 10, absint( $args['min_chars'] ) ?: 2 ) );
+		$button_mode          = self::choice( $args['button_mode'], [ 'text', 'icon', 'text-icon', 'hidden' ], 'text' );
+		$button_text          = sanitize_text_field( self::scalar_string( $args['button_text'] ) );
+		$button_text          = '' !== $button_text ? $button_text : __( 'Search', 'core-blueprint-dictionary' );
+		$button_icon_position = self::choice( $args['button_icon_position'], [ 'before', 'after' ], 'before' );
+		$button_placement     = self::choice( $args['button_placement'], [ 'inline', 'overlay' ], 'inline' );
+		$button_overlay_side  = self::choice( $args['button_overlay_side'], [ 'left', 'right' ], 'right' );
+		$query_string         = SearchResults::request_source() === '' || SearchResults::request_source() === $source
 			? SearchResults::request_query()
 			: '';
 
-		if ( $live ) {
-			Assets::enqueue_search();
-		}
+		Assets::enqueue_search( $live );
 
 		self::$instance++;
 		$input_id   = 'cb-dictionary-q-' . self::$instance;
@@ -65,6 +79,9 @@ final class Search {
 			'data-live-search'          => $live ? '1' : '0',
 			'data-endpoint'             => $live ? rest_url( RestSearch::NAMESPACE . RestSearch::ROUTE ) : '',
 			'data-min-chars'            => (string) $min_chars,
+			'data-button-mode'          => $button_mode,
+			'data-button-placement'     => $button_placement,
+			'data-button-side'          => $button_overlay_side,
 			'data-loading-label'        => __( 'Searching…', 'core-blueprint-dictionary' ),
 			'data-no-results-label'     => __( 'No matching dictionary entries found.', 'core-blueprint-dictionary' ),
 			'data-error-label'          => __( 'Live search is temporarily unavailable. Submit the form to search.', 'core-blueprint-dictionary' ),
@@ -79,7 +96,7 @@ final class Search {
 		}
 		$html .= '>';
 		$html .= '<input type="hidden" name="cb_dictionary_source" value="' . esc_attr( $source ) . '">';
-		$html .= '<button class="cb-dictionary-search__submit" type="submit">' . esc_html__( 'Search', 'core-blueprint-dictionary' ) . '</button>';
+		$html .= self::submit_button( $button_mode, $button_text, $button_icon_position, $button_placement );
 		$html .= '</form>';
 
 		if ( 'inline' === $results_mode ) {
@@ -96,6 +113,33 @@ final class Search {
 		return $html . '</div>';
 	}
 
+	private static function submit_button( string $mode, string $text, string $icon_position, string $placement ): string {
+		$classes = [
+			'cb-dictionary-search__submit',
+			'cb-dictionary-search__submit--' . $mode,
+			'cb-dictionary-search__submit--' . $placement,
+		];
+
+		$button = '<button class="' . esc_attr( implode( ' ', $classes ) ) . '" type="submit"';
+		if ( 'icon' === $mode ) {
+			$button .= ' aria-label="' . esc_attr( $text ) . '"';
+		}
+		$button .= '>';
+
+		$text_html = '<span class="cb-dictionary-search__submit-text">' . esc_html( $text ) . '</span>';
+		$icon_html = '<span class="cb-dictionary-search__submit-icon" aria-hidden="true"></span>';
+
+		if ( 'icon' === $mode ) {
+			$button .= $icon_html;
+		} elseif ( 'text-icon' === $mode ) {
+			$button .= 'after' === $icon_position ? $text_html . $icon_html : $icon_html . $text_html;
+		} else {
+			$button .= $text_html;
+		}
+
+		return $button . '</button>';
+	}
+
 	private static function boolean( mixed $value, bool $default ): bool {
 		if ( is_bool( $value ) ) {
 			return $value;
@@ -105,6 +149,15 @@ final class Search {
 			return null === $parsed ? $default : $parsed;
 		}
 		return $default;
+	}
+
+	/** @param string[] $allowed */
+	private static function choice( mixed $value, array $allowed, string $default ): string {
+		if ( ! is_scalar( $value ) ) {
+			return $default;
+		}
+		$value = sanitize_key( (string) $value );
+		return in_array( $value, $allowed, true ) ? $value : $default;
 	}
 
 	private static function scalar_string( mixed $value ): string {

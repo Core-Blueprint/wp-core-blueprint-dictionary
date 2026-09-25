@@ -224,6 +224,105 @@ final class Search extends \Bricks\Element {
 			'css'   => [ [ 'property' => 'box-shadow', 'selector' => '.cb-dictionary-search__input:focus' ] ],
 		];
 
+		$this->controls['buttonMode'] = [
+			'tab'     => 'content',
+			'group'   => 'button',
+			'label'   => esc_html__( 'Button type', 'core-blueprint-dictionary' ),
+			'type'    => 'select',
+			'options' => [
+				'text'      => esc_html__( 'Text', 'core-blueprint-dictionary' ),
+				'icon'      => esc_html__( 'Icon', 'core-blueprint-dictionary' ),
+				'text-icon' => esc_html__( 'Text + icon', 'core-blueprint-dictionary' ),
+				'hidden'    => esc_html__( 'Hidden', 'core-blueprint-dictionary' ),
+			],
+			'default' => 'text',
+		];
+		$this->controls['buttonText'] = [
+			'tab'     => 'content',
+			'group'   => 'button',
+			'label'   => esc_html__( 'Button text', 'core-blueprint-dictionary' ),
+			'type'    => 'text',
+			'default' => esc_html__( 'Search', 'core-blueprint-dictionary' ),
+		];
+		$this->controls['submitIcon'] = [
+			'tab'     => 'content',
+			'group'   => 'button',
+			'label'   => esc_html__( 'Icon', 'core-blueprint-dictionary' ),
+			'type'    => 'icon',
+			'default' => [
+				'library' => 'themify',
+				'icon'    => 'ti-search',
+			],
+		];
+		$this->controls['buttonIconPosition'] = [
+			'tab'     => 'content',
+			'group'   => 'button',
+			'label'   => esc_html__( 'Icon position', 'core-blueprint-dictionary' ),
+			'type'    => 'select',
+			'options' => [
+				'before' => esc_html__( 'Before text', 'core-blueprint-dictionary' ),
+				'after'  => esc_html__( 'After text', 'core-blueprint-dictionary' ),
+			],
+			'default'  => 'before',
+			'required' => [ 'buttonMode', '=', 'text-icon' ],
+		];
+		$this->controls['buttonPlacement'] = [
+			'tab'     => 'content',
+			'group'   => 'button',
+			'label'   => esc_html__( 'Placement', 'core-blueprint-dictionary' ),
+			'type'    => 'select',
+			'options' => [
+				'inline'  => esc_html__( 'Inline', 'core-blueprint-dictionary' ),
+				'overlay' => esc_html__( 'Overlay', 'core-blueprint-dictionary' ),
+			],
+			'default'     => 'inline',
+			'description' => esc_html__( 'Overlay positions the submit button inside the search field area. Adjust input padding when needed to prevent text overlap.', 'core-blueprint-dictionary' ),
+		];
+		$this->controls['buttonOverlaySide'] = [
+			'tab'      => 'content',
+			'group'    => 'button',
+			'label'    => esc_html__( 'Overlay side', 'core-blueprint-dictionary' ),
+			'type'     => 'select',
+			'options'  => [
+				'right' => esc_html__( 'Right', 'core-blueprint-dictionary' ),
+				'left'  => esc_html__( 'Left', 'core-blueprint-dictionary' ),
+			],
+			'default'  => 'right',
+			'required' => [ 'buttonPlacement', '=', 'overlay' ],
+		];
+		$this->controls['buttonOverlayInset'] = [
+			'tab'      => 'content',
+			'group'    => 'button',
+			'label'    => esc_html__( 'Overlay inset', 'core-blueprint-dictionary' ),
+			'type'     => 'slider',
+			'css'      => [ [ 'property' => '--cb-dictionary-search-button-inset', 'selector' => '.cb-dictionary-search__form' ] ],
+			'required' => [ 'buttonPlacement', '=', 'overlay' ],
+		];
+		$this->controls['buttonIconGap'] = [
+			'tab'   => 'content',
+			'group' => 'button',
+			'label' => esc_html__( 'Icon gap', 'core-blueprint-dictionary' ),
+			'type'  => 'slider',
+			'css'   => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-search__submit--text-icon' ] ],
+		];
+		$this->controls['buttonIconSize'] = [
+			'tab'   => 'content',
+			'group' => 'button',
+			'label' => esc_html__( 'Icon size', 'core-blueprint-dictionary' ),
+			'type'  => 'slider',
+			'css'   => [
+				[ 'property' => 'font-size', 'selector' => '.cb-dictionary-search__submit-icon' ],
+				[ 'property' => 'width', 'selector' => '.cb-dictionary-search__submit-icon svg' ],
+				[ 'property' => 'height', 'selector' => '.cb-dictionary-search__submit-icon svg' ],
+			],
+		];
+		$this->controls['buttonIconColor'] = [
+			'tab'   => 'content',
+			'group' => 'button',
+			'label' => esc_html__( 'Icon color', 'core-blueprint-dictionary' ),
+			'type'  => 'color',
+			'css'   => [ [ 'property' => 'color', 'selector' => '.cb-dictionary-search__submit-icon' ] ],
+		];
 		$this->controls['buttonTypography'] = [
 			'tab'   => 'content',
 			'group' => 'button',
@@ -286,6 +385,13 @@ final class Search extends \Bricks\Element {
 			'label' => esc_html__( 'Hover border', 'core-blueprint-dictionary' ),
 			'type'  => 'border',
 			'css'   => [ [ 'property' => 'border', 'selector' => '.cb-dictionary-search__submit:hover' ] ],
+		];
+		$this->controls['buttonHoverIconColor'] = [
+			'tab'   => 'content',
+			'group' => 'button',
+			'label' => esc_html__( 'Hover icon color', 'core-blueprint-dictionary' ),
+			'type'  => 'color',
+			'css'   => [ [ 'property' => 'color', 'selector' => '.cb-dictionary-search__submit:hover .cb-dictionary-search__submit-icon' ] ],
 		];
 
 		$this->controls['resultsBackground'] = [
@@ -468,11 +574,43 @@ final class Search extends \Bricks\Element {
 			'excerpt'     => self::checkbox( $settings, 'showExcerpt', false ),
 			'show_count'  => self::checkbox( $settings, 'showCount', false ),
 			'live'        => self::checkbox( $settings, 'liveSearch', true ),
-			'min_chars'   => $settings['minChars'] ?? 2,
+			'min_chars'            => $settings['minChars'] ?? 2,
+			'button_mode'          => (string) ( $settings['buttonMode'] ?? 'text' ),
+			'button_text'          => (string) ( $settings['buttonText'] ?? __( 'Search', 'core-blueprint-dictionary' ) ),
+			'button_icon_position' => (string) ( $settings['buttonIconPosition'] ?? 'before' ),
+			'button_placement'     => (string) ( $settings['buttonPlacement'] ?? 'inline' ),
+			'button_overlay_side'  => (string) ( $settings['buttonOverlaySide'] ?? 'right' ),
 		];
 
+		$html = SearchComponent::render( $args );
+		$icon = self::icon_markup( $settings );
+		if ( '' !== $icon ) {
+			$placeholder = '<span class="cb-dictionary-search__submit-icon" aria-hidden="true"></span>';
+			$replacement = '<span class="cb-dictionary-search__submit-icon" aria-hidden="true">' . $icon . '</span>';
+			$html = str_replace( $placeholder, $replacement, $html );
+		}
+
 		$this->set_attribute( '_root', 'class', 'cb-dictionary-bricks-search' );
-		echo '<div ' . $this->render_attributes( '_root' ) . '>' . SearchComponent::render( $args ) . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- trusted builder-neutral Dictionary renderer output.
+		echo '<div ' . $this->render_attributes( '_root' ) . '>' . $html . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- trusted builder-neutral Dictionary renderer plus Bricks-rendered icon markup.
+	}
+
+	/** @param array<string,mixed> $settings */
+	private static function icon_markup( array $settings ): string {
+		if ( ! class_exists( '\\Bricks\\Helpers' ) ) {
+			return '';
+		}
+
+		$icon = $settings['submitIcon'] ?? [
+			'library' => 'themify',
+			'icon'    => 'ti-search',
+		];
+		if ( ! is_array( $icon ) || [] === $icon ) {
+			return '';
+		}
+
+		ob_start();
+		\Bricks\Helpers::render_control_icon( $icon, [ 'cb-dictionary-search__submit-icon-svg' ] );
+		return trim( (string) ob_get_clean() );
 	}
 
 	/** @param array<string,mixed> $settings */

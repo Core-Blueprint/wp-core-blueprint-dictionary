@@ -6,3 +6,48 @@
 	outline: 2px solid currentColor;
 	outline-offset: -2px;
 }
+
+.cb-dictionary-search[data-button-placement="overlay"] .cb-dictionary-search__form {
+	position: relative;
+}
+
+.cb-dictionary-search__submit--overlay {
+	position: absolute;
+	top: 50%;
+	z-index: 1;
+	transform: translateY(-50%);
+}
+
+.cb-dictionary-search[data-button-side="right"] .cb-dictionary-search__submit--overlay {
+	right: var(--cb-dictionary-search-button-inset, 0);
+	left: auto;
+}
+
+.cb-dictionary-search[data-button-side="left"] .cb-dictionary-search__submit--overlay {
+	right: auto;
+	left: var(--cb-dictionary-search-button-inset, 0);
+}
+
+.cb-dictionary-search__submit--icon,
+.cb-dictionary-search__submit--text-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.cb-dictionary-search__submit-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+}
+
+.cb-dictionary-search__submit-icon svg {
+	display: block;
+	width: 1em;
+	height: 1em;
+}
+
+.cb-dictionary-search__submit--hidden {
+	display: none;
+}

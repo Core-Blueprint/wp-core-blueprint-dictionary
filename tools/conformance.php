@@ -138,6 +138,16 @@ foreach ( [ 'Meta::ABBREVIATION', 'Meta::SYNONYMS', 'Queries::entries', 'str_sta
 	}
 }
 
+$search_component = (string) file_get_contents( $root . '/src/Frontend/Components/Search.php' );
+foreach ( [ "'button_mode'", "'button_icon_position'", "'button_placement'", "'button_overlay_side'", 'data-button-mode', 'data-button-placement' ] as $required ) {
+	if ( ! str_contains( $search_component, $required ) ) {
+		$failures[] = 'Dictionary search presentation contract is missing ' . $required . '.';
+	}
+}
+if ( str_contains( $search_component, '\\Bricks\\' ) ) {
+	$failures[] = 'Builder-neutral Dictionary Search component must not depend on Bricks.';
+}
+
 $rest_search = (string) file_get_contents( $root . '/src/Frontend/RestSearch.php' );
 foreach ( [ 'cb-dictionary/v1', 'WP_REST_Server::READABLE', "'permission_callback' => '__return_true'", "'Cache-Control'", "'Vary'" ] as $required ) {
 	if ( ! str_contains( $rest_search, $required ) ) {

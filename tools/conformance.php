@@ -181,6 +181,13 @@ foreach ( [ 'cb-dictionary/v1', 'WP_REST_Server::READABLE', "'permission_callbac
 	}
 }
 
+$bricks_styling_css = (string) file_get_contents( $root . '/assets/css/dictionary-search.css' );
+foreach ( [ '.cb-dictionary-search-results__link,', '.cb-dictionary-alphabet__link,', '.cb-dictionary-meta__label,', 'margin: 0' ] as $required ) {
+	if ( ! str_contains( $bricks_styling_css, $required ) ) {
+		$failures[] = 'Dictionary Bricks styling baseline is missing ' . $required . '.';
+	}
+}
+
 foreach ( [ 'assets/js/dictionary-search.js', 'assets/css/dictionary-search.css' ] as $asset ) {
 	if ( ! is_file( $root . '/' . $asset ) ) {
 		$failures[] = 'Dictionary live search asset is missing ' . $asset . '.';

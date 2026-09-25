@@ -55,3 +55,40 @@
 .cb-dictionary-meta__value {
 	margin-inline-start: 0;
 }
+
+.cb-dictionary-search__input {
+	min-width: 0;
+}
+
+.cb-dictionary-search-results__count,
+.cb-dictionary-search-results__status,
+.cb-dictionary-meta {
+	margin: 0;
+}
+
+.cb-dictionary-search-results__link,
+.cb-dictionary-search-results__title,
+.cb-dictionary-search-results__excerpt {
+	display: block;
+}
+
+.cb-dictionary-alphabet__link,
+.cb-dictionary-alphabet__label {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.cb-dictionary-list__excerpt > :first-child {
+	margin-block-start: 0;
+}
+
+.cb-dictionary-list__excerpt > :last-child {
+	margin-block-end: 0;
+}
+
+.cb-dictionary-meta__label,
+.cb-dictionary-meta__value {
+	margin: 0;
+	min-width: 0;
+}

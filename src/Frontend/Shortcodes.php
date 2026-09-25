@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace CB\Dictionary\Frontend;
 
-use CB\Dictionary\Content\Taxonomies;
 use CB\Dictionary\Frontend\Components\Alphabet as AlphabetComponent;
+use CB\Dictionary\Frontend\Components\Categories as CategoriesComponent;
 use CB\Dictionary\Frontend\Components\Entries as EntriesComponent;
 use CB\Dictionary\Frontend\Components\Meta as MetaComponent;
 use CB\Dictionary\Frontend\Components\Search as SearchComponent;
@@ -87,28 +87,12 @@ final class Shortcodes {
 	/** @param array<string,mixed>|string $atts */
 	public static function categories( array|string $atts = [] ): string {
 		$atts = shortcode_atts( [ 'hide_empty' => 'true' ], is_array( $atts ) ? $atts : [], 'cb_dictionary_categories' );
-		$terms = get_terms(
+		$hide_empty = filter_var( (string) $atts['hide_empty'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE );
+		return CategoriesComponent::render(
 			[
-				'taxonomy'   => Taxonomies::CATEGORY,
-				'hide_empty' => filter_var( $atts['hide_empty'], FILTER_VALIDATE_BOOLEAN ),
-				'parent'     => 0,
+				'show_empty' => null === $hide_empty ? false : ! $hide_empty,
 			]
 		);
-		if ( is_wp_error( $terms ) || [] === $terms ) {
-			return '';
-		}
-
-		$html = '<ul class="cb-dictionary-categories">';
-		foreach ( $terms as $term ) {
-			if ( ! $term instanceof \WP_Term ) {
-				continue;
-			}
-			$link = get_term_link( $term );
-			if ( ! is_wp_error( $link ) ) {
-				$html .= '<li class="cb-dictionary-categories__item"><a href="' . esc_url( $link ) . '">' . esc_html( $term->name ) . '</a></li>';
-			}
-		}
-		return $html . '</ul>';
 	}
 
 	/** @param array<string,mixed>|string $atts */

@@ -82,6 +82,10 @@ foreach ( $element_components as $element_file => $component_files ) {
 			str_contains( $control_block, "'units' => ControlOptions::" ),
 			$element_file . ' contains a slider without explicit Bricks CSS units'
 		);
+		cbd_styling_assert(
+			str_contains( $control_block, "'unitless' => false" ),
+			$element_file . ' contains a CSS length slider that is still configured as unitless'
+		);
 	}
 
 	foreach ( cbd_styling_selector_classes( $element ) as $class ) {

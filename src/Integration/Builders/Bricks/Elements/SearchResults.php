@@ -184,6 +184,7 @@ final class SearchResults extends \Bricks\Element {
 			'label' => esc_html__( 'Gap', 'core-blueprint-dictionary' ),
 			'type'  => 'slider',
 			'units' => ControlOptions::spacing_units(),
+			'unitless' => false,
 			'css'   => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-search-results__items' ] ],
 			'required' => [ 'listDisplay', '=', [ 'flex', 'grid' ] ],
 		];

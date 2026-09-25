@@ -121,6 +121,7 @@ final class Alphabet extends \Bricks\Element {
 			'label' => esc_html__( 'Gap', 'core-blueprint-dictionary' ),
 			'type'  => 'slider',
 			'units' => ControlOptions::spacing_units(),
+			'unitless' => false,
 			'css'   => [ [ 'property' => 'gap', 'selector' => '.cb-dictionary-alphabet__items' ] ],
 		];
 		$this->controls['justifyContent'] = [

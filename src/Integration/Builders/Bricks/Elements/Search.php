@@ -306,6 +306,27 @@ final class Search extends \Bricks\Element {
 			],
 			'css'     => [ [ 'property' => 'display', 'selector' => '.cb-dictionary-search-results__items' ] ],
 		];
+		$this->controls['resultsListStyleType'] = [
+			'tab'     => 'content',
+			'group'   => 'results',
+			'label'   => esc_html__( 'List marker', 'core-blueprint-dictionary' ),
+			'type'    => 'select',
+			'options' => [
+				''                     => esc_html__( 'Browser default', 'core-blueprint-dictionary' ),
+				'none'                 => esc_html__( 'None', 'core-blueprint-dictionary' ),
+				'disc'                 => esc_html__( 'Disc', 'core-blueprint-dictionary' ),
+				'circle'               => esc_html__( 'Circle', 'core-blueprint-dictionary' ),
+				'square'               => esc_html__( 'Square', 'core-blueprint-dictionary' ),
+				'decimal'              => esc_html__( 'Decimal', 'core-blueprint-dictionary' ),
+				'decimal-leading-zero' => esc_html__( 'Decimal leading zero', 'core-blueprint-dictionary' ),
+				'lower-alpha'          => esc_html__( 'Lower alpha', 'core-blueprint-dictionary' ),
+				'upper-alpha'          => esc_html__( 'Upper alpha', 'core-blueprint-dictionary' ),
+				'lower-roman'          => esc_html__( 'Lower roman', 'core-blueprint-dictionary' ),
+				'upper-roman'          => esc_html__( 'Upper roman', 'core-blueprint-dictionary' ),
+			],
+			'default' => '',
+			'css'     => [ [ 'property' => 'list-style-type', 'selector' => '.cb-dictionary-search-results__items' ] ],
+		];
 		$this->controls['resultsColumns'] = [
 			'tab'      => 'content',
 			'group'    => 'results',

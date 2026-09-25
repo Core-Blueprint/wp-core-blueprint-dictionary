@@ -57,12 +57,14 @@ namespace {
 			"'inputFocusBorder'",
 			"'buttonHoverBackground'",
 			"'resultsListDisplay'",
+			"'resultsListStyleType'",
 			"'resultItemBackground'",
 			"'countTypography'",
 		],
 		'SearchResults.php' => [
 			"'containerBackground'",
 			"'listDisplay'",
+			"'listStyleType'",
 			"'listColumns'",
 			"'itemShadow'",
 			"'titleHoverColor'",
@@ -70,6 +72,7 @@ namespace {
 		],
 		'Alphabet.php' => [
 			"'listDisplay'",
+			"'listStyleType'",
 			"'listGap'",
 			"'hoverBackground'",
 			"'currentTypography'",
@@ -78,6 +81,7 @@ namespace {
 		],
 		'Entries.php' => [
 			"'listDisplay'",
+			"'listStyleType'",
 			"'listColumns'",
 			"'itemShadow'",
 			"'linkHoverColor'",
@@ -98,6 +102,12 @@ namespace {
 		$content = (string) file_get_contents( $root . '/src/Integration/Builders/Bricks/Elements/' . $file );
 		foreach ( $needles as $needle ) {
 			cbd_elements_assert( str_contains( $content, $needle ), $file . ' missing custom control contract ' . $needle );
+		}
+		if ( 'EntryData.php' !== $file ) {
+			cbd_elements_assert(
+				str_contains( $content, "'property' => 'list-style-type'" ),
+				$file . ' must expose list-style-type for its semantic list output'
+			);
 		}
 		cbd_elements_assert(
 			! str_contains( $content, "'tab'   => 'style'" )

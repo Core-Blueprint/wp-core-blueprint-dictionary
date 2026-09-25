@@ -251,6 +251,22 @@ final class Alphabet extends \Bricks\Element {
 			'css'   => [ [ 'property' => 'background-color', 'selector' => '.cb-dictionary-alphabet__link:hover' ] ],
 		];
 
+
+		$this->controls['focusColor'] = [
+			'tab'   => 'content',
+			'group' => 'letters',
+			'label' => esc_html__( 'Focus text color', 'core-blueprint-dictionary' ),
+			'type'  => 'color',
+			'css'   => [ [ 'property' => 'color', 'selector' => '.cb-dictionary-alphabet__link:focus-visible' ] ],
+		];
+		$this->controls['focusBackground'] = [
+			'tab'   => 'content',
+			'group' => 'letters',
+			'label' => esc_html__( 'Focus background color', 'core-blueprint-dictionary' ),
+			'type'  => 'color',
+			'css'   => [ [ 'property' => 'background-color', 'selector' => '.cb-dictionary-alphabet__link:focus-visible' ] ],
+		];
+
 		$this->controls['currentTypography'] = [
 			'tab'   => 'content',
 			'group' => 'current',

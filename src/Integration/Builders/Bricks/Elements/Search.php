@@ -110,6 +110,25 @@ final class Search extends \Bricks\Element {
 			'type'    => 'checkbox',
 			'default' => false,
 		];
+		$this->controls['liveSearch'] = [
+			'tab'     => 'content',
+			'group'   => 'search',
+			'label'   => esc_html__( 'Live search', 'core-blueprint-dictionary' ),
+			'type'    => 'checkbox',
+			'default' => true,
+		];
+		$this->controls['minChars'] = [
+			'tab'         => 'content',
+			'group'       => 'search',
+			'label'       => esc_html__( 'Minimum characters', 'core-blueprint-dictionary' ),
+			'type'        => 'number',
+			'default'     => 2,
+			'min'         => 1,
+			'max'         => 10,
+			'step'        => 1,
+			'required'    => [ 'liveSearch', '=', true ],
+			'description' => esc_html__( 'Live search starts after this many characters. Form submission remains available as a fallback.', 'core-blueprint-dictionary' ),
+		];
 
 		$this->controls['formDisplay'] = [
 			'tab'     => 'content',
@@ -431,6 +450,8 @@ final class Search extends \Bricks\Element {
 			'limit'       => $settings['limit'] ?? 30,
 			'excerpt'     => self::checkbox( $settings, 'showExcerpt', false ),
 			'show_count'  => self::checkbox( $settings, 'showCount', false ),
+			'live'        => self::checkbox( $settings, 'liveSearch', true ),
+			'min_chars'   => $settings['minChars'] ?? 2,
 		];
 
 		$this->set_attribute( '_root', 'class', 'cb-dictionary-bricks-search' );

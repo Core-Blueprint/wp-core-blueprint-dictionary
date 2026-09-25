@@ -50,7 +50,7 @@ final class SearchResults extends \Bricks\Element {
 			'tab'     => 'content',
 			'group'   => 'results',
 			'type'    => 'info',
-			'content' => esc_html__( 'Pair this element with Dictionary Search by using the same source key. It renders server-side GET results now and is ready for live search enhancement.', 'core-blueprint-dictionary' ),
+			'content' => esc_html__( 'Pair this element with Dictionary Search by using the same source key. It supports live updates while keeping server-side GET results as a fallback.', 'core-blueprint-dictionary' ),
 		];
 		$this->controls['sourceKey'] = [
 			'tab'         => 'content',

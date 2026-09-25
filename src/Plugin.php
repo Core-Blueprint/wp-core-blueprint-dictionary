@@ -9,6 +9,7 @@ use CB\Dictionary\Content\Alphabet;
 use CB\Dictionary\Content\Meta;
 use CB\Dictionary\Content\PostType;
 use CB\Dictionary\Content\Taxonomies;
+use CB\Dictionary\Frontend\RestSearch;
 use CB\Dictionary\Frontend\Shortcodes;
 use CB\Dictionary\Governance\Events;
 use CB\Dictionary\Integration\Builders\Bootstrap as BuilderBootstrap;
@@ -35,6 +36,7 @@ final class Plugin {
 
 		Alphabet::init();
 		Shortcodes::init();
+		RestSearch::init();
 		BuilderBootstrap::init();
 
 		if ( is_admin() ) {

@@ -48,6 +48,8 @@ final class Shortcodes {
 				'results'     => 'inline',
 				'excerpt'     => 'false',
 				'show_count'  => 'false',
+				'live'        => 'true',
+				'min_chars'   => 2,
 			],
 			is_array( $atts ) ? $atts : [],
 			'cb_dictionary_search'

@@ -37,6 +37,9 @@ $expected = [
 	'src/Frontend/Queries.php',
 	'src/Frontend/Conditions.php',
 	'src/Frontend/Shortcodes.php',
+	'src/Frontend/Search.php',
+	'src/Frontend/RestSearch.php',
+	'src/Frontend/Assets.php',
 	'src/Frontend/Components/Entries.php',
 	'src/Frontend/Components/Alphabet.php',
 	'src/Frontend/Components/Meta.php',
@@ -126,6 +129,31 @@ foreach ( [
 	if ( ! str_contains( $shortcodes, $required ) ) {
 		$failures[] = 'Builder-neutral shortcode/component contract is missing ' . $required . '.';
 	}
+}
+
+$search_provider = (string) file_get_contents( $root . '/src/Frontend/Search.php' );
+foreach ( [ 'Meta::ABBREVIATION', 'Meta::SYNONYMS', 'Queries::entries', 'str_starts_with' ] as $required ) {
+	if ( ! str_contains( $search_provider, $required ) ) {
+		$failures[] = 'Dictionary search provider is missing ' . $required . '.';
+	}
+}
+
+$rest_search = (string) file_get_contents( $root . '/src/Frontend/RestSearch.php' );
+foreach ( [ 'cb-dictionary/v1', 'WP_REST_Server::READABLE', "'permission_callback' => '__return_true'", "'Cache-Control'", "'Vary'" ] as $required ) {
+	if ( ! str_contains( $rest_search, $required ) ) {
+		$failures[] = 'Dictionary REST search contract is missing ' . $required . '.';
+	}
+}
+
+foreach ( [ 'assets/js/dictionary-search.js', 'assets/css/dictionary-search.css' ] as $asset ) {
+	if ( ! is_file( $root . '/' . $asset ) ) {
+		$failures[] = 'Dictionary live search asset is missing ' . $asset . '.';
+	}
+}
+
+$plugin_runtime = (string) file_get_contents( $root . '/src/Plugin.php' );
+if ( ! str_contains( $plugin_runtime, 'RestSearch::init()' ) ) {
+	$failures[] = 'Dictionary plugin must initialize the public live search REST endpoint.';
 }
 
 $events = (string) file_get_contents( $root . '/src/Governance/Events.php' );

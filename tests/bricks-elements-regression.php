@@ -53,6 +53,8 @@ namespace {
 	$root = dirname( __DIR__ );
 	$custom_control_contracts = [
 		'Search.php' => [
+			"'liveSearch'",
+			"'minChars'",
 			"'formGap'",
 			"'inputFocusBorder'",
 			"'buttonHoverBackground'",

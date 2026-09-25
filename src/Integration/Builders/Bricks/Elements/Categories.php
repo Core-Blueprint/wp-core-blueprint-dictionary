@@ -72,15 +72,20 @@ final class Categories extends \Bricks\Element {
 			'default' => '',
 			'css'     => [ [ 'property' => 'list-style-type', 'selector' => '.cb-dictionary-categories__items' ] ],
 		];
-		foreach ( [ 'listMargin' => [ 'List margin', 'margin' ], 'listPadding' => [ 'List padding', 'padding' ] ] as $name => [ $label, $property ] ) {
-			$this->controls[ $name ] = [
-				'tab'   => 'content',
-				'group' => 'layout',
-				'label' => esc_html__( $label, 'core-blueprint-dictionary' ),
-				'type'  => 'dimensions',
-				'css'   => [ [ 'property' => $property, 'selector' => '.cb-dictionary-categories__items' ] ],
-			];
-		}
+		$this->controls['listMargin'] = [
+			'tab'   => 'content',
+			'group' => 'layout',
+			'label' => esc_html__( 'List margin', 'core-blueprint-dictionary' ),
+			'type'  => 'dimensions',
+			'css'   => [ [ 'property' => 'margin', 'selector' => '.cb-dictionary-categories__items' ] ],
+		];
+		$this->controls['listPadding'] = [
+			'tab'   => 'content',
+			'group' => 'layout',
+			'label' => esc_html__( 'List padding', 'core-blueprint-dictionary' ),
+			'type'  => 'dimensions',
+			'css'   => [ [ 'property' => 'padding', 'selector' => '.cb-dictionary-categories__items' ] ],
+		];
 		$this->controls['listColumns'] = [
 			'tab'      => 'content',
 			'group'    => 'layout',
@@ -135,17 +140,24 @@ final class Categories extends \Bricks\Element {
 			'css'      => [ [ 'property' => 'align-items', 'selector' => '.cb-dictionary-categories__items' ] ],
 			'required' => [ 'listDisplay', '=', 'flex' ],
 		];
-		foreach ( [ 'listColumnGap' => [ 'Column gap', 'column-gap' ], 'listRowGap' => [ 'Row gap', 'row-gap' ] ] as $name => [ $label, $property ] ) {
-			$this->controls[ $name ] = [
-				'tab'      => 'content',
-				'group'    => 'layout',
-				'label'    => esc_html__( $label, 'core-blueprint-dictionary' ),
-				'type'     => 'number',
-				'units'    => true,
-				'css'      => [ [ 'property' => $property, 'selector' => '.cb-dictionary-categories__items' ] ],
-				'required' => [ 'listDisplay', '=', 'flex' ],
-			];
-		}
+		$this->controls['listColumnGap'] = [
+			'tab'      => 'content',
+			'group'    => 'layout',
+			'label'    => esc_html__( 'Column gap', 'core-blueprint-dictionary' ),
+			'type'     => 'number',
+			'units'    => true,
+			'css'      => [ [ 'property' => 'column-gap', 'selector' => '.cb-dictionary-categories__items' ] ],
+			'required' => [ 'listDisplay', '=', 'flex' ],
+		];
+		$this->controls['listRowGap'] = [
+			'tab'      => 'content',
+			'group'    => 'layout',
+			'label'    => esc_html__( 'Row gap', 'core-blueprint-dictionary' ),
+			'type'     => 'number',
+			'units'    => true,
+			'css'      => [ [ 'property' => 'row-gap', 'selector' => '.cb-dictionary-categories__items' ] ],
+			'required' => [ 'listDisplay', '=', 'flex' ],
+		];
 		$this->controls['listGridGap'] = [
 			'tab'      => 'content',
 			'group'    => 'layout',
@@ -192,20 +204,34 @@ final class Categories extends \Bricks\Element {
 			'type'  => 'box-shadow',
 			'css'   => [ [ 'property' => 'box-shadow', 'selector' => '.cb-dictionary-categories__link' ] ],
 		];
-		foreach ( [
-			'linkHoverColor'      => [ 'Hover text color', 'color', '.cb-dictionary-categories__link:hover' ],
-			'linkHoverBackground' => [ 'Hover background color', 'background-color', '.cb-dictionary-categories__link:hover' ],
-			'linkFocusColor'      => [ 'Focus text color', 'color', '.cb-dictionary-categories__link:focus-visible' ],
-			'linkFocusBackground' => [ 'Focus background color', 'background-color', '.cb-dictionary-categories__link:focus-visible' ],
-		] as $name => [ $label, $property, $selector ] ) {
-			$this->controls[ $name ] = [
-				'tab'   => 'content',
-				'group' => 'links',
-				'label' => esc_html__( $label, 'core-blueprint-dictionary' ),
-				'type'  => 'color',
-				'css'   => [ [ 'property' => $property, 'selector' => $selector ] ],
-			];
-		}
+		$this->controls['linkHoverColor'] = [
+			'tab'   => 'content',
+			'group' => 'links',
+			'label' => esc_html__( 'Hover text color', 'core-blueprint-dictionary' ),
+			'type'  => 'color',
+			'css'   => [ [ 'property' => 'color', 'selector' => '.cb-dictionary-categories__link:hover' ] ],
+		];
+		$this->controls['linkHoverBackground'] = [
+			'tab'   => 'content',
+			'group' => 'links',
+			'label' => esc_html__( 'Hover background color', 'core-blueprint-dictionary' ),
+			'type'  => 'color',
+			'css'   => [ [ 'property' => 'background-color', 'selector' => '.cb-dictionary-categories__link:hover' ] ],
+		];
+		$this->controls['linkFocusColor'] = [
+			'tab'   => 'content',
+			'group' => 'links',
+			'label' => esc_html__( 'Focus text color', 'core-blueprint-dictionary' ),
+			'type'  => 'color',
+			'css'   => [ [ 'property' => 'color', 'selector' => '.cb-dictionary-categories__link:focus-visible' ] ],
+		];
+		$this->controls['linkFocusBackground'] = [
+			'tab'   => 'content',
+			'group' => 'links',
+			'label' => esc_html__( 'Focus background color', 'core-blueprint-dictionary' ),
+			'type'  => 'color',
+			'css'   => [ [ 'property' => 'background-color', 'selector' => '.cb-dictionary-categories__link:focus-visible' ] ],
+		];
 
 		$this->controls['currentTypography'] = [
 			'tab'   => 'content',

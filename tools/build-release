@@ -6,8 +6,10 @@ PLUGIN_SLUG="core-blueprint-dictionary"
 MAIN_FILE="core-blueprint-dictionary.php"
 ENTRY_FILE="$ROOT_DIR/$MAIN_FILE"
 README_FILE="$ROOT_DIR/readme.txt"
-BUILD_DIR="$ROOT_DIR/build"
-STAGE_DIR="$BUILD_DIR/$PLUGIN_SLUG"
+DIST_DIR="$ROOT_DIR/dist"
+STAGE_PARENT="$(mktemp -d)"
+STAGE_DIR="$STAGE_PARENT/$PLUGIN_SLUG"
+trap 'rm -rf "$STAGE_PARENT"' EXIT
 
 fail() {
   printf 'Dictionary release build failed: %s\n' "$*" >&2
@@ -78,11 +80,11 @@ fi
 echo "==> Running canonical Dictionary checks"
 "$ROOT_DIR/tools/check"
 
-ZIP_PATH="$BUILD_DIR/$PLUGIN_SLUG-$VERSION.zip"
+ZIP_PATH="$DIST_DIR/$PLUGIN_SLUG-$VERSION.zip"
 CHECKSUM_PATH="$ZIP_PATH.sha256"
 
-rm -rf "$BUILD_DIR"
-mkdir -p "$STAGE_DIR"
+rm -rf "$DIST_DIR"
+mkdir -p "$DIST_DIR" "$STAGE_DIR"
 
 for path in "$MAIN_FILE" readme.txt uninstall.php; do
   [[ -f "$ROOT_DIR/$path" ]] || fail "missing required release file: $path"
@@ -112,7 +114,7 @@ fi
 find "$STAGE_DIR" -exec touch -t 198001010000 {} +
 
 (
-  cd "$BUILD_DIR"
+  cd "$STAGE_PARENT"
   zip -X -q "$ZIP_PATH" "$PLUGIN_SLUG/"
   find "$PLUGIN_SLUG" -type f -print | LC_ALL=C sort | zip -X -q "$ZIP_PATH" -@
 )
@@ -151,7 +153,7 @@ PACKAGED_STABLE_TAG="$(printf '%s' "$PACKAGED_README" | php -r '$s=stream_get_co
 [[ "$PACKAGED_STABLE_TAG" == "$VERSION" ]] || fail "packaged Stable tag differs from verified source"
 
 (
-  cd "$BUILD_DIR"
+  cd "$DIST_DIR"
   sha256sum "$(basename "$ZIP_PATH")" > "$(basename "$CHECKSUM_PATH")"
 )
 [[ -s "$CHECKSUM_PATH" ]] || fail "release checksum was not created"

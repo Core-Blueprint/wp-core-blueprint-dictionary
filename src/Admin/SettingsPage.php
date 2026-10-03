@@ -19,7 +19,7 @@ final class SettingsPage {
 	private const TAB_INTEGRATIONS = 'integrations';
 
 	public static function init(): void {
-		add_action( 'cb_core_register_settings', [ __CLASS__, 'register' ] );
+		add_action( 'core_blueprint_register_settings', [ __CLASS__, 'register' ] );
 	}
 
 	public static function register(): void {

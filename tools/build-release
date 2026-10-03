@@ -41,7 +41,7 @@ define_value() {
   ' "$file" "$name"
 }
 
-for command in php zip unzip sha256sum find sort touch grep; do
+for command in php node zip unzip sha256sum find sort touch grep git; do
   command -v "$command" >/dev/null 2>&1 || fail "missing required command: $command"
 done
 
@@ -71,21 +71,12 @@ README_PHP="$(header_value "$README_FILE" 'Requires PHP')"
 echo "==> Release identity"
 printf 'Version: %s\nWordPress: %s\nPHP: %s\nRequires Plugins: %s\n' "$VERSION" "$REQUIRES_WP" "$REQUIRES_PHP" "$REQUIRES_PLUGINS"
 
-echo "==> Linting source PHP"
-while IFS= read -r -d '' file; do
-  php -l "$file" >/dev/null || fail "PHP lint failed: $file"
-done < <(find "$ROOT_DIR" \
-  -path "$ROOT_DIR/.git" -prune -o \
-  -path "$BUILD_DIR" -prune -o \
-  -type f -name '*.php' -print0)
+if [[ -n "$(git -C "$ROOT_DIR" status --porcelain --untracked-files=all -- . ':!build' ':!dist')" ]]; then
+  fail "working tree contains uncommitted release-source changes"
+fi
 
-echo "==> Running Dictionary conformance and regressions"
-php "$ROOT_DIR/tools/conformance.php"
-php "$ROOT_DIR/tests/archive-context-regression.php"
-php "$ROOT_DIR/tests/bricks-adapter-regression.php"
-php "$ROOT_DIR/tests/bricks-elements-regression.php"
-php "$ROOT_DIR/tests/bricks-styling-regression.php"
-php "$ROOT_DIR/tests/live-search-regression.php"
+echo "==> Running canonical Dictionary checks"
+"$ROOT_DIR/tools/check"
 
 ZIP_PATH="$BUILD_DIR/$PLUGIN_SLUG-$VERSION.zip"
 CHECKSUM_PATH="$ZIP_PATH.sha256"
@@ -110,6 +101,13 @@ echo "==> Linting staged PHP"
 while IFS= read -r -d '' file; do
   php -l "$file" >/dev/null || fail "staged PHP lint failed: $file"
 done < <(find "$STAGE_DIR" -type f -name '*.php' -print0)
+
+echo "==> Linting staged JavaScript"
+if [[ -d "$STAGE_DIR/assets" ]]; then
+  while IFS= read -r -d '' file; do
+    node --check "$file" >/dev/null || fail "staged JavaScript syntax failed: $file"
+  done < <(find "$STAGE_DIR/assets" -type f -name '*.js' -print0)
+fi
 
 find "$STAGE_DIR" -exec touch -t 198001010000 {} +
 

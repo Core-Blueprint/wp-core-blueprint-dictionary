@@ -15,11 +15,11 @@ The check verifies expected runtime files, public Base boundaries, native CPT/ta
 ## PHP syntax
 
 ```bash
-find . -type f -name '*.php' -not -path './build/*' -print0 | xargs -0 -n1 php -l
+find . -type f -name '*.php' -not -path './build/*' -not -path './dist/*' -print0 | xargs -0 -n1 php -l
 ```
 
 ## Release build
 
 Run `tools/build-release`.
 
-The builder validates release identity, requires a clean release-source tree, runs `tools/check`, validates the staged PHP and JavaScript runtime and creates `build/core-blueprint-dictionary-{version}.zip` with a SHA-256 sidecar.
+The builder validates release identity, requires a clean release-source tree, runs `tools/check`, validates the staged PHP and JavaScript runtime and creates `dist/core-blueprint-dictionary-{version}.zip` with a SHA-256 sidecar.

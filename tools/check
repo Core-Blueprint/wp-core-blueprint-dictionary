@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
+
+fail() {
+  printf 'Dictionary checks failed: %s\n' "$*" >&2
+  exit 1
+}
+
+for command in php node find; do
+  command -v "$command" >/dev/null 2>&1 || fail "missing required command: $command"
+done
+
+php -r 'exit(version_compare(PHP_VERSION, "8.4", ">=") ? 0 : 1);' \
+  || fail "PHP 8.4 or newer is required"
+
+ENTRY="$ROOT/core-blueprint-dictionary.php"
+[[ -f "$ENTRY" ]] || fail "plugin entrypoint is missing"
+
+VERSION="$(php -r '$s=file_get_contents($argv[1]); if(!preg_match("/Version:\\s+([^\\r\\n]+)/",$s,$m)){exit(2);} echo trim($m[1]);' "$ENTRY")"
+CONSTANT_VERSION="$(php -r '$s=file_get_contents($argv[1]); if(!preg_match("/define\\(\\s*[\\x27\\x22]CB_DICTIONARY_VERSION[\\x27\\x22]\\s*,\\s*[\\x27\\x22]([^\\x27\\x22]+)[\\x27\\x22]/",$s,$m)){exit(2);} echo trim($m[1]);' "$ENTRY")"
+
+[[ "$VERSION" == "1.0.0-rc1" ]] || fail "unexpected public version: $VERSION"
+[[ "$CONSTANT_VERSION" == "$VERSION" ]] || fail "Version header and CB_DICTIONARY_VERSION differ"
+
+echo "==> PHP syntax"
+while IFS= read -r -d '' file; do
+  php -l "$file" >/dev/null || fail "PHP syntax failed: $file"
+done < <(
+  find "$ROOT" \
+    \( -path "$ROOT/.git" -o -path "$ROOT/build" -o -path "$ROOT/dist" -o -path "$ROOT/vendor" -o -path "$ROOT/node_modules" \) -prune -o \
+    -type f -name '*.php' -print0
+)
+
+echo "==> JavaScript syntax"
+if [[ -d "$ROOT/assets" ]]; then
+  while IFS= read -r -d '' file; do
+    node --check "$file" >/dev/null || fail "JavaScript syntax failed: $file"
+  done < <(find "$ROOT/assets" -type f -name '*.js' -print0)
+fi
+
+echo "==> Dictionary conformance and regressions"
+php "$ROOT/tools/conformance.php"
+php "$ROOT/tests/archive-context-regression.php"
+php "$ROOT/tests/bricks-adapter-regression.php"
+php "$ROOT/tests/bricks-elements-regression.php"
+php "$ROOT/tests/bricks-styling-regression.php"
+php "$ROOT/tests/live-search-regression.php"
+
+printf 'Dictionary checks: PASS\n'

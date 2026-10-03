@@ -71,13 +71,27 @@ foreach ( $expected as $path ) {
 	}
 }
 
-$php_files = array_merge( [ $root . '/core-blueprint-dictionary.php' ], cb_dictionary_files_with_extension( $root . '/src', 'php' ) );
+$php_files = array_merge(
+	[ $root . '/core-blueprint-dictionary.php' ],
+	cb_dictionary_files_with_extension( $root . '/src', 'php' ),
+	cb_dictionary_files_with_extension( $root . '/tests', 'php' )
+);
 $forbidden = [
 	'cb-core-css-' => 'private Base CSS handles are not public API',
 	'cb_core_event_labels' => 'legacy event-label mutation is not the Governance contract',
 	'CoreBlueprint\\Core\\Log\\AuditLog' => 'extensions must write through Governance\\Audit',
 	'CoreBlueprint\\Core\\Admin\\AdminAssetCatalog' => 'the Base asset catalog is private',
 	'jquery' => 'Dictionary has no jQuery runtime',
+	"CB\\Core\\" => 'legacy Base namespace is not supported by Base v1',
+	"CB\\\\Core\\\\" => 'escaped legacy Base namespace is not supported by Base v1',
+	'cb_core_booted' => 'legacy Base public hook is not supported by Base v1',
+	'cb_core_register_extensions' => 'legacy Base public hook is not supported by Base v1',
+	'cb_core_register_settings' => 'legacy Base public hook is not supported by Base v1',
+	'cb_core_register_interoperability_contracts' => 'legacy Base public hook is not supported by Base v1',
+	'cb_core_register_interoperability_implementations' => 'legacy Base public hook is not supported by Base v1',
+	'cb_core_module_status_definitions' => 'legacy Base public hook is not supported by Base v1',
+	'cb_core_dashboard_register_cards' => 'legacy Base public hook is not supported by Base v1',
+	'cb_core_register_pages' => 'legacy Base public hook is not supported by Base v1',
 ];
 foreach ( $php_files as $file ) {
 	$content = is_file( $file ) ? (string) file_get_contents( $file ) : '';
@@ -246,6 +260,13 @@ foreach ( [ 'EventRegistry::register', 'Audit::record', 'dictionary.settings.upd
 	}
 }
 
+$suite = (string) file_get_contents( $root . '/src/Integration/Suite.php' );
+foreach ( [ 'core_blueprint_register_extensions', 'core_blueprint_module_status_definitions', 'ExtensionRegistry::register' ] as $required ) {
+	if ( ! str_contains( $suite, $required ) ) {
+		$failures[] = 'Canonical Base v1 extension contract is missing ' . $required . '.';
+	}
+}
+
 $admin_page = (string) file_get_contents( $root . '/src/Admin/SettingsPage.php' );
 foreach ( [
 	'TAB_OVERVIEW',
@@ -258,7 +279,7 @@ foreach ( [
 	"'metric-tiles'",
 	"'nav-tabs'",
 	"'integration-grid'",
-	'cb_core_register_settings',
+	'core_blueprint_register_settings',
 	'SettingsRegistry::register',
 	'SettingsRegistry::GROUP_CONTENT_PUBLISHING',
 	'SettingsRegistry::url',

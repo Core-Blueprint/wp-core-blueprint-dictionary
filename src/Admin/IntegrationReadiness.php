@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace CB\Dictionary\Admin;
 
-use CB\Core\UI\IntegrationGrid;
+use CoreBlueprint\Core\UI\IntegrationGrid;
 use CB\Dictionary\Integration\Builders\Readiness as BuilderReadiness;
 
 defined( 'ABSPATH' ) || exit;

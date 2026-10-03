@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace CB\Dictionary\Admin;
 
-use CB\Core\Admin\SettingsRegistry;
-use CB\Core\UI\IntegrationGrid;
-use CB\Core\UI\Notice;
+use CoreBlueprint\Core\Admin\SettingsRegistry;
+use CoreBlueprint\Core\UI\IntegrationGrid;
+use CoreBlueprint\Core\UI\Notice;
 use CB\Dictionary\Content\PostType;
 use CB\Dictionary\Content\Taxonomies;
 use CB\Dictionary\Integration\Suite;

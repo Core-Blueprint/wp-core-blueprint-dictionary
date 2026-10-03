@@ -75,8 +75,8 @@ $php_files = array_merge( [ $root . '/core-blueprint-dictionary.php' ], cb_dicti
 $forbidden = [
 	'cb-core-css-' => 'private Base CSS handles are not public API',
 	'cb_core_event_labels' => 'legacy event-label mutation is not the Governance contract',
-	'CB\\Core\\Log\\AuditLog' => 'extensions must write through Governance\\Audit',
-	'CB\\Core\\Admin\\AdminAssetCatalog' => 'the Base asset catalog is private',
+	'CoreBlueprint\\Core\\Log\\AuditLog' => 'extensions must write through Governance\\Audit',
+	'CoreBlueprint\\Core\\Admin\\AdminAssetCatalog' => 'the Base asset catalog is private',
 	'jquery' => 'Dictionary has no jQuery runtime',
 ];
 foreach ( $php_files as $file ) {
@@ -310,10 +310,10 @@ if ( ! preg_match( '/^ \\* Requires Plugins:\\s+core-blueprint\\s*$/m', $bootstr
 	$failures[] = 'Dictionary WordPress.org release must declare Requires Plugins: core-blueprint.';
 }
 $requirements = (string) file_get_contents( $root . '/src/Support/Requirements.php' );
-if ( ! str_contains( $requirements, "'\\\\CB\\\\Core\\\\Admin\\\\SettingsRegistry'" ) ) {
+if ( ! str_contains( $requirements, "'\\\\CoreBlueprint\\\\Core\\\\Admin\\\\SettingsRegistry'" ) ) {
 	$failures[] = 'Dictionary requirements must include the public SettingsRegistry contract.';
 }
-foreach ( [ '\\CB\\Core\\Admin\\PageRegistry', '\\CB\\Core\\Admin\\Page' ] as $legacy_boot_contract ) {
+foreach ( [ '\\CoreBlueprint\\Core\\Admin\\PageRegistry', '\\CoreBlueprint\\Core\\Admin\\Page' ] as $legacy_boot_contract ) {
 	if ( str_contains( $bootstrap, $legacy_boot_contract ) ) {
 		$failures[] = 'Dictionary bootstrap must not require the retired flat settings contract: ' . $legacy_boot_contract . '.';
 	}

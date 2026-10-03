@@ -17,10 +17,10 @@ It owns one WordPress post type, three WordPress taxonomies and five registered 
 Dictionary requires Core Blueprint Base and consumes public Base contracts:
 
 - `CB_CORE_API_VERSION`
-- `CB\Core\ExtensionRegistry`
-- `CB\Core\Admin\PageRegistry`
-- `CB\Core\Governance\EventRegistry`
-- `CB\Core\Governance\Audit`
+- `CoreBlueprint\Core\ExtensionRegistry`
+- `CoreBlueprint\Core\Admin\PageRegistry`
+- `CoreBlueprint\Core\Governance\EventRegistry`
+- `CoreBlueprint\Core\Governance\Audit`
 
 ## Content Models boundary
 

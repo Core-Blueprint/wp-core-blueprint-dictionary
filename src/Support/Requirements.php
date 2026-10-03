@@ -43,10 +43,10 @@ final class Requirements {
 		}
 
 		$required = [
-			'\\CB\\Core\\ExtensionRegistry',
-			'\\CB\\Core\\Admin\\SettingsRegistry',
-			'\\CB\\Core\\Governance\\EventRegistry',
-			'\\CB\\Core\\Governance\\Audit',
+			'\\CoreBlueprint\\Core\\ExtensionRegistry',
+			'\\CoreBlueprint\\Core\\Admin\\SettingsRegistry',
+			'\\CoreBlueprint\\Core\\Governance\\EventRegistry',
+			'\\CoreBlueprint\\Core\\Governance\\Audit',
 		];
 		foreach ( $required as $class ) {
 			if ( ! class_exists( $class ) ) {
